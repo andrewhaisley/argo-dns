@@ -1,0 +1,16 @@
+{
+    "address_lists": [
+        {
+            "address_list_addresses": [],
+            "address_list_id": 1,
+            "address_list_networks": [
+                {
+                    "address": "0.0.0.0/0"
+                },
+                {
+                    "address": "::/0"
+                }
+            ]
+        }
+    ]
+}

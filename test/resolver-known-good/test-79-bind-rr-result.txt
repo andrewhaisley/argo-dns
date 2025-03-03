@@ -1,0 +1,23 @@
+
+; <<>> DiG 9.9.5-3ubuntu0.4-Ubuntu <<>> @192.168.0.75 cname1.blah.com ns
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 15087
+;; flags: qr aa rd; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;cname1.blah.com.		IN	NS
+
+;; ANSWER SECTION:
+cname1.blah.com.	604800	IN	CNAME	cname2.blah.com.
+cname2.blah.com.	604800	IN	CNAME	cname1.blah.com.
+
+;; Query time: 0 msec
+;; SERVER: 192.168.0.75#53(192.168.0.75)
+;; WHEN: Sun Aug 23 17:14:27 EDT 2015
+;; MSG SIZE  rcvd: 79
+

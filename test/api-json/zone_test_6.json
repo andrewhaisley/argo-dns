@@ -1,0 +1,15 @@
+{
+    "horizon_id": 1,
+    "is_forwarded": false,
+    "is_in_zone": true,
+    "is_soa": false,
+    "label": "test6",
+    "resource_records": [
+        {
+            "ip4_addr": "9.9.9.9",
+            "type": "A",
+            "ttl": 3600
+        }
+    ],
+    "transfer_address_list_id": null
+}

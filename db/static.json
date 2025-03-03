@@ -1,0 +1,1673 @@
+[
+    {
+        "table": "schema_version",
+        "values": [
+            [
+                "schema_version_id",
+                1
+            ],
+            [
+                "version_string",
+                "1"
+            ]
+        ]
+    },
+    {
+        "table": "address_list",
+        "values": [
+            [
+                "address_list_id",
+                1
+            ]
+        ]
+    },
+    {
+        "table": "address_list",
+        "values": [
+            [
+                "address_list_id",
+                2
+            ]
+        ]
+    },
+    {
+        "table": "address_list_network",
+        "values": [
+            [
+                "address_list_id",
+                1
+            ],
+            [
+                "address_list_network_id",
+                1
+            ],
+            [
+                "cidr_address",
+                "0.0.0.0/0"
+            ]
+        ]
+    },
+    {
+        "table": "address_list_network",
+        "values": [
+            [
+                "address_list_id",
+                1
+            ],
+            [
+                "address_list_network_id",
+                2
+            ],
+            [
+                "cidr_address",
+                "::/0"
+            ]
+        ]
+    },
+    {
+        "table": "address_list_address",
+        "values": [
+            [
+                "address_list_address_id",
+                1
+            ],
+            [
+                "address_list_id",
+                2
+            ],
+            [
+                "ip_address",
+                "127.0.0.1"
+            ]
+        ]
+    },
+    {
+        "table": "basic_config",
+        "values": [
+            [
+                "config_id",
+                3
+            ],
+            [
+                "name",
+                "all.support-edns"
+            ],
+            [
+                "value",
+                "true"
+            ]
+        ]
+    },
+    {
+        "table": "basic_config",
+        "values": [
+            [
+                "config_id",
+                4
+            ],
+            [
+                "name",
+                "all.edns-size"
+            ],
+            [
+                "value",
+                "4096"
+            ]
+        ]
+    },
+    {
+        "table": "basic_config",
+        "values": [
+            [
+                "config_id",
+                5
+            ],
+            [
+                "name",
+                "all.use-ip4-root-hints"
+            ],
+            [
+                "value",
+                "true"
+            ]
+        ]
+    },
+    {
+        "table": "basic_config",
+        "values": [
+            [
+                "config_id",
+                6
+            ],
+            [
+                "name",
+                "all.use-ip6-root-hints"
+            ],
+            [
+                "value",
+                "false"
+            ]
+        ]
+    },
+    {
+        "table": "basic_config",
+        "values": [
+            [
+                "config_id",
+                7
+            ],
+            [
+                "name",
+                "all.cache-garbage-collect-ms"
+            ],
+            [
+                "value",
+                "60000"
+            ]
+        ]
+    },
+    {
+        "table": "basic_config",
+        "values": [
+            [
+                "config_id",
+                8
+            ],
+            [
+                "name",
+                "all.cache-max-referral-rrs"
+            ],
+            [
+                "value",
+                "10000"
+            ]
+        ]
+    },
+    {
+        "table": "basic_config",
+        "values": [
+            [
+                "config_id",
+                9
+            ],
+            [
+                "name",
+                "all.cache-max-answer-rrs"
+            ],
+            [
+                "value",
+                "10000"
+            ]
+        ]
+    },
+    {
+        "table": "basic_config",
+        "values": [
+            [
+                "config_id",
+                10
+            ],
+            [
+                "name",
+                "all.seteuid"
+            ],
+            [
+                "value",
+                ""
+            ]
+        ]
+    },
+    {
+        "table": "basic_config",
+        "values": [
+            [
+                "config_id",
+                11
+            ],
+            [
+                "name",
+                "all.setgid"
+            ],
+            [
+                "value",
+                ""
+            ]
+        ]
+    },
+    {
+        "table": "basic_config",
+        "values": [
+            [
+                "config_id",
+                12
+            ],
+            [
+                "name",
+                "all.chroot"
+            ],
+            [
+                "value",
+                ""
+            ]
+        ]
+    },
+    {
+        "table": "server",
+        "values": [
+            [ "protocol", "dns" ],
+            [ "server_id", 1 ],
+            [ "transport", "udp" ],
+            [ "http2_deflate_table_size", 4096 ],
+            [ "is_enabled", true ]
+        ]
+    },
+    {
+        "table": "server",
+        "values": [
+            [ "protocol", "dns" ],
+            [ "server_id", 2 ],
+            [ "transport", "tcp" ],
+            [ "http2_deflate_table_size", 4096 ],
+            [ "is_enabled", true ]
+        ]
+    },
+    {
+        "table": "server",
+        "values": [
+            [ "protocol", "control" ],
+            [ "server_id", 3 ],
+            [ "transport", "tcp" ],
+            [ "http2_deflate_table_size", 4096 ],
+            [ "is_enabled", true ]
+        ]
+    },
+    {
+        "table": "server",
+        "values": [
+            [ "protocol", "dns" ],
+            [ "server_id", 4 ],
+            [ "transport", "tls" ],
+            [ "http2_deflate_table_size", 4096 ],
+            [ "is_enabled", true ]
+        ]
+    },
+    {
+        "table": "server",
+        "values": [
+            [ "protocol", "dns" ],
+            [ "server_id", 5 ],
+            [ "transport", "https" ],
+            [ "http2_deflate_table_size", 4096 ],
+            [ "is_enabled", true ]
+        ]
+    },
+    {
+        "table": "server_socket_address",
+        "values": [
+            [
+                "ip_address",
+                "0.0.0.0"
+            ],
+            [
+                "port",
+                1053
+            ],
+            [
+                "server_id",
+                1
+            ],
+            [
+                "server_socket_address_id",
+                1
+            ]
+        ]
+    },
+    {
+        "table": "server_socket_address",
+        "values": [
+            [
+                "ip_address",
+                "::"
+            ],
+            [
+                "port",
+                1053
+            ],
+            [
+                "server_id",
+                1
+            ],
+            [
+                "server_socket_address_id",
+                2
+            ]
+        ]
+    },
+    {
+        "table": "server_socket_address",
+        "values": [
+            [
+                "ip_address",
+                "0.0.0.0"
+            ],
+            [
+                "port",
+                1053
+            ],
+            [
+                "server_id",
+                2
+            ],
+            [
+                "server_socket_address_id",
+                3
+            ]
+        ]
+    },
+    {
+        "table": "server_socket_address",
+        "values": [
+            [
+                "ip_address",
+                "::"
+            ],
+            [
+                "port",
+                1053
+            ],
+            [
+                "server_id",
+                2
+            ],
+            [
+                "server_socket_address_id",
+                4
+            ]
+        ]
+    },
+    {
+        "table": "server_socket_address",
+        "values": [
+            [
+                "ip_address",
+                "0.0.0.0"
+            ],
+            [
+                "port",
+                2000
+            ],
+            [
+                "server_id",
+                3
+            ],
+            [
+                "server_socket_address_id",
+                5
+            ]
+        ]
+    },
+    {
+        "table": "server_socket_address",
+        "values": [
+            [
+                "ip_address",
+                "::"
+            ],
+            [
+                "port",
+                2000
+            ],
+            [
+                "server_id",
+                3
+            ],
+            [
+                "server_socket_address_id",
+                6
+            ]
+        ]
+    },
+    {
+        "table": "server_socket_address",
+        "values": [
+            [
+                "ip_address",
+                "0.0.0.0"
+            ],
+            [
+                "port",
+                1853 
+            ],
+            [
+                "server_id",
+                4
+            ],
+            [
+                "server_socket_address_id",
+                7
+            ]
+        ]
+    },
+    {
+        "table": "server_socket_address",
+        "values": [
+            [
+                "ip_address",
+                "::"
+            ],
+            [
+                "port",
+                1853 
+            ],
+            [
+                "server_id",
+                4
+            ],
+            [
+                "server_socket_address_id",
+                8
+            ]
+        ]
+    },
+    {
+        "table": "server_socket_address",
+        "values": [
+            [
+                "ip_address",
+                "0.0.0.0"
+            ],
+            [
+                "port",
+                1443 
+            ],
+            [
+                "server_id",
+                5
+            ],
+            [
+                "server_socket_address_id",
+                9
+            ]
+        ]
+    },
+    {
+        "table": "server_socket_address",
+        "values": [
+            [
+                "ip_address",
+                "::"
+            ],
+            [
+                "port",
+                1443 
+            ],
+            [
+                "server_id",
+                5
+            ],
+            [
+                "server_socket_address_id",
+                10
+            ]
+        ]
+    },
+    {
+        "table": "dns_client",
+        "values": [
+            [
+                "client_id",
+                0
+            ],
+            [
+                "connect_tcp_timeout_ms",
+                1000
+            ],
+            [
+                "num_parallel_udp",
+                2
+            ],
+            [
+                "read_tcp_timeout_ms",
+                1000
+            ],
+            [
+                "server_port",
+                53
+            ],
+            [
+                "total_timeout_ms",
+                5000
+            ],
+            [
+                "udp_timeout_ms",
+                2500
+            ],
+            [
+                "use_ip4",
+                1
+            ],
+            [
+                "use_ip6",
+                0
+            ],
+            [
+                "use_tcp",
+                1
+            ],
+            [
+                "use_udp",
+                1
+            ],
+            [
+                "wait_udp_response_ms",
+                1000
+            ],
+            [
+                "write_tcp_timeout_ms",
+                1000
+            ]
+        ]
+    },
+    {
+        "table": "dns_client",
+        "values": [
+            [
+                "client_id",
+                1
+            ],
+            [
+                "connect_tcp_timeout_ms",
+                1000
+            ],
+            [
+                "num_parallel_udp",
+                2
+            ],
+            [
+                "read_tcp_timeout_ms",
+                1000
+            ],
+            [
+                "server_port",
+                53
+            ],
+            [
+                "total_timeout_ms",
+                5000
+            ],
+            [
+                "udp_timeout_ms",
+                2500
+            ],
+            [
+                "use_ip4",
+                1
+            ],
+            [
+                "use_ip6",
+                0
+            ],
+            [
+                "use_tcp",
+                1
+            ],
+            [
+                "use_udp",
+                1
+            ],
+            [
+                "wait_udp_response_ms",
+                1000
+            ],
+            [
+                "write_tcp_timeout_ms",
+                1000
+            ]
+        ]
+    },
+    {
+        "table": "dns_client",
+        "values": [
+            [
+                "client_id",
+                2
+            ],
+            [
+                "connect_tcp_timeout_ms",
+                1000
+            ],
+            [
+                "num_parallel_udp",
+                2
+            ],
+            [
+                "read_tcp_timeout_ms",
+                1000
+            ],
+            [
+                "server_port",
+                53
+            ],
+            [
+                "total_timeout_ms",
+                5000
+            ],
+            [
+                "udp_timeout_ms",
+                2500
+            ],
+            [
+                "use_ip4",
+                1
+            ],
+            [
+                "use_ip6",
+                0
+            ],
+            [
+                "use_tcp",
+                1
+            ],
+            [
+                "use_udp",
+                1
+            ],
+            [
+                "wait_udp_response_ms",
+                1000
+            ],
+            [
+                "write_tcp_timeout_ms",
+                1000
+            ]
+        ]
+    },
+    {
+        "table": "dns_client",
+        "values": [
+            [
+                "client_id",
+                3
+            ],
+            [
+                "connect_tcp_timeout_ms",
+                1000
+            ],
+            [
+                "num_parallel_udp",
+                2
+            ],
+            [
+                "read_tcp_timeout_ms",
+                1000
+            ],
+            [
+                "server_port",
+                53
+            ],
+            [
+                "total_timeout_ms",
+                5000
+            ],
+            [
+                "udp_timeout_ms",
+                2500
+            ],
+            [
+                "use_ip4",
+                1
+            ],
+            [
+                "use_ip6",
+                0
+            ],
+            [
+                "use_tcp",
+                1
+            ],
+            [
+                "use_udp",
+                1
+            ],
+            [
+                "wait_udp_response_ms",
+                1000
+            ],
+            [
+                "write_tcp_timeout_ms",
+                1000
+            ]
+        ]
+    },
+    {
+        "table": "dns_client",
+        "values": [
+            [
+                "client_id",
+                4
+            ],
+            [
+                "connect_tcp_timeout_ms",
+                1000
+            ],
+            [
+                "num_parallel_udp",
+                2
+            ],
+            [
+                "read_tcp_timeout_ms",
+                1000
+            ],
+            [
+                "server_port",
+                53
+            ],
+            [
+                "total_timeout_ms",
+                5000
+            ],
+            [
+                "udp_timeout_ms",
+                2500
+            ],
+            [
+                "use_ip4",
+                1
+            ],
+            [
+                "use_ip6",
+                0
+            ],
+            [
+                "use_tcp",
+                1
+            ],
+            [
+                "use_udp",
+                1
+            ],
+            [
+                "wait_udp_response_ms",
+                1000
+            ],
+            [
+                "write_tcp_timeout_ms",
+                1000
+            ]
+        ]
+    },
+    {
+        "table": "cache_config",
+        "values": [
+            [
+                "cache_config_id",
+                0
+            ],
+            [
+                "client_id",
+                0
+            ],
+            [
+                "default_ttl",
+                300
+            ],
+            [
+                "cache_garbage_collect_ms",
+                60000
+            ],
+            [
+                "cache_max_referral_rrs",
+                10000
+            ],
+            [
+                "cache_max_answer_rrs",
+                10000
+            ]
+        ]
+    },
+    {
+        "table": "dns_server",
+        "values": [
+            [ "allowed_connection_backlog", 10 ],
+            [ "client_id", 1 ],
+            [ "max_external_resolutions", 30 ],
+            [ "max_in_message_queue_length", 10000 ],
+            [ "max_out_message_queue_length", 10000 ],
+            [ "max_queued_per_question", 10000 ],
+            [ "max_recursion_depth", 20 ],
+            [ "min_cache_ttl", 5 ],
+            [ "num_forwarding_threads", 8 ],
+            [ "num_receive_threads", 1 ],
+            [ "num_send_threads", 1 ],
+            [ "num_tcp_recursive_slots", 10 ],
+            [ "num_tcp_threads", 8 ],
+            [ "num_udp_recursive_slots", 100 ],
+            [ "num_udp_threads", 2 ],
+            [ "recursive_timeout_ms", 15000 ],
+            [ "server_id", 1 ],
+            [ "tcp_max_body_wait_ms", 5000 ],
+            [ "tcp_max_len_wait_ms", 60000 ],
+            [ "udp_reply_timeout_ms", 1000 ],
+            [ "udp_retry_count", 3 ],
+            [ "doh_client_timeout_ms", 5000 ],
+            [ "maximum_http_request_size", 4000 ],
+            [ "doh_path", "/dns-query" ]
+        ]
+    },
+    {
+        "table": "dns_server",
+        "values": [
+            [ "allowed_connection_backlog", 10 ],
+            [ "client_id", 2 ],
+            [ "max_external_resolutions", 30 ],
+            [ "max_in_message_queue_length", 10000 ],
+            [ "max_out_message_queue_length", 10000 ],
+            [ "max_queued_per_question", 10000 ],
+            [ "max_recursion_depth", 20 ],
+            [ "min_cache_ttl", 5 ],
+            [ "num_forwarding_threads", 8 ],
+            [ "num_receive_threads", 1 ],
+            [ "num_send_threads", 1 ],
+            [ "num_tcp_recursive_slots", 10 ],
+            [ "num_tcp_threads", 8 ],
+            [ "num_udp_recursive_slots", 100 ],
+            [ "num_udp_threads", 1 ],
+            [ "recursive_timeout_ms", 15000 ],
+            [ "server_id", 2 ],
+            [ "tcp_max_body_wait_ms", 5000 ],
+            [ "tcp_max_len_wait_ms", 60000 ],
+            [ "udp_reply_timeout_ms", 1000 ],
+            [ "udp_retry_count", 3 ],
+            [ "doh_client_timeout_ms", 5000 ],
+            [ "maximum_http_request_size", 4000 ],
+            [ "doh_path", "/dns-query" ]
+        ]
+    },
+    {
+        "table": "dns_server",
+        "values": [
+            [ "allowed_connection_backlog", 10 ],
+            [ "client_id", 3 ],
+            [ "max_external_resolutions", 30 ],
+            [ "max_in_message_queue_length", 10000 ],
+            [ "max_out_message_queue_length", 10000 ],
+            [ "max_queued_per_question", 10000 ],
+            [ "max_recursion_depth", 20 ],
+            [ "min_cache_ttl", 5 ],
+            [ "num_forwarding_threads", 8 ],
+            [ "num_receive_threads", 1 ],
+            [ "num_send_threads", 1 ],
+            [ "num_tcp_recursive_slots", 10 ],
+            [ "num_tcp_threads", 8 ],
+            [ "num_udp_recursive_slots", 100 ],
+            [ "num_udp_threads", 1 ],
+            [ "recursive_timeout_ms", 15000 ],
+            [ "server_id", 4 ],
+            [ "tcp_max_body_wait_ms", 5000 ],
+            [ "tcp_max_len_wait_ms", 60000 ],
+            [ "udp_reply_timeout_ms", 1000 ],
+            [ "udp_retry_count", 3 ],
+            [ "doh_client_timeout_ms", 5000 ],
+            [ "maximum_http_request_size", 4000 ],
+            [ "doh_path", "/dns-query" ]
+        ]
+    },
+    {
+        "table": "dns_server",
+        "values": [
+            [ "allowed_connection_backlog", 10 ],
+            [ "client_id", 4 ],
+            [ "max_external_resolutions", 30 ],
+            [ "max_in_message_queue_length", 10000 ],
+            [ "max_out_message_queue_length", 10000 ],
+            [ "max_queued_per_question", 10000 ],
+            [ "max_recursion_depth", 20 ],
+            [ "min_cache_ttl", 5 ],
+            [ "num_forwarding_threads", 8 ],
+            [ "num_receive_threads", 1 ],
+            [ "num_send_threads", 1 ],
+            [ "num_tcp_recursive_slots", 10 ],
+            [ "num_tcp_threads", 8 ],
+            [ "num_udp_recursive_slots", 100 ],
+            [ "num_udp_threads", 1 ],
+            [ "recursive_timeout_ms", 15000 ],
+            [ "server_id", 5 ],
+            [ "tcp_max_body_wait_ms", 5000 ],
+            [ "tcp_max_len_wait_ms", 60000 ],
+            [ "udp_reply_timeout_ms", 1000 ],
+            [ "udp_retry_count", 3 ],
+            [ "doh_client_timeout_ms", 5000 ],
+            [ "maximum_http_request_size", 4000 ],
+            [ "doh_path", "/dns-query" ]
+        ]
+    },
+    {
+        "table": "control_server",
+        "values": [
+            [ "address_list_id", 1 ],
+            [ "allowed_connection_backlog", 10 ],
+            [ "client_connection_timeout_ms", 30000 ],
+            [ "maximum_payload_size", 1000000 ],
+            [ "num_threads", 2 ],
+            [ "server_id", 3 ],
+            [ "use_ssl", 1 ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "198.41.0.4"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "a.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                1
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "192.228.79.201"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "b.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                2
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "192.33.4.12"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "c.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                3
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "199.7.91.13"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "d.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                4
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "192.203.230.10"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "e.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                5
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "192.5.5.241"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "f.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                6
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "192.112.36.4"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "g.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                7
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "128.63.2.53"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "h.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                8
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "192.36.148.17"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "i.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                9
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "192.58.128.30"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "j.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                10
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "193.0.14.129"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "k.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                11
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "199.7.83.42"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "l.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                12
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "202.12.27.33"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "m.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                13
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "2001:503:ba3e::2:30"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "a.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                14
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "2001:500:84::b"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "b.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                15
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "2001:500:2::c"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "c.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                16
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "2001:500:2d::d"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "d.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                17
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "2001:500:2f::f"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "f.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                18
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "2001:500:1::803f:235"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "h.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                19
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "2001:7fe::53"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "i.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                20
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "2001:503:c27::2:30"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "j.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                21
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "2001:7fd::1"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "k.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                22
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "2001:500:3::42"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "l.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                23
+            ]
+        ]
+    },
+    {
+        "table": "root_server",
+        "values": [
+            [
+                "addr_ttl",
+                600000
+            ],
+            [
+                "ip_address",
+                "2001:dc3::35"
+            ],
+            [
+                "last_contact_date_time",
+                "2015-09-07 21:00:00"
+            ],
+            [
+                "name",
+                "m.root-servers.net"
+            ],
+            [
+                "ns_ttl",
+                600000
+            ],
+            [
+                "root_server_id",
+                24
+            ]
+        ]
+    },
+    {
+        "table": "horizon",
+        "values": [
+            [
+                "address_list_id",
+                1
+            ],
+            [
+                "allow_recursion",
+                1
+            ],
+            [
+                "horizon_id",
+                1
+            ],
+            [
+                "check_order",
+                1
+            ]
+        ]
+    }
+]

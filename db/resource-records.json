@@ -1,0 +1,1419 @@
+{
+    "rr_a": {
+        "columns": {
+            "ip4_addr": {
+                "length": 15,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_a_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_a_id",
+                    true
+                ]
+            ],
+            "i_rr_a_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_a"
+    },
+    "rr_aaaa": {
+        "columns": {
+            "ip6_addr": {
+                "length": 45,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_aaaa_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_aaaa_id",
+                    true
+                ]
+            ],
+            "i_rr_aaaa_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_aaaa"
+    },
+    "rr_afsdb": {
+        "columns": {
+            "hostname": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_afsdb_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "subtype": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_afsdb_id",
+                    true
+                ]
+            ],
+            "i_rr_afsdb_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_afsdb"
+    },
+    "rr_caa": {
+        "columns": {
+            "contents": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "flags": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_caa_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "tag": {
+                "length": 255,
+                "nullable": false,
+                "type": "string"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_caa_id",
+                    true
+                ]
+            ],
+            "i_rr_caa_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_caa"
+    },
+    "rr_cert": {
+        "columns": {
+            "algorithm": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "certificate": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "certificate_type": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "key_tag": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_cert_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_cert_id",
+                    true
+                ]
+            ],
+            "i_rr_cert_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_cert"
+    },
+    "rr_cname": {
+        "columns": {
+            "cname": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_cname_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_cname_id",
+                    true
+                ]
+            ],
+            "i_rr_cname_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_cname"
+    },
+    "rr_csync": {
+        "columns": {
+            "flags": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_csync_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "soa_serial": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "type_bitmap": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_csync_id",
+                    true
+                ]
+            ],
+            "i_rr_csync_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_csync"
+    },
+    "rr_dhcid": {
+        "columns": {
+            "contents": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_dhcid_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_dhcid_id",
+                    true
+                ]
+            ],
+            "i_rr_dhcid_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_dhcid"
+    },
+    "rr_dname": {
+        "columns": {
+            "dname": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_dname_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_dname_id",
+                    true
+                ]
+            ],
+            "i_rr_dname_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_dname"
+    },
+    "rr_eui48": {
+        "columns": {
+            "eui48": {
+                "length": 17,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_eui48_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_eui48_id",
+                    true
+                ]
+            ],
+            "i_rr_eui48_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_eui48"
+    },
+    "rr_eui64": {
+        "columns": {
+            "eui64": {
+                "length": 23,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_eui64_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_eui64_id",
+                    true
+                ]
+            ],
+            "i_rr_eui64_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_eui64"
+    },
+    "rr_generic": {
+        "columns": {
+            "contents": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_generic_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_generic_id",
+                    true
+                ]
+            ],
+            "i_rr_generic_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_generic"
+    },
+    "rr_hinfo": {
+        "columns": {
+            "cpu": {
+                "length": 255,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "os": {
+                "length": 255,
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_hinfo_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_hinfo_id",
+                    true
+                ]
+            ],
+            "i_rr_hinfo_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_hinfo"
+    },
+    "rr_https": {
+        "columns": {
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "priority": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "rr_https_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "svcparams": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "target": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_https_id",
+                    true
+                ]
+            ],
+            "i_rr_https_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_https"
+    },
+    "rr_ipseckey": {
+        "columns": {
+            "ipseckey": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_ipseckey_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_ipseckey_id",
+                    true
+                ]
+            ],
+            "i_rr_ipseckey_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_ipseckey"
+    },
+    "rr_kx": {
+        "columns": {
+            "exchanger": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "preference": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "rr_kx_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_kx_id",
+                    true
+                ]
+            ],
+            "i_rr_kx_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_kx"
+    },
+    "rr_loc": {
+        "columns": {
+            "altitude": {
+                "nullable": false,
+                "type": "int"
+            },
+            "horizontal_precision": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "latitude": {
+                "nullable": false,
+                "type": "int"
+            },
+            "longitude": {
+                "nullable": false,
+                "type": "int"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_loc_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "size": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "version": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "vertical_precision": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_loc_id",
+                    true
+                ]
+            ],
+            "i_rr_loc_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_loc"
+    },
+    "rr_mx": {
+        "columns": {
+            "exchange": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "preference": {
+                "nullable": false,
+                "type": "int"
+            },
+            "rr_mx_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_mx_id",
+                    true
+                ]
+            ],
+            "i_rr_mx_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_mx"
+    },
+    "rr_naptr": {
+        "columns": {
+            "flags": {
+                "length": 255,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "naptr_order": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "naptr_regexp": {
+                "length": 255,
+                "nullable": false,
+                "type": "string"
+            },
+            "preference": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "replacement": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_naptr_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "services": {
+                "length": 255,
+                "nullable": false,
+                "type": "string"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_naptr_id",
+                    true
+                ]
+            ],
+            "i_rr_naptr_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_naptr"
+    },
+    "rr_ns": {
+        "columns": {
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "nsdname": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_ns_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_ns_id",
+                    true
+                ]
+            ],
+            "i_rr_ns_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_ns"
+    },
+    "rr_openpgpkey": {
+        "columns": {
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "pgpkey": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_openpgpkey_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_openpgpkey_id",
+                    true
+                ]
+            ],
+            "i_rr_openpgpkey_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_openpgpkey"
+    },
+    "rr_ptr": {
+        "columns": {
+            "dname": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_ptr_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_ptr_id",
+                    true
+                ]
+            ],
+            "i_rr_ptr_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_ptr"
+    },
+    "rr_soa": {
+        "columns": {
+            "expire": {
+                "nullable": false,
+                "type": "int"
+            },
+            "minimum": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "mname": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "refresh": {
+                "nullable": false,
+                "type": "int"
+            },
+            "retry": {
+                "nullable": false,
+                "type": "int"
+            },
+            "rname": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_soa_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "serial": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_soa_id",
+                    true
+                ]
+            ],
+            "i_rr_soa_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_soa"
+    },
+    "rr_srv": {
+        "columns": {
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "port": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "priority": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "rr_srv_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "target": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "weight": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_srv_id",
+                    true
+                ]
+            ],
+            "i_rr_srv_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_srv"
+    },
+    "rr_sshfp": {
+        "columns": {
+            "algorithm": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "fingerprint": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "fp_type": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_sshfp_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_sshfp_id",
+                    true
+                ]
+            ],
+            "i_rr_sshfp_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_sshfp"
+    },
+    "rr_svcb": {
+        "columns": {
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "priority": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "rr_svcb_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "svcparams": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "target": {
+                "length": 253,
+                "nullable": false,
+                "type": "string"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_svcb_id",
+                    true
+                ]
+            ],
+            "i_rr_svcb_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_svcb"
+    },
+    "rr_tlsa": {
+        "columns": {
+            "certifcate_usage": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "certificate_association": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "matching_type": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_tlsa_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "selector": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_tlsa_id",
+                    true
+                ]
+            ],
+            "i_rr_tlsa_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_tlsa"
+    },
+    "rr_txt": {
+        "columns": {
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_txt_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "txt": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_txt_id",
+                    true
+                ]
+            ],
+            "i_rr_txt_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_txt"
+    },
+    "rr_uri": {
+        "columns": {
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "priority": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "rr_uri_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "target": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "weight": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_uri_id",
+                    true
+                ]
+            ],
+            "i_rr_uri_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_uri"
+    },
+    "rr_zonemd": {
+        "columns": {
+            "algorithm": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "digest": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_zonemd_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "scheme": {
+                "nullable": false,
+                "type": "octet"
+            },
+            "soa_serial": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_zonemd_id",
+                    true
+                ]
+            ],
+            "i_rr_zonemd_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_zonemd"
+    }
+}

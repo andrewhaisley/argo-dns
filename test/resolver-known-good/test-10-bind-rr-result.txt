@@ -1,0 +1,22 @@
+
+; <<>> DiG 9.9.5-3ubuntu0.4-Ubuntu <<>> @192.168.0.75 blah.com dnskey
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 51695
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;blah.com.			IN	DNSKEY
+
+;; ANSWER SECTION:
+blah.com.		604800	IN	DNSKEY	256 3 7 AwEAActPMYurNEyhUgHjPctbLCI1VuSj3xcjI8QFTpdM8k3cYrfwB/Wl NKjnnjt98nPmHv6frnuvs2LKIvvGzz++kVwVc8uMLVyLOxVeKhygDurF QpLNNdPumuc2MMRvV9mefPrdKWtEEtOxq6Pce3DW2qRLjyE1n1oEq44g ixn6hjgosG2FzV4fTQdxdYCzlYjsaZwy0Kww4HpIaozGNjoDQVI/f3Jt LpE1MYEb9DiUVMjkwVR5yH2UhJwZH6VVvDOZg6u6YPOSUDVvyofCGcIC LqUOG+qITYVucyIWgZtHZUb49dpGaJTAdVKlOTbYV9sbmHNuMuGt+1/r c+StsjTPTHU=
+
+;; Query time: 0 msec
+;; SERVER: 192.168.0.75#53(192.168.0.75)
+;; WHEN: Sun Aug 23 17:14:25 EDT 2015
+;; MSG SIZE  rcvd: 313
+

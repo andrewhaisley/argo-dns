@@ -1,0 +1,315 @@
+{
+    "SOA":
+    {
+        "value": 6,
+        "content":
+        [
+            ["mname", "name"],
+            ["rname", "name"],
+            ["serial", "uint"],
+            ["refresh", "int"],
+            ["retry", "int"],
+            ["expire", "int"],
+            ["minimum", "uint"]
+        ]
+    },
+    "A":
+    {
+        "value": 1,
+        "content":
+        [
+            ["ip4_addr", "ip_v4_address"]
+        ]
+    },
+    "AAAA":
+    {
+        "value": 28,
+        "content":
+        [
+            ["ip6_addr", "ip_v6_address"]
+        ]
+    },
+    "AFSDB":
+    {
+        "value": 18,
+        "content":
+        [
+            ["subtype", "unsigned short"],
+            ["hostname", "name"]
+        ]
+    },
+    "NS":
+    {
+        "value": 2,
+        "content":
+        [
+            ["nsdname", "name"]
+        ]
+    },
+    "MX":
+    {
+        "value": 15,
+        "content":
+        [
+            ["preference", "short"],
+            ["exchange", "name"]
+        ]
+    },
+    "CNAME":
+    {
+        "value": 5,
+        "content":
+        [
+            ["cname", "name"]
+        ]
+    },
+    "DNAME":
+    {
+        "value": 39,
+        "content":
+        [
+            ["dname", "name"]
+        ]
+    },
+    "PTR":
+    {
+        "value": 12,
+        "content":
+        [
+            ["dname", "name"]
+        ]
+    },
+    "TXT":
+    {
+        "value": 16,
+        "content":
+        [
+            ["txt", "txt"]
+        ]
+    },
+    "NAPTR":
+    {
+        "value": 35,
+        "content":
+        [
+            ["naptr_order", "unsigned short"],
+            ["preference", "unsigned short"],
+            ["flags", "string"],
+            ["services", "string"],
+            ["naptr_regexp", "string"],
+            ["replacement", "uncompressed name"]
+        ]
+    },
+    "KX":
+    {
+        "value": 36,
+        "content":
+        [
+            ["preference", "unsigned short"],
+            ["exchanger", "uncompressed name"]
+        ]
+    },
+    "OPT":
+    {
+        "genrow": false,
+        "genclass": false,
+        "value": 41,
+        "content":
+        [
+            ["data", "buffer"]
+        ]
+    },
+    "SRV":
+    {
+        "value": 33,
+        "content":
+        [
+            ["priority", "unsigned short"],
+            ["weight", "unsigned short"],
+            ["port", "unsigned short"],
+            ["target", "name"]
+        ]
+    },
+    "HINFO":
+    {
+        "value": 13,
+        "content":
+        [
+            ["cpu", "string"],
+            ["os", "string"]
+        ]
+    },
+    "SVCB":
+    {
+        "value": 64,
+        "content":
+        [
+            ["priority", "unsigned short"],
+            ["target", "name"],
+            ["svcparams", "svcparams"]
+        ]
+    },
+    "IPSECKEY":
+    {
+        "value": 45,
+        "content":
+        [
+            ["ipseckey", "ipseckey"]
+        ]
+    },
+    "LOC":
+    {
+        "value": 29,
+        "content":
+        [
+            ["version", "octet"],
+            ["size", "octet"],
+            ["horizontal_precision", "octet"],
+            ["vertical_precision", "octet"],
+            ["latitude", "int"],
+            ["longitude", "int"],
+            ["altitude", "int"]
+        ]
+    },
+    "HTTPS":
+    {
+        "value": 65,
+        "content":
+        [
+            ["priority", "unsigned short"],
+            ["target", "uncompressed name"],
+            ["svcparams", "svcparams"]
+        ]
+    },
+    "CAA":
+    {
+        "value": 257,
+        "content":
+        [
+            ["flags", "octet"],
+            ["tag", "string"],
+            ["contents", "remaining base64"]
+        ]
+    },
+    "ZONEMD":
+    {
+        "value": 63,
+        "content":
+        [
+            ["soa_serial", "uint"],
+            ["scheme", "octet"],
+            ["algorithm", "octet"],
+            ["digest", "remaining hex"]
+        ]
+    },
+    "URI":
+    {
+        "value": 256,
+        "content":
+        [
+            ["priority", "unsigned short"],
+            ["weight", "unsigned short"],
+            ["target", "remaining string"]
+        ]
+    },
+    "SSHFP":
+    {
+        "value": 44,
+        "content":
+        [
+            ["algorithm", "octet"],
+            ["fp_type", "octet"],
+            ["fingerprint", "remaining hex"]
+        ]
+    },
+    "TLSA":
+    {
+        "value": 52,
+        "content":
+        [
+            ["certifcate_usage", "octet"],
+            ["selector", "octet"],
+            ["matching_type", "octet"],
+            ["certificate_association", "remaining hex"]
+        ]
+    },
+    "OPENPGPKEY":
+    {
+        "value": 61,
+        "content":
+        [
+            ["pgpkey", "remaining base64"]
+        ]
+    },
+    "DHCID":
+    {
+        "value": 49,
+        "content":
+        [
+            ["contents", "remaining base64"]
+        ]
+    },
+    "CERT":
+    {
+        "value": 37,
+        "content":
+        [
+            ["certificate_type", "unsigned short"],
+            ["key_tag", "unsigned short"],
+            ["algorithm", "octet"],
+            ["certificate", "remaining base64"]
+        ]
+    },
+    "EUI48":
+    {
+        "value": 108,
+        "content":
+        [
+            ["eui48", "eui48"]
+        ]
+    },
+    "EUI64":
+    {
+        "value": 109,
+        "content":
+        [
+            ["eui64", "eui64"]
+        ]
+    },
+    "CSYNC":
+    {
+        "value": 62,
+        "content":
+        [
+            ["soa_serial", "uint"],
+            ["flags", "unsigned short"],
+            ["type_bitmap", "bitmap"]
+        ]
+    },
+    "TKEY":
+    {
+        "genrow": false,
+        "value": 249,
+        "content":
+        [
+            ["contents", "remaining base64"]
+        ]
+    },
+    "TSIG":
+    {
+        "genrow": false,
+        "value": 250,
+        "content":
+        [
+            ["contents", "remaining base64"]
+        ]
+    },
+    "GENERIC":
+    {
+        "value": 1000,
+        "content":
+        [
+            ["contents", "remaining base64"]
+        ]
+    }
+}

@@ -1,0 +1,27 @@
+
+; <<>> DiG 9.9.5-3ubuntu0.4-Ubuntu <<>> @192.168.0.75 blah1.com ns
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 43842
+;; flags: qr aa rd; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 3
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;blah1.com.			IN	NS
+
+;; ANSWER SECTION:
+blah1.com.		604800	IN	NS	ns1.blah1.com.
+blah1.com.		604800	IN	NS	ns2.blah1.com.
+
+;; ADDITIONAL SECTION:
+ns1.blah1.com.		604800	IN	A	2.1.1.3
+ns2.blah1.com.		604800	IN	A	2.1.1.4
+
+;; Query time: 0 msec
+;; SERVER: 192.168.0.75#53(192.168.0.75)
+;; WHEN: Sun Aug 23 17:14:25 EDT 2015
+;; MSG SIZE  rcvd: 106
+

@@ -1,0 +1,4 @@
+{
+    "tables": ["base-tables.json", "resource-records.json"],
+    "static": "static.json"
+}

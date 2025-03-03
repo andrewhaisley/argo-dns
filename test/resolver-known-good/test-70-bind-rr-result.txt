@@ -1,0 +1,19 @@
+
+; <<>> DiG 9.9.5-3ubuntu0.4-Ubuntu <<>> @192.168.0.75 somewhere.else.com soa
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: REFUSED, id: 61834
+;; flags: qr rd; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;somewhere.else.com.		IN	SOA
+
+;; Query time: 0 msec
+;; SERVER: 192.168.0.75#53(192.168.0.75)
+;; WHEN: Sun Aug 23 17:14:27 EDT 2015
+;; MSG SIZE  rcvd: 47
+

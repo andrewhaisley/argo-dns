@@ -1,0 +1,35 @@
+
+; <<>> DiG 9.10.3-P4-Ubuntu <<>> @localhost -p 1053 blah.com any
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 40967
+;; flags: qr aa rd; QUERY: 1, ANSWER: 10, AUTHORITY: 0, ADDITIONAL: 3
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;blah.com.			IN	ANY
+
+;; ANSWER SECTION:
+blah.com.		604800	IN	A	1.1.1.1
+blah.com.		604800	IN	PTR	another.com.
+blah.com.		604800	IN	NS	ns1.blah.com.
+blah.com.		604800	IN	NS	ns2.blah.com.
+blah.com.		604800	IN	AAAA	2607:f0d0:1002:51::4
+blah.com.		604800	IN	TXT	"text string 1" "text string 2"
+blah.com.		604800	IN	SOA	blah.com. admin.blah.com. 2 604800 86400 2419200 604800
+blah.com.		604800	IN	HINFO	"cpu" "os"
+blah.com.		604800	IN	MX	10 mail.example.com.
+blah.com.		604800	IN	NAPTR	10 100 "U" "E2U+sip" "!^\\+44111555(.+)$!sip:7\\1@sip.example.com!" .
+
+;; ADDITIONAL SECTION:
+ns1.blah.com.		604800	IN	A	1.1.1.2
+ns2.blah.com.		604800	IN	A	1.1.1.3
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#1053(127.0.0.1)
+;; WHEN: Sun Dec 15 13:47:24 EST 2019
+;; MSG SIZE  rcvd: 371
+

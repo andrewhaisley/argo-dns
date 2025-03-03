@@ -1,0 +1,51 @@
+
+; <<>> DiG 9.10.3-P4-Ubuntu <<>> @localhost -p 1053 blah.com axfr
+; (1 server found)
+;; global options: +cmd
+blah.com.		604800	IN	SOA	blah.com. admin.blah.com. 2 604800 86400 2419200 604800
+blah.com.		604800	IN	A	1.1.1.1
+ns1.blah.com.		604800	IN	A	1.1.1.2
+ns2.blah.com.		604800	IN	A	1.1.1.3
+x.x.blah.com.		604800	IN	A	1.1.1.4
+ns1.delegated.blah.com.	604800	IN	A	1.1.1.5
+ns2.delegated.blah.com.	604800	IN	A	1.1.1.6
+x.extra.blah.com.	604800	IN	A	1.1.1.8
+c.blah.com.		604800	IN	A	1.1.1.9
+inzone4-dname.blah.com.	604800	IN	A	1.1.1.10
+AbCd.blah.com.		604800	IN	A	2.2.2.2
+*.wildcard.blah.com.	604800	IN	A	3.3.3.3
+a.AbCd.blah.com.	604800	IN	A	2.2.2.3
+b.AbCd.blah.com.	604800	IN	A	2.2.2.4
+c.AbCd.blah.com.	604800	IN	A	2.2.2.5
+blah.com.		604800	IN	PTR	another.com.
+blah.com.		604800	IN	NS	ns1.blah.com.
+blah.com.		604800	IN	NS	ns2.blah.com.
+delegated.blah.com.	604800	IN	NS	ns1.delegated.blah.com.
+delegated.blah.com.	604800	IN	NS	ns2.delegated.blah.com.
+outzone-dname.blah.com.	604800	IN	DNAME	also.somewhere.else.com.
+inzone-dname.blah.com.	604800	IN	DNAME	extra.blah.com.
+inzone2-dname.blah.com.	604800	IN	DNAME	inzone3-dname.blah.com.
+inzone3-dname.blah.com.	604800	IN	DNAME	inzone4-dname.blah.com.
+dname1.blah.com.	604800	IN	DNAME	dname2.blah.com.
+dname2.blah.com.	604800	IN	DNAME	dname1.blah.com.
+blah.com.		604800	IN	AAAA	2607:f0d0:1002:51::4
+blah.com.		604800	IN	TXT	"text string 1" "text string 2"
+ftp.blah.com.		604800	IN	CNAME	blah.com.
+www.blah.com.		604800	IN	CNAME	somewhere.else.com.
+a.blah.com.		604800	IN	CNAME	b.blah.com.
+b.blah.com.		604800	IN	CNAME	c.blah.com.
+cname1.blah.com.	604800	IN	CNAME	cname2.blah.com.
+cname2.blah.com.	604800	IN	CNAME	cname1.blah.com.
+www1.blah.com.		604800	IN	CNAME	www.blah1.com.
+hanging-cname.blah.com.	604800	IN	CNAME	zog.blah.com.
+*.wildcard2.blah.com.	604800	IN	CNAME	c.blah.com.
+blah.com.		604800	IN	HINFO	"cpu" "os"
+blah.com.		604800	IN	MX	10 mail.example.com.
+_ftp._tcp.blah.com.	604800	IN	SRV	0 1 9 blah.com.
+blah.com.		604800	IN	NAPTR	10 100 "U" "E2U+sip" "!^\\+44111555(.+)$!sip:7\\1@sip.example.com!" .
+blah.com.		604800	IN	SOA	blah.com. admin.blah.com. 2 604800 86400 2419200 604800
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#1053(127.0.0.1)
+;; WHEN: Sun Dec 15 13:50:14 EST 2019
+;; XFR size: 42 records (messages 1, bytes 1079)
+

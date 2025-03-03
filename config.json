@@ -1,0 +1,48 @@
+{
+    "static-config":
+    {
+        "server-config-username" : "admin",
+        "server-config-password" : "admin",
+        "run-as-daemon"          : false,
+        "ssl-server-chain-file"  : "socket/files/fullchain.pem",
+        "ssl-server-key-file"    : "socket/files/privkey.pem",
+        "log":
+        {
+            "level"      : "trace",
+            "destination": "console",
+            "syslog-udp" :
+            {
+                "address": "127.0.0.1",
+                "port"   : "514"
+            },
+            "file"       :
+            {
+                "filename"     : "adns_%N.log",
+                "rotation_size": 10485760,
+                "format"       : "[%TimeStamp%] [%ThreadID%]: %Message%"
+            }
+        },
+        "dbtype": "sqlite", 
+        "mysql":
+        {
+            "url"      : "tcp://127.0.0.1:3306",
+            "username" : "<adns>",
+            "password" : "<adns>",
+            "database" : "<adns>"
+        },
+        "mongodb":
+        {
+            "url"              : "mongodb://localhost:27017",
+            "database"         : "<adns>",
+            "use_transactions" : false
+        },
+        "postgres":
+        {
+            "info" : "host=localhost user=<adns> password=<adns> dbname=<adns>"
+        },
+        "sqlite":
+        {
+            "filename" : "ADNS.SQLITE"
+        }
+    }
+}

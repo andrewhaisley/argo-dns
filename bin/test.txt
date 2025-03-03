@@ -1,0 +1,45 @@
+; hello world
+$ORIGIN blah5.com.
+$TTL 10m
+
+@       100  IN      SOA   ns1.blah.com. hostmaster.blah.com.(
+                                2003080800 ; serial number
+                                12h        ; refresh
+                                15m        ; update retry
+                                3w         ; expiry
+                                2h         ; minimum
+                                )
+
+        200   IN      NS      ns1
+        300   IN      NS      ns2.blah.net.
+
+
+www 200 IN A 1.2.3.4 ; kjhkjh
+IN A 3.4.6.4 ; kjhkjh
+666 A 3.4.6.4 ; kjhkjh
+testip6 AAAA 10::10 ; kjhkjh
+
+@       100 IN  MX      10  mail.blah.com.
+cname   100 IN  CNAME   redirectedto.blah.com.
+dname   100 IN  DNAME   redirectedto.blah.com.
+;1.0.0.10.in-addr.arpa. 100 PTR mailserver.example.org.
+@       100 IN  TXT     "hello world" "two"
+@       100 IN  NAPTR   100 10 "U" "E2U+sip" "!^.*$!sip:customer-service@example.com!" .
+@       100 IN  SRV     1 2 3 xyz.com.
+@       100 IN  HINFO   "foo" "bar"
+@       100 IN  AFSDB   1 host.example.com.
+@       100 IN  CAA     128 abcd a2poa2poa2poIGpraGpoa2poa2hqayBqaDk4Nzg5Nwo=
+@       600 IN  CERT    1 1 1 a2poa2poa2poIGpraGpoa2poa2hqayBqaDk4Nzg5Nwo=
+@       600 IN  CSYNC 66 3 A NS AAAA
+@       600 IN  DHCID AAIBY2/AuCccgoJbsaxcQc9TUapptP69lOjxfNuVAA2kjEA=
+@       600 IN  EUI48 00-11-22-44-55-66
+@       600 IN  EUI64 00-11-22-44-55-66-77-88
+@       600 IN  HTTPS 1 . mandatory=alpn,port alpn="h3" no-default-alpn port=65535 ech=a2poa2poa2poIGpraGpoa2poa2hqayBqaDk4Nzg5Nwo=
+@       600 IN  IPSECKEY 10 1 1 192.0.2.38 AQNRU3mG7TVTO2BkR47u sn tb102uFJtugbo6BSGvgqt4AQ==
+@       500 IN  KX 100 one.two.com.
+@       500 IN  LOC   51 36 19 N 71 06 18 W -24m 30m
+@       500 IN  OPENPGPKEY AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ==
+@       500 IN  SSHFP 2 1 123456789abcdef67890123456789abcdef67890
+@       500 IN  TLSA 0 0 1 d2abde240d7cd3ee6b4b28c54df034b9 7983a1d16e8a410e4561cb106618e971
+@       400 IN  URI 10 1 "ftp://ftp1.example.com/public"
+@       400 IN  ZONEMD 2018031500 1 1 FEBE3D4CE2EC2FFA4BA99D46CD69D6D29711E55217057BEE 7EB1A7B641A47BA7FED2DD5B97AE499FAFA4F22C6BD647DE

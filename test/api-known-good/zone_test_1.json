@@ -1,0 +1,787 @@
+{
+    "child_zones": [
+        {
+            "child_zones": [
+                {
+                    "child_zones": [
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "ns1",
+                            "resource_records": [
+                                {
+                                    "ip4_addr": "2.1.1.3",
+                                    "ttl": 604800,
+                                    "type": "A"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "www",
+                            "resource_records": [
+                                {
+                                    "ip4_addr": "2.1.1.2",
+                                    "ttl": 604800,
+                                    "type": "A"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "ns2",
+                            "resource_records": [
+                                {
+                                    "ip4_addr": "2.1.1.4",
+                                    "ttl": 604800,
+                                    "type": "A"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        }
+                    ],
+                    "horizon_id": 1,
+                    "is_forwarded": false,
+                    "is_in_zone": true,
+                    "is_soa": true,
+                    "label": "blah1",
+                    "resource_records": [
+                        {
+                            "expire": 2419200,
+                            "minimum": 604800,
+                            "mname": "blah1.com",
+                            "refresh": 604800,
+                            "retry": 86400,
+                            "rname": "admin.blah1.com",
+                            "serial": 2,
+                            "ttl": 604800,
+                            "type": "SOA"
+                        },
+                        {
+                            "ip4_addr": "2.1.1.1",
+                            "ttl": 604800,
+                            "type": "A"
+                        },
+                        {
+                            "nsdname": "ns1.blah1.com",
+                            "ttl": 604800,
+                            "type": "NS"
+                        },
+                        {
+                            "nsdname": "ns2.blah1.com",
+                            "ttl": 604800,
+                            "type": "NS"
+                        }
+                    ],
+                    "transfer_address_list_id": null
+                },
+                {
+                    "child_zones": [
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "cname2",
+                            "resource_records": [
+                                {
+                                    "cname": "cname1.blah.com",
+                                    "ttl": 604800,
+                                    "type": "CNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "c",
+                            "resource_records": [
+                                {
+                                    "ip4_addr": "1.1.1.9",
+                                    "ttl": 604800,
+                                    "type": "A"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "hanging-cname",
+                            "resource_records": [
+                                {
+                                    "cname": "zog.blah.com",
+                                    "ttl": 604800,
+                                    "type": "CNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "child_zones": [
+                                {
+                                    "horizon_id": 1,
+                                    "is_forwarded": false,
+                                    "is_in_zone": true,
+                                    "is_soa": false,
+                                    "label": "x",
+                                    "resource_records": [
+                                        {
+                                            "ip4_addr": "1.1.1.8",
+                                            "ttl": 604800,
+                                            "type": "A"
+                                        }
+                                    ],
+                                    "transfer_address_list_id": null
+                                }
+                            ],
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "extra",
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "inzone4-dname",
+                            "resource_records": [
+                                {
+                                    "ip4_addr": "1.1.1.10",
+                                    "ttl": 604800,
+                                    "type": "A"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "child_zones": [
+                                {
+                                    "horizon_id": 1,
+                                    "is_forwarded": false,
+                                    "is_in_zone": true,
+                                    "is_soa": false,
+                                    "label": "a",
+                                    "resource_records": [
+                                        {
+                                            "ip4_addr": "2.2.2.3",
+                                            "ttl": 604800,
+                                            "type": "A"
+                                        }
+                                    ],
+                                    "transfer_address_list_id": null
+                                },
+                                {
+                                    "horizon_id": 1,
+                                    "is_forwarded": false,
+                                    "is_in_zone": true,
+                                    "is_soa": false,
+                                    "label": "b",
+                                    "resource_records": [
+                                        {
+                                            "ip4_addr": "2.2.2.4",
+                                            "ttl": 604800,
+                                            "type": "A"
+                                        }
+                                    ],
+                                    "transfer_address_list_id": null
+                                },
+                                {
+                                    "horizon_id": 1,
+                                    "is_forwarded": false,
+                                    "is_in_zone": true,
+                                    "is_soa": false,
+                                    "label": "c",
+                                    "resource_records": [
+                                        {
+                                            "ip4_addr": "2.2.2.5",
+                                            "ttl": 604800,
+                                            "type": "A"
+                                        }
+                                    ],
+                                    "transfer_address_list_id": null
+                                }
+                            ],
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "AbCd",
+                            "resource_records": [
+                                {
+                                    "ip4_addr": "2.2.2.2",
+                                    "ttl": 604800,
+                                    "type": "A"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "dname2",
+                            "resource_records": [
+                                {
+                                    "dname": "dname1.blah.com",
+                                    "ttl": 604800,
+                                    "type": "DNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "child_zones": [
+                                {
+                                    "horizon_id": 1,
+                                    "is_forwarded": false,
+                                    "is_in_zone": true,
+                                    "is_soa": false,
+                                    "label": "*",
+                                    "resource_records": [
+                                        {
+                                            "ip4_addr": "3.3.3.3",
+                                            "ttl": 604800,
+                                            "type": "A"
+                                        }
+                                    ],
+                                    "transfer_address_list_id": null
+                                }
+                            ],
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "wildcard",
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "www1",
+                            "resource_records": [
+                                {
+                                    "cname": "www.blah1.com",
+                                    "ttl": 604800,
+                                    "type": "CNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "child_zones": [
+                                {
+                                    "horizon_id": 1,
+                                    "is_forwarded": false,
+                                    "is_in_zone": true,
+                                    "is_soa": false,
+                                    "label": "_ftp",
+                                    "resource_records": [
+                                        {
+                                            "port": 9,
+                                            "priority": 0,
+                                            "target": "blah.com",
+                                            "ttl": 604800,
+                                            "type": "SRV",
+                                            "weight": 1
+                                        }
+                                    ],
+                                    "transfer_address_list_id": null
+                                }
+                            ],
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "_tcp",
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "dname1",
+                            "resource_records": [
+                                {
+                                    "dname": "dname2.blah.com",
+                                    "ttl": 604800,
+                                    "type": "DNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "child_zones": [
+                                {
+                                    "horizon_id": 1,
+                                    "is_forwarded": false,
+                                    "is_in_zone": true,
+                                    "is_soa": false,
+                                    "label": "*",
+                                    "resource_records": [
+                                        {
+                                            "cname": "c.blah.com",
+                                            "ttl": 604800,
+                                            "type": "CNAME"
+                                        }
+                                    ],
+                                    "transfer_address_list_id": null
+                                }
+                            ],
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "wildcard2",
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "cname1",
+                            "resource_records": [
+                                {
+                                    "cname": "cname2.blah.com",
+                                    "ttl": 604800,
+                                    "type": "CNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "inzone3-dname",
+                            "resource_records": [
+                                {
+                                    "dname": "inzone4-dname.blah.com",
+                                    "ttl": 604800,
+                                    "type": "DNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "inzone-dname",
+                            "resource_records": [
+                                {
+                                    "dname": "extra.blah.com",
+                                    "ttl": 604800,
+                                    "type": "DNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "inzone2-dname",
+                            "resource_records": [
+                                {
+                                    "dname": "inzone3-dname.blah.com",
+                                    "ttl": 604800,
+                                    "type": "DNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "child_zones": [
+                                {
+                                    "horizon_id": 1,
+                                    "is_forwarded": false,
+                                    "is_in_zone": true,
+                                    "is_soa": false,
+                                    "label": "ns1",
+                                    "resource_records": [
+                                        {
+                                            "ip4_addr": "1.1.1.5",
+                                            "ttl": 604800,
+                                            "type": "A"
+                                        }
+                                    ],
+                                    "transfer_address_list_id": null
+                                },
+                                {
+                                    "horizon_id": 1,
+                                    "is_forwarded": false,
+                                    "is_in_zone": true,
+                                    "is_soa": false,
+                                    "label": "ns2",
+                                    "resource_records": [
+                                        {
+                                            "ip4_addr": "1.1.1.6",
+                                            "ttl": 604800,
+                                            "type": "A"
+                                        }
+                                    ],
+                                    "transfer_address_list_id": null
+                                }
+                            ],
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "delegated",
+                            "resource_records": [
+                                {
+                                    "nsdname": "ns1.delegated.blah.com",
+                                    "ttl": 604800,
+                                    "type": "NS"
+                                },
+                                {
+                                    "nsdname": "ns2.delegated.blah.com",
+                                    "ttl": 604800,
+                                    "type": "NS"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "outzone-dname",
+                            "resource_records": [
+                                {
+                                    "ip4_addr": "1.1.1.7",
+                                    "ttl": 604800,
+                                    "type": "A"
+                                },
+                                {
+                                    "dname": "also.somewhere.else.com",
+                                    "ttl": 604800,
+                                    "type": "DNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "child_zones": [
+                                {
+                                    "horizon_id": 1,
+                                    "is_forwarded": false,
+                                    "is_in_zone": true,
+                                    "is_soa": false,
+                                    "label": "x",
+                                    "resource_records": [
+                                        {
+                                            "ip4_addr": "1.1.1.4",
+                                            "ttl": 604800,
+                                            "type": "A"
+                                        }
+                                    ],
+                                    "transfer_address_list_id": null
+                                }
+                            ],
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "x",
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "ftp",
+                            "resource_records": [
+                                {
+                                    "cname": "blah.com",
+                                    "ttl": 604800,
+                                    "type": "CNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "ns2",
+                            "resource_records": [
+                                {
+                                    "ip4_addr": "1.1.1.3",
+                                    "ttl": 604800,
+                                    "type": "A"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "ns1",
+                            "resource_records": [
+                                {
+                                    "ip4_addr": "1.1.1.2",
+                                    "ttl": 604800,
+                                    "type": "A"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "www",
+                            "resource_records": [
+                                {
+                                    "cname": "somewhere.else.com",
+                                    "ttl": 604800,
+                                    "type": "CNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "a",
+                            "resource_records": [
+                                {
+                                    "cname": "b.blah.com",
+                                    "ttl": 604800,
+                                    "type": "CNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        },
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "b",
+                            "resource_records": [
+                                {
+                                    "cname": "c.blah.com",
+                                    "ttl": 604800,
+                                    "type": "CNAME"
+                                }
+                            ],
+                            "transfer_address_list_id": null
+                        }
+                    ],
+                    "horizon_id": 1,
+                    "is_forwarded": false,
+                    "is_in_zone": true,
+                    "is_soa": true,
+                    "label": "blah",
+                    "resource_records": [
+                        {
+                            "expire": 2419200,
+                            "minimum": 604800,
+                            "mname": "blah.com",
+                            "refresh": 604800,
+                            "retry": 86400,
+                            "rname": "admin.blah.com",
+                            "serial": 2,
+                            "ttl": 604800,
+                            "type": "SOA"
+                        },
+                        {
+                            "ip4_addr": "1.1.1.1",
+                            "ttl": 604800,
+                            "type": "A"
+                        },
+                        {
+                            "flags": "U",
+                            "naptr_order": 10,
+                            "naptr_regexp": "!^\\+44111555(.+)$!sip:7\\1@sip.example.com!",
+                            "preference": 100,
+                            "replacement": "",
+                            "services": "E2U+sip",
+                            "ttl": 604800,
+                            "type": "NAPTR"
+                        },
+                        {
+                            "ttl": 604800,
+                            "txt": "DXRleHQgc3RyaW5nIDENdGV4dCBzdHJpbmcgMg=",
+                            "type": "TXT"
+                        },
+                        {
+                            "cert_assoc_data": "0qveJA180+5rSyjFTfA0uXmDodFuikEORWHLEGYY6XE==",
+                            "cert_usage": 0,
+                            "matching_type": 1,
+                            "selector": 0,
+                            "ttl": 604800,
+                            "type": "TLSA"
+                        },
+                        {
+                            "dname": "another.com",
+                            "ttl": 604800,
+                            "type": "PTR"
+                        },
+                        {
+                            "ip6_addr": "2607:f0d0:1002:51::4",
+                            "ttl": 604800,
+                            "type": "AAAA"
+                        },
+                        {
+                            "next_domain_name": "host.example.com",
+                            "rr_types": "A MX RRSIG NSEC",
+                            "ttl": 604800,
+                            "type": "NSEC"
+                        },
+                        {
+                            "algorithm": 5,
+                            "key_tag": 38519,
+                            "labels": 2,
+                            "original_ttl": 360000,
+                            "signature": "OMK8rAZlepfzLWW75Dxd63jy2wswESzxDKG2f9AMN1CytCd10cYISAxfAdvXSZ7xujKAtPbctvOQ2ofO7AZJ+d01EeeQTVBPq4/6KCWhqe2XTjnkVLNvvhnc0u28aoSsG0+4InvkkOHknKxw4kX18MMR34i8lC36SR5xBni8vHI==",
+                            "signature_expiration": "2024-05-09 18:36:19",
+                            "signature_inception": "2014-04-09 18:36:19",
+                            "signers_name": "blah.com",
+                            "ttl": 604800,
+                            "type": "RRSIG",
+                            "type_covered": 15
+                        },
+                        {
+                            "algorithm": 5,
+                            "digest": "2BB183AF5F22588179A53B0A98631FAD1A292118",
+                            "digest_type": 1,
+                            "key_tag": 60485,
+                            "ttl": 604800,
+                            "type": "DS"
+                        },
+                        {
+                            "cpu": "cpu",
+                            "os": "os",
+                            "ttl": 604800,
+                            "type": "HINFO"
+                        },
+                        {
+                            "algorithm": 7,
+                            "flags": 256,
+                            "protocol": 3,
+                            "public_key": "AwEAActPMYurNEyhUgHjPctbLCI1VuSj3xcjI8QFTpdM8k3cYrfwB/WlNKjnnjt98nPmHv6frnuvs2LKIvvGzz++kVwVc8uMLVyLOxVeKhygDurFQpLNNdPumuc2MMRvV9mefPrdKWtEEtOxq6Pce3DW2qRLjyE1n1oEq44gixn6hjgosG2FzV4fTQdxdYCzlYjsaZwy0Kww4HpIaozGNjoDQVI/f3JtLpE1MYEb9DiUVMjkwVR5yH2UhJwZH6VVvDOZg6u6YPOSUDVvyofCGcICLqUOG+qITYVucyIWgZtHZUb49dpGaJTAdVKlOTbYV9sbmHNuMuGt+1/rc+StsjTPTHU==",
+                            "ttl": 604800,
+                            "type": "DNSKEY"
+                        },
+                        {
+                            "nsdname": "ns2.blah.com",
+                            "ttl": 604800,
+                            "type": "NS"
+                        },
+                        {
+                            "nsdname": "ns1.blah.com",
+                            "ttl": 604800,
+                            "type": "NS"
+                        },
+                        {
+                            "domain": "mail.example.com",
+                            "preference": 10,
+                            "ttl": 604800,
+                            "type": "MX"
+                        }
+                    ],
+                    "transfer_address_list_id": 1
+                },
+                {
+                    "horizon_id": 1,
+                    "is_forwarded": false,
+                    "is_in_zone": true,
+                    "is_soa": true,
+                    "label": "slave",
+                    "transfer_address_list_id": 1
+                },
+                {
+                    "child_zones": [
+                        {
+                            "horizon_id": 1,
+                            "is_forwarded": false,
+                            "is_in_zone": true,
+                            "is_soa": false,
+                            "label": "www",
+                            "transfer_address_list_id": null
+                        }
+                    ],
+                    "horizon_id": 1,
+                    "is_forwarded": false,
+                    "is_in_zone": true,
+                    "is_soa": true,
+                    "label": "xyz",
+                    "resource_records": [
+                        {
+                            "expire": 2419200,
+                            "minimum": 604800,
+                            "mname": "xyz.com",
+                            "refresh": 604800,
+                            "retry": 86400,
+                            "rname": "admin.xyz.com",
+                            "serial": 2,
+                            "ttl": 604800,
+                            "type": "SOA"
+                        },
+                        {
+                            "nsdname": "ns1.xyz.com",
+                            "ttl": 604800,
+                            "type": "NS"
+                        },
+                        {
+                            "nsdname": "ns2.xyz.com",
+                            "ttl": 604800,
+                            "type": "NS"
+                        }
+                    ],
+                    "transfer_address_list_id": 1
+                }
+            ],
+            "horizon_id": 1,
+            "is_forwarded": false,
+            "is_in_zone": false,
+            "is_soa": false,
+            "label": "com",
+            "transfer_address_list_id": null
+        }
+    ],
+    "horizon_id": 1,
+    "is_forwarded": false,
+    "is_in_zone": false,
+    "is_soa": false,
+    "label": ".",
+    "transfer_address_list_id": null
+}

@@ -1,0 +1,30 @@
+
+; <<>> DiG 9.9.5-3ubuntu0.4-Ubuntu <<>> @192.168.0.75 blah.com tlsa
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 64921
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 2, ADDITIONAL: 3
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;blah.com.			IN	TLSA
+
+;; ANSWER SECTION:
+blah.com.		604800	IN	TLSA	0 0 1 D2ABDE240D7CD3EE6B4B28C54DF034B97983A1D16E8A410E4561CB10 6618E971
+
+;; AUTHORITY SECTION:
+blah.com.		604800	IN	NS	ns2.blah.com.
+blah.com.		604800	IN	NS	ns1.blah.com.
+
+;; ADDITIONAL SECTION:
+ns1.blah.com.		604800	IN	A	1.1.1.2
+ns2.blah.com.		604800	IN	A	1.1.1.3
+
+;; Query time: 0 msec
+;; SERVER: 192.168.0.75#53(192.168.0.75)
+;; WHEN: Sun Aug 23 17:14:25 EDT 2015
+;; MSG SIZE  rcvd: 152
+

@@ -1,0 +1,37 @@
+{
+    "dns": {
+        "allowed_connection_backlog": 10,
+        "edns_payload_size": 4096,
+        "max_in_message_queue_length": 100,
+        "max_out_message_queue_length": 100,
+        "max_slave_update_in_queue_len": 10,
+        "max_slave_update_out_queue_len": 1,
+        "num_slave_update_threads": 5,
+        "num_udp_threads": 10,
+        "num_tcp_threads": 10,
+        "num_recursive_threads": 10,
+        "num_forwarding_threads": 10,
+        "num_send_threads": 2,
+        "num_receive_threads": 2,
+        "support_edns": true,
+        "tcp_max_body_wait_seconds": 5,
+        "tcp_max_len_wait_seconds": 60,
+        "num_recursive_slots": 100,
+        "use_ip4_upstream": true,
+        "use_ip6_upstream": true,
+        "recursive_timeout_seconds": 3
+    },
+    "protocol": "dns",
+    "server_id": 10,
+    "socket_addresses": [
+        {
+            "ip_address": "2.2.2.2",
+            "port": 1053
+        },
+        {
+            "ip_address": "::2",
+            "port": 1053
+        }
+    ],
+    "transport": "udp"
+}

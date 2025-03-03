@@ -1,0 +1,8 @@
+{
+    "horizon_id": 1,
+    "is_forwarded": false,
+    "is_in_zone": false,
+    "is_soa": false,
+    "label": ".",
+    "transfer_address_list_id": null
+}

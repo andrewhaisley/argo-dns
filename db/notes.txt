@@ -1,0 +1,50 @@
+
+conn = db_connection_pool.get()
+
+auto rows = abind::db::zone::get_all(conn);
+auto row = abind::db::zone::get_by_zone_id(conn, 123);
+auto rows = abind::db::zone::get_by_blah(conn, 123);
+
+row.set_name('sf');
+row.set_name('sf');
+row.set_name('sf');
+row.set_name('sf');
+row.update(conn);
+row.insert(conn);
+row.delete(conn);
+
+conn.commit();
+
+
+class _blah : public row
+{
+public:
+
+        std::shared_ptr<_blah> get_by_blah_id(connection &conn, int blah_id)
+        {
+            return fetch_row(conn, get_column("blah_id"), blah_id);
+        }
+};
+
+create table test
+(
+    test_id integer unsigned not null primary key,
+    c1 INTEGER NOT NULL,
+    c2 INTEGER UNSIGNED NOT NULL,
+    c3 VARCHAR(253) NOT NULL,
+    c4 BLOB NOT NULL,
+    c5 TEXT NOT NULL,
+    c6 BOOLEAN NOT NULL,
+    c7 INTEGER NULL,
+    c8 INTEGER UNSIGNED NULL,
+    c9 VARCHAR(253) NULL,
+    c10 BLOB NULL,
+    c11 TEXT NULL,
+    c12 BOOLEAN NULL,
+    c13 DATETIME NOT NULL,
+    c14 DATETIME NULL,
+    c15 INTEGER UNSIGNED NOT NULL
+);
+
+CREATE INDEX i_test_c2 ON test (c2);
+CREATE INDEX iu_test_c15 ON test (c15);

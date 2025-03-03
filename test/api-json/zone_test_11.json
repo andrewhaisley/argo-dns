@@ -1,0 +1,15 @@
+{
+    "horizon_id": 1,
+    "is_forwarded": false,
+    "is_in_zone": true,
+    "is_soa": false,
+    "label": "ns1",
+    "resource_records": [
+        {
+            "ip4_addr": "6.6.6.6",
+            "ttl": 604800,
+            "type": "A"
+        }
+    ],
+    "transfer_address_list_id": null
+}

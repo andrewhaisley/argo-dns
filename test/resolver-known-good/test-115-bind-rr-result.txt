@@ -1,0 +1,25 @@
+
+; <<>> DiG 9.9.5-3ubuntu0.4-Ubuntu <<>> @192.168.0.75 x.dname1.blah.com soa
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 52072
+;; flags: qr aa rd; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;x.dname1.blah.com.		IN	SOA
+
+;; ANSWER SECTION:
+dname1.blah.com.	604800	IN	DNAME	dname2.blah.com.
+x.dname1.blah.com.	604800	IN	CNAME	x.dname2.blah.com.
+dname2.blah.com.	604800	IN	DNAME	dname1.blah.com.
+x.dname2.blah.com.	604800	IN	CNAME	x.dname1.blah.com.
+
+;; Query time: 1 msec
+;; SERVER: 192.168.0.75#53(192.168.0.75)
+;; WHEN: Sun Aug 23 17:14:29 EDT 2015
+;; MSG SIZE  rcvd: 134
+

@@ -1,0 +1,23 @@
+{
+    "control": {
+        "access_address_list_id": 1,
+        "allowed_connection_backlog": 15,
+        "client_connection_timeout": 10,
+        "maximum_payload_size": 2000000,
+        "num_threads": 2,
+        "use_ssl": false
+    },
+    "protocol": "control",
+    "server_id": 3,
+    "socket_addresses": [
+        {
+            "ip_address": "1.1.1.1",
+            "port": 2001
+        },
+        {
+            "ip_address": "::1",
+            "port": 2002
+        }
+    ],
+    "transport": "tcp"
+}

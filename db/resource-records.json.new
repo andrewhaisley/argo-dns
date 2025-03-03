@@ -1,0 +1,586 @@
+{
+    "rr_a": {
+        "columns": {
+            "ip4_addr": {
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "rr_a_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_a_id",
+                    true
+                ]
+            ],
+            "i_rr_a_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_a"
+    },
+    "rr_aaaa": {
+        "columns": {
+            "ip6_addr": {
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "rr_aaaa_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_aaaa_id",
+                    true
+                ]
+            ],
+            "i_rr_aaaa_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_aaaa"
+    },
+    "rr_cname": {
+        "columns": {
+            "cname": {
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "rr_cname_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_cname_id",
+                    true
+                ]
+            ],
+            "i_rr_cname_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_cname"
+    },
+    "rr_dname": {
+        "columns": {
+            "dname": {
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "rr_dname_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_dname_id",
+                    true
+                ]
+            ],
+            "i_rr_dname_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_dname"
+    },
+    "rr_generic": {
+        "columns": {
+            "contents": {
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "rr_generic_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_generic_id",
+                    true
+                ]
+            ],
+            "i_rr_generic_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_generic"
+    },
+    "rr_hinfo": {
+        "columns": {
+            "cpu": {
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "os": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_hinfo_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_hinfo_id",
+                    true
+                ]
+            ],
+            "i_rr_hinfo_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_hinfo"
+    },
+    "rr_mx": {
+        "columns": {
+            "domain": {
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "preference": {
+                "nullable": false,
+                "type": "int"
+            },
+            "rr_mx_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_mx_id",
+                    true
+                ]
+            ],
+            "i_rr_mx_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_mx"
+    },
+    "rr_naptr": {
+        "columns": {
+            "flags": {
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "naptr_order": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "naptr_regexp": {
+                "nullable": false,
+                "type": "string"
+            },
+            "preference": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "replacement": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_naptr_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "services": {
+                "nullable": false,
+                "type": "string"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_naptr_id",
+                    true
+                ]
+            ],
+            "i_rr_naptr_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_naptr"
+    },
+    "rr_ns": {
+        "columns": {
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "nsdname": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_ns_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_ns_id",
+                    true
+                ]
+            ],
+            "i_rr_ns_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_ns"
+    },
+    "rr_ptr": {
+        "columns": {
+            "dname": {
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "rr_ptr_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_ptr_id",
+                    true
+                ]
+            ],
+            "i_rr_ptr_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_ptr"
+    },
+    "rr_soa": {
+        "columns": {
+            "expire": {
+                "nullable": false,
+                "type": "int"
+            },
+            "minimum": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "mname": {
+                "nullable": false,
+                "type": "string"
+            },
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "refresh": {
+                "nullable": false,
+                "type": "int"
+            },
+            "retry": {
+                "nullable": false,
+                "type": "int"
+            },
+            "rname": {
+                "nullable": false,
+                "type": "string"
+            },
+            "rr_soa_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "serial": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_soa_id",
+                    true
+                ]
+            ],
+            "i_rr_soa_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_soa"
+    },
+    "rr_srv": {
+        "columns": {
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "port": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "priority": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "rr_srv_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "target": {
+                "nullable": false,
+                "type": "string"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "weight": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_srv_id",
+                    true
+                ]
+            ],
+            "i_rr_srv_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_srv"
+    },
+    "rr_txt": {
+        "columns": {
+            "name": {
+                "nullable": false,
+                "type": "std::string"
+            },
+            "rr_txt_id": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "txt": {
+                "nullable": false,
+                "type": "string"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_txt_id",
+                    true
+                ]
+            ],
+            "i_rr_txt_zone": [
+                [
+                    "zone_id",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_txt"
+    }
+}

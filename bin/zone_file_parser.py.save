@@ -1,0 +1,456 @@
+class reader():
+
+    def __init__(self, f):
+        self._file = f
+        self._line = 1
+        self._putback = None
+
+    def read(self):
+        if self._putback == None:
+            res = self._file.read(1)
+            if res == '\n':
+                self._line += 1
+            return res
+        else:
+            res = self._putback
+            self._putback = None
+            return res
+
+    def putback(self, c):
+        self._putback = c
+
+    def line(self):
+        return str(self._line)
+        
+class token:
+    
+    # types of token
+    ORIGIN      = 1     # $ORIGIN 
+    INCLUDE     = 2     # $INCLUDE
+    TTL         = 3     # $TTL
+    AT          = 4     # origin - i.e. @
+    OPEN        = 5     # (
+    CLOSE       = 6     # )
+    STRING      = 7
+    WORD        = 8     # any freestanding non quoted piece of text
+    EOL         = 9
+    COMMENT     = 10
+    UNDEFINED   = 11
+
+    def __init__(self, ttype, value=None):
+        self._type = ttype
+        self._value = value
+
+    def value(self):
+        return self._value
+
+    def type(self):
+        return self._type
+
+    @classmethod
+    def consume_whitespace(cls, f):
+        while True:
+            c = f.read()
+            if c != ' ' and c != '\t':
+                f.putback(c)
+                return
+
+    @classmethod
+    def consume_to_eol(cls, f):
+        while True:
+            c = f.read()
+            if c == '\n':
+                return
+
+    @classmethod
+    def read_string(cls, f):
+        res = ''
+        while True:
+            c = f.read()
+            if c == '"':
+                return res
+            elif c == '\\':
+                c = f.read()
+                if c == '\n' or c == '' or c == None:
+                    raise Exception('malformed string at line' % s, f.line())
+                else:
+                    res += c
+            else:
+                res += c
+
+    @classmethod
+    def read_to_whitespace(cls, f):
+        res = ''
+        while True:
+            c = f.read()
+            if c == '\\':
+                c = f.read()
+                if c == None:
+                    return res
+                else:
+                    res += c
+            elif c == None or c == ' ' or c == '\t':
+                return res
+            elif c == '\n' or c == '(' or c == ')':
+                f.putback(c)
+                return res
+            else:
+                res += c
+
+    @classmethod
+    def read(cls, f):
+        cls.consume_whitespace(f)
+        s = ''
+        c = f.read()
+        if c == None or c == '':
+            return None
+        elif c == ';':
+            cls.consume_to_eol(f)
+            return token(cls.COMMENT)
+        elif c == '$':
+            s = cls.read_to_whitespace(f)
+            if s == 'TTL':
+                return token(cls.TTL)
+            elif s == 'ORIGIN':
+                return token(cls.ORIGIN)
+            elif s == 'INCLUDE':
+                return token(cls.INCLUDE)
+            else:
+                raise Exception('invalid control entry %s at line' % s, f.line())
+        elif c == '@':
+            return token(cls.AT, "@")
+        elif c == '\n':
+            return token(cls.EOL)
+        elif c == '(':
+            return token(cls.OPEN)
+        elif c == ')':
+            return token(cls.CLOSE)
+        elif c == '"':
+            return token(cls.STRING, cls.read_string(f))
+        elif str.isalnum(c) or c == '\\':
+            return token(cls.WORD, c + cls.read_to_whitespace(f))
+        else:
+            raise Exception("invalid character '%s' at line" % c, f.line())
+
+class statement:
+
+    # types of statement
+    ORIGIN      = 1     # $ORIGIN 
+    INCLUDE     = 2     # $INCLUDE
+    TTL         = 3     # $TTL
+    RECORD      = 4     # resource record
+    COMMENT     = 5
+    UNDEFINED   = 6
+
+    # record types supported
+    supported_types = {'SOA', 'A', 'AAAA', 'NS', 'MX', 'CNAME', 'DNAME', 'PTR', 'TXT', 'NAPTR', 'SRV', 'HINFO'}
+
+    def __init__(self, stype=UNDEFINED):
+        self._type = stype
+        self._origin = None
+        self._ttl = None
+        self._filename = None
+        self._record = None
+
+    def type(self):
+        return self._type
+
+    def origin(self):
+        return self._origin
+
+    def ttl(self):
+        return self._ttl
+
+    def filename(self):
+        return self._filename
+
+    def record(self):
+        return self._record
+    
+    @classmethod
+    def translate_ttl(cls, f, s):
+        np = ''
+        while len(s) > 0:
+            if str.isdigit(s[0]):
+                np += s[0]
+                s = s[1:]
+            else:
+                break
+
+        if np == '':
+            raise Exception('invalid TTL value at line', f.line())
+
+        np = int(np)
+
+        if s == '':
+            pass
+        elif s == 'm':
+            np *= 60
+        elif s == 'h':
+            np *= 60*60
+        elif s == 'd':
+            np *= 60*60*24
+        elif s == 'w':
+            np *= 60*60*24*7
+        else:
+            raise Exception('invalid TTL value at line', f.line())
+
+        if np > (2**32 - 1):
+            raise Exception('TTL max value exceeded at line', f.line())
+        else:
+            return np
+
+    @classmethod
+    def valid_ttl(cls, f, s):
+        try:
+            cls.translate_ttl(f, s)
+            return True
+        except:
+            return False
+
+    @classmethod
+    def valid_fqdn(cls, f, s):
+        # must be at least 1 character long
+        if s == '' or s is None:
+            raise Exception('invalid empty name at line' % s, f.line())
+
+        # must be letters, digits, and '-' symbols only
+        for c in s:
+            if not str.isalnum(c) and c != '-' and c != '.':
+                raise Exception('invalid character in name %s at line' % s, f.line())
+            
+        # must end in '.'
+        if s[-1] != '.':
+            raise Exception("name %s doesn't end in '.' at line" % s, f.line())
+
+        # must be no more than 254 characters long including periods
+        if len(s) > 254:
+            raise Exception("name %s too long '.' at line" % s, f.line())
+
+        # must have no more than 128 labels
+        if len(s.split('.')) > 128:
+            raise Exception("name %s has too many labels '.' at line" % s, f.line())
+
+        return True
+
+    @classmethod 
+    def parse_rdata(cls, f, res, tokens):
+        pass
+    
+    @classmethod 
+    def get_name(cls, f, ORIGIN, name):
+        if len(name) == 0 or name is None:
+            raise Exception('inavlid name at line', f.line())
+        if name == '@':
+            if ORIGIN is None:
+                raise Exception('no default ORIGIN to use at line', f.line())
+            return ORIGIN
+        elif name[-1] == '.':
+            return name
+        else:
+            if ORIGIN is None:
+                raise Exception('no default ORIGIN to use at line', f.line())
+            return name + '.' + ORIGIN 
+
+    @classmethod
+    def assemble_record(cls, f, tokens, ORIGIN, TTL, LAST_NAME, LAST_TTL):
+        #print("assemble", [t.value() for t in tokens])
+        #
+        # records look like one of these:
+        # [<owner>] [<TTL>] [<class>] <type> <RDATA>
+        # [<owner>] [<class>] [<TTL>] <type> <RDATA>
+        #
+        # type is mandatory so start by finding that
+        #
+        res = {'name' : None, 'type' : None, 'ttl' : None}
+
+        if LAST_NAME is None:
+            LAST_NAME = ORIGIN
+
+        if TTL is not None:
+            LAST_TTL = TTL
+
+        for i in range(0, len(tokens)):
+            t = tokens[i]
+            if t.type() == token.WORD:
+                if t.value() in cls.supported_types:
+                    if i == len(tokens) - 1:
+                        raise Exception('missing rdata at line', f.line())
+                    res['type'] = t.value()
+                    if i == 0:
+                        if LAST_NAME is None:
+                            raise Exception('unable to default name at line', f.line())
+                        if LAST_TTL is None:
+                            raise Exception('unable to default TTL at line', f.line())
+                        res['name'] = LAST_NAME
+                        res['ttl'] = LAST_TTL
+                    elif i == 1:
+                        # with only one item to the left, assume it's a name
+                        if LAST_NAME is None:
+                            raise Exception('unable to default name at line', f.line())
+                        if LAST_TTL is None:
+                            raise Exception('unable to default TTL at line', f.line())
+                        res['name'] = cls.get_name(f, ORIGIN, tokens[0].value())
+                        res['ttl'] = LAST_TTL
+                    elif i == 2:
+                        # with two items to the left 
+                        # TTL IN   - name stays the same as previous record
+                        # IN TTL    - name stays the same as previous record
+                        # NAME IN  - TTL stays same or defaults to $TTL
+                        # NAME TTL - type defaults to IN
+                        # NAME NAME - invalid
+                        left = tokens[0]
+                        right = tokens[1]
+
+                        if left.type() != token.WORD or left.type() != token.WORD:
+                            raise Exception('invalid token at line', f.line())
+
+                        left_is_TTL = valid_ttl(f, left)
+                        right_is_TTL = valid_ttl(f, right)
+                        left_is_IN = left.value() == 'IN'
+                        right_is_IN = right.value() == 'IN'
+                        left_is_name = not left_is_TTL and not left_is_IN
+                        right_is_name = not right_is_TTL and not right_is_IN
+
+                        if left_is_TTL and right_is_IN:
+                            res['ttl'] = cls.translate_ttl(f, left.value())
+                        elif left_is_IN and right_is_TTL:
+                            res['ttl'] = cls.translate_ttl(f, right.value())
+                        elif left_is_name and right_is_IN:
+                            res['name'] = cls.get_name(f, ORIGIN, left.value())
+                        elif left_is_name and right_is_TTL:
+                            res['name'] = cls.get_name(f, ORIGIN, left.value())
+                            res['ttl'] = cls.translate_ttl(f, right.value())
+                        else:
+                            raise Exception('invalid token at line', f.line())
+
+                    elif i == 3:
+                        # with three items to the left we have name type and TTL
+                        # the first is a label, TTL is the one that's a number, the other must be IN
+                        res['name'] = cls.get_name(f, ORIGIN, tokens[0].value())
+                        if tokens[1].value() == 'IN':
+                            res['ttl'] = cls.translate_ttl(f, tokens[2].value())
+                        else:
+                            res['ttl'] = cls.translate_ttl(f, tokens[1].value())
+
+                    cls.parse_rdata(f, res, tokens[i+1:])
+                    return res
+
+        raise Exception('invalid resource record at line', f.line())
+
+    @classmethod
+    def parse_record(cls, f, t, ORIGIN, TTL, LAST_NAME, LAST_TTL):
+        res = statement(cls.RECORD)
+        tokens = []
+        if t.type() != token.EOL:
+            tokens.append(t)
+        in_brackets = False
+        while True:
+            t = token.read(f)
+            if t is None or t.type() == token.EOL:
+                if not in_brackets:
+                    break
+            elif t.type() == token.CLOSE:
+                if in_brackets:
+                    in_brackets = False
+                else:
+                    raise Exception('unmatched closing brace at line', f.line())
+            elif t.type() == token.OPEN:
+                if in_brackets:
+                    raise Exception('illegal nested opening brace at line', f.line())
+                else:
+                    in_brackets = True
+            elif t.type() == token.AT:
+                tokens.append(t)
+            elif t.type() == token.STRING:
+                tokens.append(t)
+            elif t.type() == token.WORD:
+                tokens.append(t)
+            elif t.type() == token.COMMENT:
+                if not in_brackets:
+                    break
+            else:
+                raise Exception('unexpected token (%s,%s) at line' % (t.type(), t.value()), f.line())
+
+        if len(tokens) == 0:
+            res._record = None
+        else:
+            res._record = cls.assemble_record(f, tokens, ORIGIN, TTL, LAST_NAME, LAST_TTL)
+
+        return res
+
+    @classmethod
+    def read(cls, f, ORIGIN, TTL, LAST_NAME, LAST_TTL):
+
+        t = token.read(f)
+
+        if t == None:
+            return None
+
+        elif t.type() == token.TTL:
+            res = statement(cls.TTL)
+            v = token.read(f)
+            if v.type() == token.WORD:
+                res._ttl = cls.translate_ttl(f, v.value())
+            else:
+                raise Exception('malformed TTL statement at line', f.line())
+            return res
+
+        elif t.type() == token.ORIGIN:
+            res = statement(cls.ORIGIN)
+            v = token.read(f)
+            if v.type() == token.WORD:
+                if cls.valid_fqdn(f, v.value()):
+                    res._origin = v.value()
+                else:
+                    raise Exception('malformed ORIGIN at line', f.line())
+            else:
+                raise Exception('malformed ORIGIN statement at line', f.line())
+            return res
+
+        elif t.type() == token.INCLUDE:
+            res = statement(cls.INCLUDE)
+            v = token.read(f)
+            if v.type() == token.STRING:
+                res._filename = v.value()
+            else:
+                raise Exception('malformed INCLUDE statement at line', f.line())
+            return res
+
+        elif t.type() == token.EOL or t.type() == token.COMMENT:
+            return statement(cls.COMMENT)
+
+        else:
+            return cls.parse_record(f, t, ORIGIN, TTL, LAST_NAME, LAST_TTL)
+
+
+def get_resource_records(filename, ORIGIN=None, TTL=None):
+
+    result = []
+
+    f = reader(open(filename))
+
+    LAST_NAME = None
+    LAST_TTL = None
+
+    while True:
+        s = statement.read(f, ORIGIN, TTL, LAST_NAME, LAST_TTL)
+        if s == None:
+            return result
+        elif s.type() == s.ORIGIN:
+            ORIGIN = s.origin()
+        elif s.type() == s.INCLUDE:
+            result += get_resource_records(s.filename(), ORIGIN, TTL)
+        elif s.type() == s.TTL:
+            TTL = s.ttl()
+        elif s.type() == s.COMMENT:
+            pass
+        elif s.type() == s.RECORD:
+            if s.record() != None:
+                result.append(s.record())
+                LAST_NAME = s.record()['name']
+                LAST_TTL = s.record()['ttl']
+        else:
+            raise Exception('undefined statement type at line', f.line())
+
+    return result

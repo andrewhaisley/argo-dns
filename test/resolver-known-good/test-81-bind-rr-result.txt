@@ -1,0 +1,25 @@
+
+; <<>> DiG 9.9.5-3ubuntu0.4-Ubuntu <<>> @192.168.0.75 hanging-cname.blah.com a
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 41023
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;hanging-cname.blah.com.		IN	A
+
+;; ANSWER SECTION:
+hanging-cname.blah.com.	604800	IN	CNAME	zog.blah.com.
+
+;; AUTHORITY SECTION:
+blah.com.		604800	IN	SOA	blah.com. admin.blah.com. 2 604800 86400 2419200 604800
+
+;; Query time: 0 msec
+;; SERVER: 192.168.0.75#53(192.168.0.75)
+;; WHEN: Sun Aug 23 17:14:28 EDT 2015
+;; MSG SIZE  rcvd: 111
+

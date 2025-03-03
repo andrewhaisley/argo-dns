@@ -1,0 +1,38 @@
+{
+    "address_lists": [
+        {
+            "address_list_addresses": [],
+            "address_list_id": 1,
+            "address_list_networks": [
+                {
+                    "address": "0.0.0.0/0"
+                },
+                {
+                    "address": "::/0"
+                }
+            ]
+        },
+        {
+            "address_list_addresses": [
+                {
+                    "address": "3.3.3.3"
+                },
+                {
+                    "address": "4.4.4.4"
+                },
+                {
+                    "address": "5.5.5.5"
+                }
+            ],
+            "address_list_id": 2,
+            "address_list_networks": [
+                {
+                    "address": "1.1.1.1/0"
+                },
+                {
+                    "address": "2.2.2.2/0"
+                }
+            ]
+        }
+    ]
+}

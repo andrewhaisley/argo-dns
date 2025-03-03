@@ -1,0 +1,22 @@
+
+; <<>> DiG 9.9.5-3ubuntu0.4-Ubuntu <<>> @192.168.0.75 outzone-dname.blah.com soa
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 47921
+;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;outzone-dname.blah.com.		IN	SOA
+
+;; AUTHORITY SECTION:
+blah.com.		604800	IN	SOA	blah.com. admin.blah.com. 2 604800 86400 2419200 604800
+
+;; Query time: 1 msec
+;; SERVER: 192.168.0.75#53(192.168.0.75)
+;; WHEN: Sun Aug 23 17:14:28 EDT 2015
+;; MSG SIZE  rcvd: 93
+

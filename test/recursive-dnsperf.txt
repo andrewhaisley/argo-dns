@@ -1,0 +1,5 @@
+google.com a
+google.ca a
+amazon.com a
+amazon.ca a
+cbc.ca a

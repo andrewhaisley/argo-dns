@@ -1,0 +1,687 @@
+{
+    "schema_version": {
+        "columns": {
+            "schema_version_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "version_string": {
+                "nullable": false,
+                "type": "string"
+            }
+        },
+        "foreign_keys": {
+        },
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "schema_version_id",
+                    true
+                ]
+            ]
+        },
+        "name": "schema_version"
+    },
+    "address_list": {
+        "columns": {
+            "address_list_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {
+            "control_server": {
+                "column_name": "address_list_id",
+                "referenced_column_name": "address_list_id"
+            },
+            "horizon": {
+                "column_name": "address_list_id",
+                "referenced_column_name": "address_list_id"
+            }
+        },
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "address_list_id",
+                    true
+                ]
+            ]
+        },
+        "name": "address_list"
+    },
+    "address_list_address": {
+        "columns": {
+            "address_list_address_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "address_list_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "ip_address": {
+                "nullable": false,
+                "type": "string",
+                "length": 45
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "address_list_address_id",
+                    true
+                ]
+            ],
+            "i_addr_list_addr_list_id": [
+                [
+                    "address_list_id",
+                    false
+                ]
+            ]
+        },
+        "name": "address_list_address"
+    },
+    "address_list_network": {
+        "columns": {
+            "address_list_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "address_list_network_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "cidr_address": {
+                "nullable": false,
+                "type": "string",
+                "length": 49
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "address_list_network_id",
+                    true
+                ]
+            ],
+            "i_addr_list_network_list_id": [
+                [
+                    "address_list_id",
+                    false
+                ]
+            ]
+        },
+        "name": "address_list_network"
+    },
+    "basic_config": {
+        "columns": {
+            "config_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string",
+                "length": 100
+            },
+            "value": {
+                "nullable": false,
+                "type": "string",
+                "length": 100
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "config_id",
+                    true
+                ]
+            ]
+        },
+        "name": "basic_config"
+    },
+    "cache_config": {
+        "columns": {
+            "cache_config_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "client_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "default_ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "cache_garbage_collect_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "cache_max_referral_rrs": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "cache_max_answer_rrs": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "cache_config_id",
+                    true
+                ]
+            ],
+            "fk_cache_client": [
+                [
+                    "client_id",
+                    false
+                ]
+            ]
+        },
+        "name": "cache_config"
+    },
+    "control_server": {
+        "columns": {
+            "address_list_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "allowed_connection_backlog": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "client_connection_timeout_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "maximum_payload_size": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "num_threads": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "server_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "use_ssl": {
+                "nullable": false,
+                "type": "bool"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "server_id",
+                    true
+                ]
+            ],
+            "fk_access_al_id": [
+                [
+                    "address_list_id",
+                    false
+                ]
+            ]
+        },
+        "name": "control_server"
+    },
+    "dns_client": {
+        "columns": {
+            "client_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "connect_tcp_timeout_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "num_parallel_udp": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "read_tcp_timeout_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "server_port": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "total_timeout_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "udp_timeout_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "use_ip4": {
+                "nullable": false,
+                "type": "bool"
+            },
+            "use_ip6": {
+                "nullable": false,
+                "type": "bool"
+            },
+            "use_tcp": {
+                "nullable": false,
+                "type": "bool"
+            },
+            "use_udp": {
+                "nullable": false,
+                "type": "bool"
+            },
+            "wait_udp_response_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "write_tcp_timeout_ms": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {
+            "cache_config": {
+                "column_name": "client_id",
+                "referenced_column_name": "client_id"
+            },
+            "dns_server": {
+                "column_name": "client_id",
+                "referenced_column_name": "client_id"
+            }
+        },
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "client_id",
+                    true
+                ]
+            ]
+        },
+        "name": "dns_client"
+    },
+    "dns_server": {
+        "columns": {
+            "allowed_connection_backlog": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "client_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "max_external_resolutions": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "max_in_message_queue_length": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "max_out_message_queue_length": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "max_queued_per_question": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "max_recursion_depth": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "min_cache_ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "num_forwarding_threads": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "num_receive_threads": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "num_send_threads": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "num_tcp_recursive_slots": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "num_tcp_threads": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "num_udp_recursive_slots": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "num_udp_threads": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "recursive_timeout_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "server_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "tcp_max_body_wait_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "tcp_max_len_wait_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "udp_reply_timeout_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "udp_retry_count": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "doh_client_timeout_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "maximum_http_request_size": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "doh_path": {
+                "nullable": false,
+                "type": "string"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "server_id",
+                    true
+                ]
+            ],
+            "fk_dns_server_client": [
+                [
+                    "client_id",
+                    false
+                ]
+            ]
+        },
+        "name": "dns_server"
+    },
+    "horizon": {
+        "columns": {
+            "address_list_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "allow_recursion": {
+                "nullable": false,
+                "type": "bool"
+            },
+            "horizon_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "check_order": {
+                "nullable": false,
+                "type": "uint"
+            }
+        },
+        "foreign_keys": {
+            "zone": {
+                "column_name": "horizon_id",
+                "referenced_column_name": "horizon_id"
+            }
+        },
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "horizon_id",
+                    true
+                ]
+            ],
+            "fk_horizon_al_id": [
+                [
+                    "address_list_id",
+                    false
+                ]
+            ]
+        },
+        "name": "horizon"
+    },
+    "root_server": {
+        "columns": {
+            "addr_ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "ip_address": {
+                "nullable": false,
+                "type": "string",
+                "length": 45
+            },
+            "last_contact_date_time": {
+                "nullable": false,
+                "type": "datetime"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "ns_ttl": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "root_server_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "root_server_id",
+                    true
+                ]
+            ]
+        },
+        "name": "root_server"
+    },
+    "server": {
+        "columns": {
+            "protocol": {
+                "nullable": false,
+                "type": "string",
+                "length": 20
+            },
+            "server_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "transport": {
+                "nullable": false,
+                "type": "string",
+                "length": 20
+            },
+            "http2_deflate_table_size": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "is_enabled": {
+                "nullable": false,
+                "type": "bool"
+            }
+        },
+        "foreign_keys": {
+            "control_server": {
+                "column_name": "server_id",
+                "referenced_column_name": "server_id"
+            },
+            "dns_server": {
+                "column_name": "server_id",
+                "referenced_column_name": "server_id"
+            },
+            "server_socket_address": {
+                "column_name": "server_id",
+                "referenced_column_name": "server_id"
+            }
+        },
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "server_id",
+                    true
+                ]
+            ]
+        },
+        "name": "server"
+    },
+    "server_socket_address": {
+        "columns": {
+            "ip_address": {
+                "nullable": false,
+                "type": "string",
+                "length": 45
+            },
+            "port": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "server_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "server_socket_address_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "server_socket_address_id",
+                    true
+                ]
+            ],
+            "fk_server_sa_server": [
+                [
+                    "server_id",
+                    false
+                ]
+            ]
+        },
+        "name": "server_socket_address"
+    },
+    "zone": {
+        "columns": {
+            "forward_ip_address": {
+                "nullable": true,
+                "type": "string",
+                "length": 45
+            },
+            "forward_port": {
+                "nullable": true,
+                "type": "uint"
+            },
+            "horizon_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "is_forwarded": {
+                "nullable": false,
+                "type": "bool"
+            },
+            "name": {
+                "nullable": false,
+                "type": "string"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            }
+        },
+        "foreign_keys": {
+        },
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "zone_id",
+                    true
+                ]
+            ],
+            "i_zone_horizon_id": [
+                [
+                    "horizon_id",
+                    false
+                ]
+            ]
+        },
+        "name": "zone"
+    },
+    "rr_history": {
+        "columns": {
+            "rr_history_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "full_record": {
+                "length": 8000,
+                "nullable": false,
+                "type": "string"
+            },
+            "zone_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "sequence_number": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "action": {
+                "length": 1,
+                "nullable": false,
+                "type": "string"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "rr_history_id",
+                    true
+                ]
+            ],
+            "i_rr_history_zone_seq": [
+                [
+                    "zone_id",
+                    false
+                ],
+                [
+                    "sequence_number",
+                    false
+                ]
+            ]
+        },
+        "name": "rr_generic"
+    }
+}
