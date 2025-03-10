@@ -1,15 +1,18 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(ADNS)
+include_directories(
+    .
+    ../socket
+    ../acore
+    ../db
+    ../json)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++17 -O3 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/home/andrew/nghttp2/lib/includes/nghttp2 -g -Wall -std=c++20 -Ofast")
-
-include_directories("/usr/include/libmongoc-1.0")
-include_directories("/usr/include/libbson-1.0")
-include_directories("/usr/include/postgresql")
-include_directories(http ../ ../socket/ ../acore/ ../db/ ../json)
-
-file(GLOB sources *.cpp)
-
-add_library(http ${sources})
+add_library(
+    http
+    http1.cpp
+    http2.cpp
+    http.cpp
+    http_impl.cpp
+    http_request.cpp
+    http_response.cpp
+    url.cpp)

@@ -1,15 +1,29 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(ADNS)
+include_directories(
+    .
+    ../socket
+    ../acore
+    ../db
+    ../http
+    ../zone
+    ../message
+    ../resolver
+    ../json 
+    ../cache)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++17 -O3 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++20 -Ofast")
-
-include_directories("/usr/include/libmongoc-1.0")
-include_directories("/usr/include/libbson-1.0")
-include_directories("/usr/include/postgresql")
-include_directories(api ../ ../socket/ ../acore/ ../db/ ../http/ ../zone/ ../message/ ../resolver/ ../json ../cache)
-
-file(GLOB sources *.cpp)
-
-add_library(api ${sources})
+add_library(
+    api 
+    api_address_list_v1.cpp
+    api_base_configuration_v1.cpp
+    api_cache_configuration_v1.cpp
+    api.cpp
+    api_guard.cpp
+    api_horizon_v1.cpp
+    api_monitor_v1.cpp
+    api_resource_record_v1.cpp
+    api_run_state_v1.cpp
+    api_server_v1.cpp
+    api_url_v1.cpp
+    api_v1.cpp
+    api_zone_v1.cpp)

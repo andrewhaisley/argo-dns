@@ -1,13 +1,24 @@
-project(ADNS)
+cmake_minimum_required(VERSION 3.5)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++20 -O3 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++17 -Ofast")
+include_directories(
+    .
+    ../db 
+    ../socket 
+    ../json)
 
-include_directories("/usr/include/libmongoc-1.0")
-include_directories("/usr/include/libbson-1.0")
-include_directories("/usr/include/postgresql")
-include_directories(acore ../ ../db ./ ../socket ../json)
-
-file(GLOB sources *.cpp)
-
-add_library(acore ${sources})
+add_library(acore
+    buffer.cpp
+    cache_config.cpp
+    client_config.cpp
+    config.cpp
+    config_reader.cpp
+    config_types.cpp
+    datetime.cpp
+    exception.cpp
+    frequency_meter.cpp
+    json_serializable.cpp
+    monitor.cpp
+    read_write_lock.cpp
+    run_state.cpp
+    server_config.cpp
+    util.cpp)

@@ -1,13 +1,13 @@
-project(ADNS)
+cmake_minimum_required(VERSION 3.5)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++17 -O3 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++17 -Ofast")
+include_directories(
+    .
+    ../client 
+    ../acore 
+    ../message 
+    ../zone 
+    ../socket 
+    ../db
+    ../json)
 
-include_directories("/usr/include/libmongoc-1.0")
-include_directories("/usr/include/libbson-1.0")
-include_directories("/usr/include/postgresql")
-include_directories(cache ../ ../client ../acore ../message ../zone ../socket ../db/ ./  ../json)
-
-file(GLOB sources *.cpp)
-
-add_library(cache ${sources})
+add_library(cache dns_recursive_cache_answer.cpp dns_recursive_cache.cpp)

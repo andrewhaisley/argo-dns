@@ -1,15 +1,29 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(ADNS)
+include_directories(
+    .
+    ../client 
+    ../api 
+    ../resolver 
+    ../socket 
+    ../acore 
+    ../message 
+    ../zone 
+    ../db 
+    ../http 
+    ../cache
+    ../json)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++17 -O3 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++20 -Ofast")
-
-include_directories("/usr/include/libmongoc-1.0")
-include_directories("/usr/include/libbson-1.0")
-include_directories("/usr/include/postgresql")
-include_directories(server ../ ../client ../api ../resolver ../socket ../acore ../message ../zone ../db ../http ../cache/ ../json)
-
-file(GLOB sources *.cpp)
-
-add_library(server ${sources})
+add_library(
+    server 
+    control_connection.cpp
+    control_server.cpp
+    dns_doh_connection.cpp
+    dns_doh_server.cpp
+    dns_dot_server.cpp
+    dns_handler.cpp
+    dns_tcp_connection.cpp
+    dns_tcp_server.cpp
+    dns_udp_server.cpp
+    server_container.cpp
+    server.cpp)

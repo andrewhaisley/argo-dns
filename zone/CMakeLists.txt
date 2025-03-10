@@ -1,15 +1,55 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(ADNS)
+include_directories(
+    .
+    ../zone 
+    ../socket 
+    ../db 
+    ../acore 
+    ../message 
+    ../resolver 
+    ../client 
+    ../json)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++17 -O3 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++20 -Ofast")
-
-file(GLOB sources *.cpp)
-
-include_directories("/usr/include/libmongoc-1.0")
-include_directories("/usr/include/libbson-1.0")
-include_directories("/usr/include/postgresql")
-include_directories(../zone ../ ../socket/ ../db/ ../acore/ ../message/ ../resolver/ ../client/ ./ ../json)
-
-add_library(zone ${sources})
+add_library(
+    zone
+    dns_rr_AAAA.cpp
+    dns_rr_A.cpp
+    dns_rr_AFSDB.cpp
+    dns_rr_CAA.cpp
+    dns_rr_cache.cpp
+    dns_rr_CERT.cpp
+    dns_rr_CNAME.cpp
+    dns_rr.cpp
+    dns_rr_CSYNC.cpp
+    dns_rr_dal.cpp
+    dns_rr_DHCID.cpp
+    dns_rr_DNAME.cpp
+    dns_rr_EUI48.cpp
+    dns_rr_EUI64.cpp
+    dns_rr_GENERIC.cpp
+    dns_rr_HINFO.cpp
+    dns_rr_HTTPS.cpp
+    dns_rr_IPSECKEY.cpp
+    dns_rr_KX.cpp
+    dns_rr_LOC.cpp
+    dns_rr_MX.cpp
+    dns_rr_NAPTR.cpp
+    dns_rr_NS.cpp
+    dns_rr_OPENPGPKEY.cpp
+    dns_rr_OPT.cpp
+    dns_rr_parser.cpp
+    dns_rr_PTR.cpp
+    dns_rr_SOA.cpp
+    dns_rr_SRV.cpp
+    dns_rr_SSHFP.cpp
+    dns_rr_SVCB.cpp
+    dns_rr_TKEY.cpp
+    dns_rr_TLSA.cpp
+    dns_rr_TSIG.cpp
+    dns_rr_TXT.cpp
+    dns_rr_URI.cpp
+    dns_rr_ZONEMD.cpp
+    dns_zone.cpp
+    dns_zone_guard.cpp
+    dns_zone_validator.cpp)
