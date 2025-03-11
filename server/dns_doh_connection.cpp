@@ -15,6 +15,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+#include <boost/lexical_cast.hpp>
+
 #include "types.hpp"
 #include "util.hpp"
 #include "http.hpp"
@@ -55,8 +57,6 @@ dns_doh_connection::dns_doh_connection(
     params.p_forwarding_resolver = p_forwarding_resolver;
     params.check_message_length = false;
 
-    // generally these queues will only have 1 message in them, but allow for more to handle the case of
-    // zone transfers (not yet implemented)
     m_handler_pool = new handler_pool<dns_message_envelope *, dns_handler, dns_handler::params_t>(
                                     "DNS DoH connection mini-handler pool", params, 100, 100, 1);
 
@@ -125,12 +125,12 @@ void dns_doh_connection::run()
                     if (req->get_method() == "GET")
                     {
                         extract_get_request(req, b);
-                        m = new dns_message_envelope(b, m_socket->get_remote_address(), nullptr);
+                        m = new dns_message_envelope(b, m_socket->get_remote_address());
                     }
                     else if (req->get_method() == "POST")
                     {
                         extract_post_request(req, b);
-                        m = new dns_message_envelope(b, m_socket->get_remote_address(), nullptr);
+                        m = new dns_message_envelope(b, m_socket->get_remote_address());
                     }
                     else
                     {
@@ -166,6 +166,7 @@ void dns_doh_connection::run()
                     try
                     {
                         auto res = make_shared<http_response>(req->get_stream_id(), http_response::ok_200, m->get_raw());
+                        res->add_header("cache-control", "private, max-age=" + boost::lexical_cast<string>(m->get_response()->get_min_ttl()));
                         h.to_wire(*res);
 
                         // cleanup

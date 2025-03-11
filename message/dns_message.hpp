@@ -15,6 +15,7 @@
 #pragma once
 
 #include <list>
+#include <algorithm>
 
 #include "dns_question.hpp"
 #include "dns_rr.hpp"
@@ -212,48 +213,56 @@ namespace adns
         {
             m_answers.push_back(a);
             m_an_count++;
+            update_min_ttl(a);
         }
 
         template<class RR> void add_first_answer(const std::shared_ptr<RR> &a)
         {
             m_answers.push_front(a);
             m_an_count++;
+            update_min_ttl(a);
         }
 
         template<class RR> void add_last_answer(const std::shared_ptr<RR> &a)
         {
             m_answers.push_back(a);
             m_an_count++;
+            update_min_ttl(a);
         }
 
         template<class RR> void add_answers(const std::list<std::shared_ptr<RR>> &a)
         {
             m_answers.insert(m_answers.end(), a.begin(), a.end());
             m_an_count += a.size();
+            update_min_ttl(a);
         }
 
         template<class RR> void add_nameserver(const std::shared_ptr<RR> &ns)
         {
             m_nameservers.push_back(ns);
             m_ns_count++;
+            update_min_ttl(ns);
         }
 
         template<class RR> void add_nameservers(const std::list<std::shared_ptr<RR>> &ns)
         {
             m_nameservers.insert(m_nameservers.end(), ns.begin(), ns.end());
             m_ns_count += ns.size();
+            update_min_ttl(ns);
         }
 
         template<class RR> void add_additional_record(const std::shared_ptr<RR> &a)
         {
             m_additional_records.push_back(a);
             m_ar_count++;
+            update_min_ttl(a);
         }
 
         template<class RR> void add_additional_records(const std::list<std::shared_ptr<RR>> &a)
         {
             m_additional_records.insert(m_additional_records.end(), a.begin(), a.end());
             m_ar_count += a.size();
+            update_min_ttl(a);
         }
 
         /**
@@ -295,6 +304,11 @@ namespace adns
         bool additional_record_exists(dns_rr::type_t t) const;
 
         /**
+         * get the minimum TTL for any of the contained records
+         */
+        int get_min_ttl() const;
+
+        /**
          * Debug dump via boost info log messages.
          */
         void dump() const;
@@ -316,12 +330,39 @@ namespace adns
         unsigned short m_an_count;
         unsigned short m_ns_count;
         unsigned short m_ar_count;
+        int m_min_ttl;
 
         std::shared_ptr<dns_question> m_question;
 
         std::list<std::shared_ptr<dns_rr>> m_answers;
         std::list<std::shared_ptr<dns_rr>> m_nameservers;
         std::list<std::shared_ptr<dns_rr>> m_additional_records;
+
+        /*
+         * update the min ttl value for the message based on the contents of the supplied record
+         */
+        template<class RR> void update_min_ttl(const std::shared_ptr<RR> &r)
+        {
+            if (m_min_ttl == -1)
+            {
+                m_min_ttl = r->get_ttl();
+            }
+            else
+            {
+                m_min_ttl = std::min(m_min_ttl, (int)r->get_ttl());
+            }
+        }
+
+        /*
+         * update the min ttl value for the message based on the contents of the supplied record
+         */
+        template<class RR> void update_min_ttl(const std::list<std::shared_ptr<RR>> &rl)
+        {
+            for (auto r : rl)
+            {
+                update_min_ttl(r);
+            }
+        }
 
         /**
          * get the number of records of a given type in a list

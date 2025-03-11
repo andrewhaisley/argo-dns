@@ -4,8 +4,8 @@
         "server-config-username" : "admin",
         "server-config-password" : "admin",
         "run-as-daemon"          : false,
-        "ssl-server-chain-file"  : "socket/files/fullchain.pem",
-        "ssl-server-key-file"    : "socket/files/privkey.pem",
+        "ssl-server-chain-file"  : "socket/certs/fullchain.pem",
+        "ssl-server-key-file"    : "socket/certs/privkey.pem",
         "log":
         {
             "level"      : "trace",

@@ -41,6 +41,7 @@ dns_message::dns_message()
     m_is_edns = false;
     m_edns_version = 0;
     m_is_dnssec_ok = false;
+    m_min_ttl = -1;
 }
 
 void dns_message::dump() const
@@ -374,4 +375,9 @@ size_t dns_message::get_num_nameservers() const
 size_t dns_message::get_num_additional_records() const
 {
     return m_additional_records.size();
+}
+
+int dns_message::get_min_ttl() const
+{
+    return m_min_ttl;
 }

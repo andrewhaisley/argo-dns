@@ -28,6 +28,7 @@ dns_message_envelope::dns_message_envelope(const dns_message_envelope &other)
     m_remote_address = other.m_remote_address;
     m_socket = other.m_socket;
     m_channel = other.m_channel;
+    m_min_ttl = other.m_min_ttl;
 
     if (other.m_request != nullptr)
     {
@@ -55,6 +56,7 @@ dns_message_envelope::dns_message_envelope(
     m_raw(raw),
     m_remote_address(remote_address),
     m_channel(0),
+    m_min_ttl(0),
     m_socket(s),
     m_request(nullptr), 
     m_response(nullptr),
@@ -140,4 +142,14 @@ const ip_address &dns_message_envelope::get_forwarding_address() const
 int dns_message_envelope::get_forwarding_port() const
 {
     return m_forward_port;
+}
+
+void dns_message_envelope::set_min_ttl(int min_ttl)
+{
+    m_min_ttl = min_ttl;
+}
+
+int dns_message_envelope::get_min_ttl() const
+{
+    return m_min_ttl;
 }

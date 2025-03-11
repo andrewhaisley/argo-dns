@@ -117,11 +117,22 @@ namespace adns
          */
         int get_forwarding_port() const;
 
+        /**
+         * set the minimum TTL of a record in the contained message
+         */
+        void set_min_ttl(int min_ttl);
+
+        /**
+         * get the minimum TTL of a record in the contained message
+         */
+        int get_min_ttl() const;
+
     private:
 
         buffer         m_raw;
         socket_address m_remote_address;
         int            m_channel;
+        int            m_min_ttl;
 
         udp_socket  *m_socket;
 

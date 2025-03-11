@@ -45,8 +45,6 @@ void http_impl::add_headers(http::usage_t u, http_response &res, int content_len
         // add DNS headers
         res.add_header("content-type", "application/dns-message");
         res.add_header("access-control-allow-origin", "*");
-        // TODO: put the min TTL of the response records (if any) in here
-        res.add_header("cache-control", "private, max-age=300");
         res.add_header("content-length", boost::lexical_cast<string>(res.get_data().get_size()));
     }
     else
