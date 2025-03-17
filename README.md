@@ -1,5 +1,6 @@
 # argo-dns
-The Argo DNS Server
+The Argo DNS Server. A high performance, scalable DNS server with database storage
+and a REST API. 
 # features
 - Authoritative DNS
 - Recursive DNS
