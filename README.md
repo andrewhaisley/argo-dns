@@ -56,12 +56,12 @@ sudo apt install g++
 sudo apt install cmake
 sudo apt install bind9-dnsutils
 sudo apt install libssldev
-sudo api install libboost-dev
-sudo api install libsqlite3-dev
-sudo api install libpq-dev
-sudo api install libbson-dev
-sudo api install libmongoc-dev
-sudo api install libmysqlcppconn-dev
+sudo apt install libboost-dev
+sudo apt install libsqlite3-dev
+sudo apt install libpq-dev
+sudo apt install libbson-dev
+sudo apt install libmongoc-dev
+sudo apt install libmysqlcppconn-dev
 ```
 ## Clone the repo
 ```
