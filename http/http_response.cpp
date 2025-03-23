@@ -74,7 +74,8 @@ http_response::http_response(uint32_t stream_id, status_t status, const json &j)
 {
 }
 
-http_response::http_response(uint32_t stream_id, status_t status, const buffer &b) : m_stream_id(stream_id), m_status(status), m_buffer(b)
+http_response::http_response(uint32_t stream_id, status_t status, const buffer &b, const string &content_type) : 
+                    m_stream_id(stream_id), m_status(status), m_buffer(b), m_content_type(content_type)
 {
 }
 
@@ -116,4 +117,9 @@ const buffer &http_response::get_data() const
 uint32_t http_response::get_stream_id() const
 {
     return m_stream_id;
+}
+
+const string &http_response::get_content_type() const
+{
+    return m_content_type;
 }

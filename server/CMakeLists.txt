@@ -26,4 +26,6 @@ add_library(
     dns_tcp_server.cpp
     dns_udp_server.cpp
     server_container.cpp
-    server.cpp)
+    server.cpp
+    ui_connection.cpp
+    ui_server.cpp)

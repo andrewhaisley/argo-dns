@@ -29,6 +29,7 @@
 #include "row_dns_client.hpp"
 #include "row_dns_server.hpp"
 #include "row_control_server.hpp"
+#include "row_ui_server.hpp"
 #include "row_server_socket_address.hpp"
 
 EXCEPTION_CLASS(config_reader_exception, exception)
@@ -195,6 +196,11 @@ namespace adns
          * create a control server row from a server_config instance
          */
         void build_row(const server_config &sc, db::row_control_server &rs);
+
+        /**
+         * create a UI server row from a server_config instance
+         */
+        void build_row(const server_config &sc, db::row_ui_server &rs);
 
         /**
          * create a client row from a client_config instance

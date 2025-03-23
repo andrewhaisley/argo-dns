@@ -36,6 +36,7 @@
 #include "dns_doh_server.hpp"
 #include "dns_recursive_cache.hpp"
 #include "control_server.hpp"
+#include "ui_server.hpp"
 #include "dns_rr.hpp"
 #include "address_list.hpp"
 #include "dns_horizon.hpp"
@@ -225,6 +226,21 @@ void run_servers()
             catch (adns::exception &e)
             {
                 e.log(error, "failed to start control server instance");
+            }
+            break;
+        case server_config::ui_e :
+            LOG(info) << "starting UI server (tcp ipv4/ipv6)";
+            for (auto x : iter.socket_addresses)
+            {
+                LOG(info) << "binding to " << x.ip_address << " port " << x.port;
+            }
+            try
+            {
+                sc.add(new ui_server(io_service, iter));
+            }
+            catch (adns::exception &e)
+            {
+                e.log(error, "failed to start UI server instance");
             }
             break;
         default:

@@ -14,7 +14,12 @@
 // 
 #pragma once
 
+#include <istream>
+
 #include "types.hpp"
+#include "exception.hpp"
+
+EXCEPTION_CLASS(buffer_exception, exception)
 
 namespace adns
 {
@@ -40,6 +45,11 @@ namespace adns
          * New block from a string - a copy is made
          */
         buffer(const std::string &s);
+
+        /**
+         * New block from the contents of a stream
+         */
+        buffer(std::istream &is);
 
         /**
          * New block of given size.

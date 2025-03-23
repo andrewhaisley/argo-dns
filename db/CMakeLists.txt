@@ -60,6 +60,7 @@ add_library(
     row_schema_version.cpp
     row_server.cpp
     row_server_socket_address.cpp
+    row_ui_server.cpp
     row_zone.cpp
     schema_manager.cpp
     sqlite_row_helper.cpp

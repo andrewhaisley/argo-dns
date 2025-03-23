@@ -69,7 +69,7 @@ namespace adns
         /**
          * response containing binary data
          */
-        http_response(uint32_t stream_id, status_t status, const buffer &b);
+        http_response(uint32_t stream_id, status_t status, const buffer &b, const std::string &content_type="");
 
         /**
          * destructor
@@ -112,6 +112,11 @@ namespace adns
         const std::string get_status_text() const;
 
         /**
+         * get the content type
+         */
+        const std::string &get_content_type() const;
+
+        /**
          * dump out for debug purposes
          */
         void dump() const;
@@ -123,6 +128,8 @@ namespace adns
         status_t m_status;
         json     m_json;
         buffer   m_buffer;
+
+        std::string m_content_type;
 
         std::map<std::string, std::string> m_headers;
     };

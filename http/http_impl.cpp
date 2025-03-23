@@ -47,12 +47,21 @@ void http_impl::add_headers(http::usage_t u, http_response &res, int content_len
         res.add_header("access-control-allow-origin", "*");
         res.add_header("content-length", boost::lexical_cast<string>(res.get_data().get_size()));
     }
-    else
+    else if (u == http::api_e)
     {
         // add API headers
         res.add_header("content-type", "application/json");
         res.add_header("www-authenticate", "Basic realm=\"ADNS\"");
         res.add_header("cache-control", "no-cache");
+        res.add_header("content-length", boost::lexical_cast<string>(content_length));
+    }
+    else
+    {
+        // add UI headers
+        // set cache expiry to 24 hours - we don't expect content to change
+        // very often
+        res.add_header("cache-control", "max-age=86400");
+        res.add_header("content-type", res.get_content_type());
         res.add_header("content-length", boost::lexical_cast<string>(content_length));
     }
 }

@@ -41,7 +41,8 @@ namespace adns
         typedef enum
         {
             api_e,
-            doh_e
+            doh_e,
+            ui_e
         }
         usage_t;
 

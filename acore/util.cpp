@@ -15,7 +15,7 @@
 #include <stdarg.h>
 #include <string.h>
 
-#include <atomic>
+#include <boost/algorithm/string.hpp>
 
 #include "types.hpp"
 #include "exception.hpp"
@@ -319,4 +319,89 @@ size_t util::hash_by_byte(const void *data, size_t len)
     }
 
     return hash;
+}
+
+bool util::path_is_safe(std::string &path)
+{
+    // does the path contain anything other than the following characters?
+    //  a-z
+    //  0-9
+    //  A-Z
+    //  /
+    //  -
+    //  _
+    //  .
+    // are there any consecutive '.' characters? e.g. a/../../.. etc
+    // are there any consecutive '/' characters?
+
+    // this should be quicker than a regex
+    for (size_t i = 0; i < path.size(); i++)
+    {
+        char c1 = path[i];
+
+        if (!((c1 >= 'a' && c1 <= 'z') ||
+            (c1 >= 'A' && c1 <= 'Z') ||
+            (c1 >= '0' && c1 <= '9') ||
+            (c1 == '/') ||
+            (c1 == '-') ||
+            (c1 == '_') ||
+            (c1 == '.')))
+        {
+            return false;
+        }
+
+        if (i < (path.size() - 1))
+        {
+            char c2 = path[i + 1];
+            if ((c1 == c2) && ((c1 == '/') || (c1 == '.')))
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+string util::mime_type(const string &path)
+{
+    // types handled:
+    // image/png
+    // text/css
+    // text/html
+    // text/javascript
+    // text/json
+    auto i = path.rfind('.');
+
+    if (i == string::npos || (i == path.size() - 1))
+    {
+        THROW(util_exception, "mime type cannot be determined", path);
+    }
+    
+    string ext = path.substr(i + 1);
+
+    if (ext == "html")
+    {
+        return "text/html";
+    }
+    else if (ext == "png")
+    {
+        return "image/png";
+    }
+    else if (ext == "css")
+    {
+        return "text/css";
+    }
+    else if (ext == "js" || ext == "javascript")
+    {
+        return "text/javascript";
+    }
+    else if (ext == "json")
+    {
+        return "text/json";
+    }
+    else
+    {
+        THROW(util_exception, "mime type cannot be determined", path);
+    }
 }

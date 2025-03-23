@@ -78,5 +78,18 @@ namespace adns
          * turn a single character into a hex char (0-f)
          */
         char tohexchar(octet o);
+
+        /** 
+         * is a path from a URL safe. Safe means it's not an attempt to     
+         * access something outside of the normal local directory
+         * hierachy.
+         */
+        bool path_is_safe(std::string &path);
+
+        /**
+         * guess the mime type of a given file. Uses file extensions
+         * but could be extended to look at contents if needed.
+         */
+        std::string mime_type(const std::string &path);
     }
 }

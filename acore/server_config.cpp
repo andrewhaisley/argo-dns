@@ -36,6 +36,8 @@ server_config::server_type_t server_config::string_to_server_type(const string &
         return server_config::dns_doh_e;
     else if (s == "control.tcp")
         return server_config::control_e;
+    else if (s == "ui.tcp")
+        return server_config::ui_e;
 
     THROW(server_config_exception, "unrecognised server type", s);
 }
@@ -91,6 +93,19 @@ void server_config::json_serialize() const
         cj["client_connection_timeout_ms"] = int(control.client_connection_timeout_ms);
 
         set_json("control", cj);
+    }
+    else if (protocol == "ui")
+    {
+        json uj(json::object_e);
+
+        uj["address_list"] = ui.ui_address_list->to_json();
+        uj["use_ssl"] = ui.use_ssl;
+        uj["num_threads"] = int(ui.num_threads);
+        uj["allowed_connection_backlog"] = int(ui.allowed_connection_backlog);
+        uj["client_connection_timeout_ms"] = int(ui.client_connection_timeout_ms);
+        uj["document_root"] = ui.document_root;
+
+        set_json("ui", uj);
     }
     else
     {
@@ -176,6 +191,24 @@ void server_config::json_unserialize()
         control.allowed_connection_backlog =    int(cj["allowed_connection_backlog"]);
         control.maximum_payload_size =          int(cj["maximum_payload_size"]);
         control.client_connection_timeout_ms =  int(cj["client_connection_timeout_ms"]);
+    }
+    else if (protocol == "ui")
+    {
+        if (transport != "tcp")
+        {
+            THROW(server_config_exception, "UI server can only run over tcp", transport);
+        }
+
+        json uj = (*m_json_object)["ui"];
+
+        ui.ui_address_list = make_shared<address_list>();
+        ui.ui_address_list->from_json(uj["address_list"]);
+
+        ui.use_ssl =                       uj["use_ssl"];
+        ui.num_threads =                   int(uj["num_threads"]);
+        ui.allowed_connection_backlog =    int(uj["allowed_connection_backlog"]);
+        ui.client_connection_timeout_ms =  int(uj["client_connection_timeout_ms"]);
+        ui.document_root =                 string(uj["document_root"]);
     }
     else
     {

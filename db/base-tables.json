@@ -34,6 +34,10 @@
                 "column_name": "address_list_id",
                 "referenced_column_name": "address_list_id"
             },
+            "ui_server": {
+                "column_name": "address_list_id",
+                "referenced_column_name": "address_list_id"
+            },
             "horizon": {
                 "column_name": "address_list_id",
                 "referenced_column_name": "address_list_id"
@@ -234,6 +238,54 @@
             ]
         },
         "name": "control_server"
+    },
+    "ui_server": {
+        "columns": {
+            "address_list_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "allowed_connection_backlog": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "client_connection_timeout_ms": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "num_threads": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "server_id": {
+                "nullable": false,
+                "type": "uuid"
+            },
+            "use_ssl": {
+                "nullable": false,
+                "type": "bool"
+            },
+            "document_root": {
+                "nullable": false,
+                "type": "string"
+            }
+        },
+        "foreign_keys": {},
+        "indexes": {
+            "PRIMARY": [
+                [
+                    "server_id",
+                    true
+                ]
+            ],
+            "fk_ui_access_al_id": [
+                [
+                    "address_list_id",
+                    false
+                ]
+            ]
+        },
+        "name": "ui_server"
     },
     "dns_client": {
         "columns": {
@@ -533,6 +585,10 @@
         },
         "foreign_keys": {
             "control_server": {
+                "column_name": "server_id",
+                "referenced_column_name": "server_id"
+            },
+            "ui_server": {
                 "column_name": "server_id",
                 "referenced_column_name": "server_id"
             },

@@ -25,7 +25,7 @@ using namespace boost::log::trivial;
 
 http::http(usage_t u, tcp_socket &s, uint timeout)
 {
-    if (s.get_protocol() == tcp_socket::http_1_1_e)
+    if ((s.get_protocol() == tcp_socket::http_1_1_e) || (s.get_protocol() == tcp_socket::none_e))
     {
         m_protocol = new http1(u, s, timeout);
     }

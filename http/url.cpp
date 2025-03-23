@@ -53,6 +53,11 @@ url::url(const string &s) : m_raw(s)
 
     m_path = util::fromhttp(path);
 
+    if (!util::path_is_safe(path))
+    {
+        THROW(url_exception, "badly formed path", p);
+    }
+
     if (query != "")
     {
         vector<string> bits1;

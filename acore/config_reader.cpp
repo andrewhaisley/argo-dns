@@ -130,6 +130,23 @@ void config_reader::read()
                 m_server_configs.push_back(s);
             }
             break;
+        case server_config::ui_e:
+            {
+                auto ui_row = row_ui_server::get_by_server_id(*conn, row->get_server_id());
+
+                s.ui.use_ssl = ui_row->get_use_ssl();
+                s.ui.num_threads = ui_row->get_num_threads();
+                s.ui.allowed_connection_backlog = ui_row->get_allowed_connection_backlog();
+                s.ui.client_connection_timeout_ms = ui_row->get_client_connection_timeout_ms();
+                s.ui.ui_address_list = address_list::get(ui_row->get_address_list_id());
+                s.ui.document_root = ui_row->get_document_root();
+                if (!s.ui.ui_address_list)
+                {
+                    THROW(config_reader_exception, "no address list found for ID", ui_row->get_address_list_id());
+                }
+                m_server_configs.push_back(s);
+            }
+            break;
         default:
             LOG(warning) << "unknown server type";
         }
@@ -386,6 +403,17 @@ void config_reader::build_row(const server_config &sc, row_control_server &rs)
     rs.set_client_connection_timeout_ms(sc.control.client_connection_timeout_ms);
 }
 
+void config_reader::build_row(const server_config &sc, row_ui_server &rs)
+{
+    rs.set_server_id(sc.server_id);
+    rs.set_address_list_id(sc.ui.ui_address_list->get_address_list_id());
+    rs.set_use_ssl(sc.ui.use_ssl);
+    rs.set_num_threads(sc.ui.num_threads);
+    rs.set_allowed_connection_backlog(sc.ui.allowed_connection_backlog);
+    rs.set_client_connection_timeout_ms(sc.ui.client_connection_timeout_ms);
+    rs.set_document_root(sc.ui.document_root);
+}
+
 void config_reader::build_socket_address_rows(const server_config &sc, vector<shared_ptr<row_server_socket_address>> &sar)
 {
     for (auto sa : sc.socket_addresses)
@@ -498,7 +526,26 @@ void config_reader::update_server(const server_config &sc)
         build_row(sc, rs);
         rs.update_row(*conn);
 
-        row_control_server rcs;
+            row_control_server rcs;
+            build_row(sc, rcs);
+            rcs.update_row(*conn);
+        }
+        else if (sc.type == server_config::ui_e)   
+        {
+            if (sc.ui.ui_address_list)
+            {
+                sc.ui.ui_address_list->update_address_list_db(*conn);
+            }
+            else
+            {
+                THROW(config_reader_exception, "null address list found");
+        }
+
+        row_server rs;
+        build_row(sc, rs);
+        rs.update_row(*conn);
+
+        row_ui_server rcs;
         build_row(sc, rcs);
         rcs.update_row(*conn);
     }
@@ -520,7 +567,16 @@ void config_reader::update_server(const server_config &sc)
 
     t.commit();
 
-    sc.control.control_address_list->update_address_list_cache();
+    if (sc.type == server_config::control_e)   
+    {
+        sc.control.control_address_list->update_address_list_cache();
+    }
+
+    if (sc.type == server_config::ui_e)   
+    {
+        sc.ui.ui_address_list->update_address_list_cache();
+    }
+
     *current_server_config = sc;
 }
 
@@ -532,6 +588,7 @@ void config_reader::delete_server(const server_config &sc)
     transaction t(*conn);
     row_server_socket_address::delete_by_server_id(*conn, sc.server_id);
     row_control_server::delete_by_server_id(*conn, sc.server_id);
+    row_ui_server::delete_by_server_id(*conn, sc.server_id);
     row_dns_server::delete_by_server_id(*conn, sc.server_id);
     row_server::delete_by_server_id(*conn, sc.server_id);
     m_server_configs.remove(sc);

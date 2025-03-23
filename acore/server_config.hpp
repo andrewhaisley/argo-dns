@@ -39,7 +39,8 @@ namespace adns
             dns_tcp_e = 3,
             dns_dot_e = 4,
             dns_doh_e = 5,
-            control_e = 6
+            control_e = 6,
+            ui_e      = 7
         }
         server_type_t;
 
@@ -100,11 +101,26 @@ namespace adns
             uint    maximum_payload_size;
             uint    client_connection_timeout_ms;
 
+            // list of addresses/networks from which control server connections may be made
             std::shared_ptr<address_list> control_address_list;
+        };
+
+        class _ui
+        {
+        public:
+            bool        use_ssl;
+            uint        num_threads;
+            uint        allowed_connection_backlog;
+            uint        client_connection_timeout_ms;
+            std::string document_root; // location of HTLM/CSS/JS to serve
+
+            // list of addresses/networks from which UI server connections may be made
+            std::shared_ptr<address_list> ui_address_list;
         };
 
         _dns     dns;
         _control control;
+        _ui      ui;
 
         /**
          * 'dns,udp' -> dns_udp_e etc

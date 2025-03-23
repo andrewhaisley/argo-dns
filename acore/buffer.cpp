@@ -41,6 +41,22 @@ buffer::buffer(const string &s) : m_size(s.size()), m_data(new octet[m_size])
     memcpy(m_data.get(), s.c_str(), m_size);
 }
 
+buffer::buffer(istream &is)
+{
+    is.seekg(0, is.end);
+    m_size = is.tellg();
+    is.seekg(0, is.beg);
+
+    m_data.reset(new octet[m_size]);
+
+    is.read((char *)(m_data.get()), m_size);
+
+    if (!is)
+    {
+        THROW(buffer_exception, "file read failed");
+    }
+}
+
 void buffer::set_data(size_t size, const octet *data)
 {
     octet *nd = new octet[size];
