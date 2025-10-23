@@ -1,4 +1,24 @@
-//
+#!/usr/bin/python3
+
+import sys
+import shutil
+
+old = """// 
+// Copyright 2025 Andrew Haisley
+// 
+// This program is free software: you can redistribute it and/or modify it under the terms 
+// of the GNU General Public License as published by the Free Software Foundation, either 
+// version 3 of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+// without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+// See the GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License along with this program. 
+// If not, see https://www.gnu.org/licenses/.
+//"""
+
+new = """//
 //  Copyright 2025 Andrew Haisley
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
@@ -16,36 +36,20 @@
 //  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
- 
-#pragma once
+"""
 
-#include <ostream>
 
-#include "writer.hpp"
+def fix(file_name):
+    f = open(file_name)
+    text = f.read()
+    f.close()
+    if 'GNU General Public License' in text:
+        print(file_name)
+        text = text.replace(old, new)
+        f = open(file_name + '.tmp', 'w')
+        f.write(text)
+        f.close()
+        shutil.move(file_name + '.tmp', file_name)
 
-namespace adns
-{
-    /// A class to write JSON messages to a C++ istream.
-    class stream_writer : public writer
-    {
-    public:
-
-        /**
-         * Constructor. Does not take over owenership of the stream,
-         * the caller is required to close it and deallocate (if needed)
-         * when done.
-         */
-        stream_writer(std::ostream *s);
-
-        /**
-         * Write a string to the stream.
-         */
-        virtual void write(const std::string &s);
-
-    private:
-
-        std::ostream *m_stream;
-
-    };
-
-}
+for f in sys.argv[1:]:
+    fix(f)
