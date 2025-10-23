@@ -535,11 +535,17 @@ shared_ptr<dns_zone> dns_zone::dns_zone_cache::find(uuid id)
 
 uuid dns_zone::insert_zone_db(connection &conn)
 {
-    dns_zone_validator::validate_insert(*this);
+    // forwarded zones don't have records etc and the name can be blank if we're
+    // forwarding everything elsewhere
+    if (!m_is_forwarded)
+    {
+        dns_zone_validator::validate_insert(*this);
+    }
 
     // check for duplicates first
     auto existing_zone = find_exact(m_horizon_id, *m_name);
 
+    // check for duplicates first
     if (existing_zone)
     {
         THROW(dns_zone_exception, "attempt to insert duplicate zone", m_name->to_string());
@@ -563,10 +569,13 @@ uuid dns_zone::insert_zone_db(connection &conn)
 
     z.insert_row(conn);
 
-    for (auto rr : m_pending_resource_records)
+    if (!m_is_forwarded) 
     {
-        rr->set_zone_id(m_zone_id);
-        o_rr_cache->insert_record_db(conn, rr);
+        for (auto rr : m_pending_resource_records)
+        {
+            rr->set_zone_id(m_zone_id);
+            o_rr_cache->insert_record_db(conn, rr);
+        }
     }
 
     return m_zone_id;
@@ -634,6 +643,7 @@ shared_ptr<dns_zone> dns_zone::clone() const
 void dns_zone::insert_zone_cache()
 {
     lock_guard<recursive_mutex> guard(o_lock);
+
 
     if (o_zone_cache.find(m_horizon_id) == o_zone_cache.end())
     {

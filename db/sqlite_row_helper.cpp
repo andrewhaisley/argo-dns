@@ -219,7 +219,7 @@ void sqlite_row_helper::set_placeholder_values(sqlite3_stmt *stmt, bool include_
                         }
                         else
                         {
-                            int rc = sqlite3_bind_text(stmt, i, v.value().to_string().c_str(), -1, nullptr);
+                            int rc = sqlite3_bind_text(stmt, i, v.value().to_string().c_str(), -1, SQLITE_TRANSIENT);
                             if (rc != SQLITE_OK)
                             {
                                 THROW(sqlite_exception, "sqlite error in bind datetime", rc);
@@ -228,7 +228,7 @@ void sqlite_row_helper::set_placeholder_values(sqlite3_stmt *stmt, bool include_
                     }
                     else
                     {
-                        int rc = sqlite3_bind_text(stmt, i, r.get_datetime_column_value(c).to_string().c_str(), -1, nullptr);
+                        int rc = sqlite3_bind_text(stmt, i, r.get_datetime_column_value(c).to_string().c_str(), -1, SQLITE_TRANSIENT);
                         if (rc != SQLITE_OK)
                         {
                             THROW(sqlite_exception, "sqlite error in bind datetime", rc);
@@ -250,7 +250,7 @@ void sqlite_row_helper::set_placeholder_values(sqlite3_stmt *stmt, bool include_
                         }
                         else
                         {
-                            int rc = sqlite3_bind_text(stmt, i, v.value().c_str(), -1, nullptr);
+                            int rc = sqlite3_bind_text(stmt, i, v.value().c_str(), -1, SQLITE_TRANSIENT);
                             if (rc != SQLITE_OK)
                             {
                                 THROW(sqlite_exception, "sqlite error in bind string", rc);
@@ -259,7 +259,7 @@ void sqlite_row_helper::set_placeholder_values(sqlite3_stmt *stmt, bool include_
                     }
                     else
                     {
-                        int rc = sqlite3_bind_text(stmt, i, r.get_string_column_value(c).c_str(), -1, nullptr);
+                        int rc = sqlite3_bind_text(stmt, i, r.get_string_column_value(c).c_str(), -1, SQLITE_TRANSIENT);
                         if (rc != SQLITE_OK)
                         {
                             THROW(sqlite_exception, "sqlite error in bind string", rc);
@@ -416,33 +416,67 @@ int sqlite_row_helper::select_callback(void *rp, int count, char **data, char **
     {
         if (data[i] != nullptr)
         {
-            switch (c.get_type())
+            if (c.get_nullable())
             {
-            case column::bool_e:
-                r->set_column_value(c, strcmp(data[i], "1") == 0);
-                break;
-            case column::int_e:
-                r->set_column_value(c, lexical_cast<int>(data[i]));
-                break;
-            case column::uint_e:
-                r->set_column_value(c, lexical_cast<uint>(data[i]));
-                break;
-            case column::octet_e:
-                r->set_column_value(c, static_cast<octet>(lexical_cast<uint>(data[i])));
-                break;
-            case column::uuid_e:
-                r->set_column_value(c, lexical_cast<uuid>(data[i]));
-                break;
-            case column::datetime_e:
-                r->set_column_value(c, datetime(data[i]));
-                break;
-            case column::string_e:
-                r->set_column_value(c, string(data[i]));
-                break;
-            case column::invalid_e:
-            default:
-                delete r;
-                THROW(row_exception, "invalid column type found in select_callback", c.get_type());
+                switch (c.get_type())
+                {
+                case column::bool_e:
+                    r->set_column_value(c, nullable<bool>(strcmp(data[i], "1") == 0));
+                    break;
+                case column::int_e:
+                    r->set_column_value(c, nullable<int>(lexical_cast<int>(data[i])));
+                    break;
+                case column::uint_e:
+                    r->set_column_value(c, nullable<uint>(lexical_cast<uint>(data[i])));
+                    break;
+                case column::octet_e:
+                    r->set_column_value(c, nullable<octet>(static_cast<octet>(lexical_cast<uint>(data[i]))));
+                    break;
+                case column::uuid_e:
+                    r->set_column_value(c, nullable<uuid>(lexical_cast<uuid>(data[i])));
+                    break;
+                case column::datetime_e:
+                    r->set_column_value(c, nullable<datetime>(datetime(data[i])));
+                    break;
+                case column::string_e:
+                    r->set_column_value(c, nullable<string>(string(data[i])));
+                    break;
+                case column::invalid_e:
+                default:
+                    delete r;
+                    THROW(row_exception, "invalid column type found in select_callback", c.get_type());
+                }
+            }
+            else
+            {
+                switch (c.get_type())
+                {
+                case column::bool_e:
+                    r->set_column_value(c, strcmp(data[i], "1") == 0);
+                    break;
+                case column::int_e:
+                    r->set_column_value(c, lexical_cast<int>(data[i]));
+                    break;
+                case column::uint_e:
+                    r->set_column_value(c, lexical_cast<uint>(data[i]));
+                    break;
+                case column::octet_e:
+                    r->set_column_value(c, static_cast<octet>(lexical_cast<uint>(data[i])));
+                    break;
+                case column::uuid_e:
+                    r->set_column_value(c, lexical_cast<uuid>(data[i]));
+                    break;
+                case column::datetime_e:
+                    r->set_column_value(c, datetime(data[i]));
+                    break;
+                case column::string_e:
+                    r->set_column_value(c, string(data[i]));
+                    break;
+                case column::invalid_e:
+                default:
+                    delete r;
+                    THROW(row_exception, "invalid column type found in select_callback", c.get_type());
+                }
             }
         }
         i++;

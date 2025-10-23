@@ -31,6 +31,12 @@ dns_rr_cache::~dns_rr_cache()
 
 void dns_rr_cache::read_records(const dns_zone &zone, dns_rr::type_t t)
 {
+    // forwarded zones have no records
+    if (zone.get_is_forwarded())
+    {
+        return;
+    }
+
     auto z = m_cache.find(zone.get_zone_id());
 
     if (z == m_cache.end())

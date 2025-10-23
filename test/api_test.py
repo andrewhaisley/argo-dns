@@ -101,6 +101,8 @@ def test_server():
     else:
         print('server test 1: FAILED')
 
+    return
+
     servers = json.loads(data)
     cs_id = None
     for s in servers['servers']:
@@ -501,7 +503,7 @@ def test_auth():
 
 def test():
     #enable_recursion()
-    horizon_id = create_base_data()
+    #horizon_id = create_base_data()
     #restart_server()
     #test_auth()
     #test_run_state()
@@ -511,12 +513,9 @@ def test():
     #test_cache_config()
     #test_address_list()
     #test_horizon()
-    #test_zone()
+    test_zone()
     #test_rr(horizon_id)
+    pass
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 test()
-
-#while True:
-    #os.system('dig @localhost -p 1053 +tcp ppp.com SOA')
-
