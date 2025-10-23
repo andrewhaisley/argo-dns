@@ -371,6 +371,8 @@ string util::mime_type(const string &path)
     // text/html
     // text/javascript
     // text/json
+    // image/x-icon
+    // application/manifest+json
     auto i = path.rfind('.');
 
     if (i == string::npos || (i == path.size() - 1))
@@ -388,6 +390,10 @@ string util::mime_type(const string &path)
     {
         return "image/png";
     }
+    else if (ext == "ico")
+    {
+        return "image/x-icon";
+    }
     else if (ext == "css")
     {
         return "text/css";
@@ -399,6 +405,10 @@ string util::mime_type(const string &path)
     else if (ext == "json")
     {
         return "text/json";
+    }
+    else if (ext == "manifest")
+    {
+        return "application/manifest+json";
     }
     else
     {

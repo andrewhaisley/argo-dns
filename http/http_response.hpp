@@ -32,7 +32,7 @@ namespace adns
         {
             ok_200                      = 200,
             bad_request_400             = 400,
-            unauthorised_401            = 401,
+            unauthorized_401            = 401,
             not_found_404               = 404,
             method_not_allowed_405      = 405,
             conflict_407                = 407,

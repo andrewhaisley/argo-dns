@@ -15,6 +15,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>    
 
+#include "config.hpp"
 #include "http_request.hpp"
 #include "util.hpp"
 #include "parser.hpp"
@@ -198,4 +199,52 @@ http_request::http_request(
 uint32_t http_request::get_stream_id() const
 {
     return m_stream_id;
+}
+
+bool http_request::authorized() const
+{
+    string a = get_header("authorization");
+
+    if (a == "")
+    {
+        return false;
+    }
+    else
+    {
+        vector<string> bits;
+        split(bits, a, boost::is_any_of(" "));
+
+        if (bits.size() == 2)
+        {
+            if (bits[0] == "Basic")
+            {
+                try
+                {
+                    string s = util::frombase64(bits[1]).to_ascii_string();
+                    split(bits, s, boost::is_any_of(":"));
+                    if (bits.size() == 2)
+                    {
+                        return bits[0] == config::server_config_username() &&
+                               bits[1] == config::server_config_password();
+                    }
+                    else
+                    {
+                        THROW(http_request_bad_format_exception, "malformed basic authentication username/password");
+                    }
+                }
+                catch (util_exception &e)
+                {
+                    THROW(http_request_bad_format_exception, "malformed basic authentication username/password base64 string");
+                }
+            }
+            else
+            {
+                THROW(http_request_bad_format_exception, "only Basic authentication is supported", bits[0]);
+            }
+        }
+        else
+        {
+            THROW(http_request_bad_format_exception, "malformed basic authentication header");
+        }
+    }
 }

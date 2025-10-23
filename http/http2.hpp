@@ -122,7 +122,7 @@ namespace adns
 
         // callback for getting the data to be sent in a response. Note that user_data can't be set to
         // anything due to the limited nghttp2 data provider interface
-        static nghttp2_ssize read_data_callback(
+        static ssize_t read_data_callback(
                 nghttp2_session     *session,
                 int32_t             stream_id, 
                 uint8_t             *buf,
@@ -132,7 +132,7 @@ namespace adns
                 void                *unused);
 
         // send data back to the client - calls the relevant member function
-        static nghttp2_ssize send_callback(
+        static ssize_t send_callback(
                 nghttp2_session *session,
                 const uint8_t   *data, 
                 size_t          length,
@@ -157,7 +157,7 @@ namespace adns
 
         int on_frame_recv_callback(nghttp2_session *session, const nghttp2_frame *frame);
 
-        nghttp2_ssize send_callback(
+        ssize_t send_callback(
             nghttp2_session *session, 
             const uint8_t   *data, 
             size_t          length, 

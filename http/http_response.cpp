@@ -32,7 +32,7 @@ map<http_response::status_t, string> http_response::o_response_codes =
     { header_fields_too_large_431, "Request Header Fields Too Large" },
     { internal_server_error_500, "Internal Server Error" },
     { not_implemented_501, "Not Implemented" },
-    { unauthorised_401, "Unauthorized" },
+    { unauthorized_401, "Unauthorized" },
     { not_found_404, "Not Found" },
     { method_not_allowed_405, "Method Not Allowed" }
 };

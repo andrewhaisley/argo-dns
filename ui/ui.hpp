@@ -20,6 +20,9 @@
 
 namespace adns
 {
+    // Note that there no authentication or authorization needed for serving up the UI
+    // as that's all handled by the API. All this class does is serve up the VUE app and
+    // relevant assets.
     class ui
     {
     public:

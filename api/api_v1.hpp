@@ -40,13 +40,5 @@ namespace adns
          * handle a request
          */
         virtual std::shared_ptr<http_response> handle_request(std::shared_ptr<http_request> &req, const api_url_v1 &p);
-
-    protected:
-
-        /**
-         * find out if the caller is authorised - uses basic authentication via headers
-         */
-        virtual bool authorised(std::shared_ptr<http_request> &req);
-
     };
 }

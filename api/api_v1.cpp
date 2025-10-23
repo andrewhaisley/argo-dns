@@ -39,59 +39,11 @@ api_v1::~api_v1()
 {
 }
 
-bool api_v1::authorised(shared_ptr<http_request> &req)
-{
-    string a = req->get_header("authorization");
-
-    if (a == "")
-    {
-        return false;
-    }
-    else
-    {
-        vector<string> bits;
-        split(bits, a, boost::is_any_of(" "));
-
-        if (bits.size() == 2)
-        {
-            if (bits[0] == "Basic")
-            {
-                try
-                {
-                    string s = util::frombase64(bits[1]).to_ascii_string();
-                    split(bits, s, boost::is_any_of(":"));
-                    if (bits.size() == 2)
-                    {
-                        return bits[0] == config::server_config_username() &&
-                               bits[1] == config::server_config_password();
-                    }
-                    else
-                    {
-                        THROW(api_malformed_exception, "malformed basic authentication username/password");
-                    }
-                }
-                catch (util_exception &e)
-                {
-                    THROW(api_malformed_exception, "malformed basic authentication username/password base64 string");
-                }
-            }
-            else
-            {
-                THROW(api_unsupported_exception, "only Basic authentication is supported", bits[0]);
-            }
-        }
-        else
-        {
-            THROW(api_malformed_exception, "malformed basic authentication header");
-        }
-    }
-}
-
 shared_ptr<http_response> api_v1::handle_request(shared_ptr<http_request> &req, const api_url_v1 &p)
 {
-    if (!authorised(req))
+    if (!req->authorized())
     {
-        return make_shared<http_response>(req->get_stream_id(), http_response::unauthorised_401);
+        return make_shared<http_response>(req->get_stream_id(), http_response::unauthorized_401);
     }
 
     switch (p.get_resource_type())

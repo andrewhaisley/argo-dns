@@ -99,6 +99,12 @@ namespace adns
         uint32_t get_stream_id() const;
 
         /**
+         * Does the request contain an authorization header with username & password
+         * matching the server config?
+         */
+        bool authorized() const;
+
+        /**
          * dump for debug
          */
         void dump() const;

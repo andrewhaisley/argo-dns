@@ -63,7 +63,7 @@ int http2::on_frame_recv_callback(
     return o->on_frame_recv_callback(session, frame);
 }
 
-nghttp2_ssize http2::send_callback(
+ssize_t http2::send_callback(
         nghttp2_session *session,
         const uint8_t   *data, 
         size_t          length,
@@ -201,7 +201,7 @@ http2::http2(http::usage_t u, tcp_socket &s, uint timeout) :
     nghttp2_session_callbacks *callbacks;
     nghttp2_session_callbacks_new(&callbacks);
 
-    nghttp2_session_callbacks_set_send_callback2(callbacks, send_callback);
+    nghttp2_session_callbacks_set_send_callback(callbacks, send_callback);
     nghttp2_session_callbacks_set_on_header_callback(callbacks, on_header_callback);
     nghttp2_session_callbacks_set_on_data_chunk_recv_callback(callbacks, on_data_chunk_callback);
     nghttp2_session_callbacks_set_on_frame_recv_callback(callbacks, on_frame_recv_callback);
@@ -242,7 +242,7 @@ void make_nv(nghttp2_nv &nv, const string &name, const string &value)
     nv.valuelen = value.size();
 }
 
-nghttp2_ssize http2::read_data_callback(
+ssize_t http2::read_data_callback(
                 nghttp2_session     *session,
                 int32_t             stream_id, 
                 uint8_t             *buf,
@@ -319,11 +319,11 @@ void http2::to_wire(http_response &res)
 
     pair<size_t, buffer *> br(0, &b);
 
-    nghttp2_data_provider2 data_prd;
+    nghttp2_data_provider data_prd;
     data_prd.source.ptr = &br;
     data_prd.read_callback = read_data_callback;
 
-    int r = nghttp2_submit_response2(m_session, res.get_stream_id(), hdrs, n, &data_prd);
+    int r = nghttp2_submit_response(m_session, res.get_stream_id(), hdrs, n, &data_prd);
     
     if (r != 0)
     {
@@ -354,7 +354,7 @@ shared_ptr<http_request> http2::from_wire()
         buffer b = m_socket.read(1, m_timeout);
         if (b.get_size() == 1)
         {
-            int r = nghttp2_session_mem_recv2(m_session, b.get_data(), 1);
+            int r = nghttp2_session_mem_recv(m_session, b.get_data(), 1);
         
             if (r < 0) 
             {
@@ -373,7 +373,7 @@ shared_ptr<http_request> http2::from_wire()
     }
 }
 
-nghttp2_ssize http2::send_callback(
+ssize_t http2::send_callback(
         nghttp2_session *session,
         const uint8_t   *data, 
         size_t          length,

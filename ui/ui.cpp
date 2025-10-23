@@ -20,6 +20,7 @@
 using namespace std;
 using namespace adns;
 
+
 ui::ui(const string &document_root) : m_document_root(document_root)
 {
 }
@@ -30,12 +31,20 @@ ui::~ui()
 
 shared_ptr<http_response> ui::handle_get_request(shared_ptr<http_request> &req)
 {
-    string path = m_document_root + '/' + req->get_url().get_path();
+    string path = req->get_url().get_path();
 
-    if (path[path.size() - 1] == '/')
+    if (path == "")
+    {
+        path = "/index.html";
+    }
+    else if (path[path.size() - 1] == '/')
     {
         path += "index.html";
     }
+
+    path = m_document_root + path;
+
+    LOG(debug) << "file path is " << path;
 
     ifstream is(path);
 
@@ -63,24 +72,14 @@ shared_ptr<http_response> ui::handle_get_request(shared_ptr<http_request> &req)
 
 shared_ptr<http_response> ui::handle_request(shared_ptr<http_request> &req)
 {
-    if (req->get_method() == "GET")
-    {
-        return handle_get_request(req);
-    }
-    else if (req->get_method() == "PUT")
-    {  
-        return make_shared<http_response>(0, http_response::method_not_allowed_405);
-    }
-    else if (req->get_method() == "POST")
-    {
-        return make_shared<http_response>(0, http_response::method_not_allowed_405);
-    }
-    else if (req->get_method() == "DELETE")
+    LOG(debug) << req->get_method() << " " << req->get_url().get_path();
+
+    if (req->get_method() != "GET")
     {
         return make_shared<http_response>(0, http_response::method_not_allowed_405);
     }
     else
     {
-        return make_shared<http_response>(0, http_response::bad_request_400);
+        return handle_get_request(req);
     }
 }

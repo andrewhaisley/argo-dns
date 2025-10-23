@@ -3,6 +3,7 @@
     {
         "server-config-username" : "admin",
         "server-config-password" : "admin",
+        "cookie-password"        : "cookie",
         "run-as-daemon"          : false,
         "ssl-server-chain-file"  : "socket/certs/fullchain.pem",
         "ssl-server-key-file"    : "socket/certs/privkey.pem",
