@@ -1,0 +1,18 @@
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.2-Ubuntu <<>> @127.0.0.1 -p 1053 abcd.com a
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 10902
+;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;abcd.com.			IN	A
+
+;; Query time: 169 msec
+;; SERVER: 127.0.0.1#1053(127.0.0.1) (UDP)
+;; WHEN: Thu Oct 23 10:50:54 EDT 2025
+;; MSG SIZE  rcvd: 37
+
