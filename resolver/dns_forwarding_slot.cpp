@@ -51,7 +51,22 @@ void dns_forwarding_slot::process(dns_message_envelope *m)
 {
     auto id = m->get_request()->get_id();
 
+    LOG(debug) << "forwarding slot address to use " << m->get_forwarding_address() << ":" << m->get_forwarding_port();
+
     client_config config;
+
+    // TODO: read this from the DB instead of hard coding it all
+    config.use_ip4 = true;
+    config.use_ip6 = false;
+    config.use_udp = true;
+    config.use_tcp = false;
+    config.num_parallel_udp = 1;
+    config.total_timeout_ms = 1000;
+    config.udp_timeout_ms = 1000;
+    config.wait_udp_response_ms = 1000;
+    config.connect_tcp_timeout_ms = 0;
+    config.read_tcp_timeout_ms = 0;
+    config.write_tcp_timeout_ms = 0;
 
     // override the port as that is set per zone.
     config.server_port = m->get_forwarding_port();
@@ -82,7 +97,7 @@ void dns_forwarding_slot::process(dns_message_envelope *m)
     }
     catch (adns::exception &e)
     {
-        LOG(warning) << "no response from forwarder";
+        LOG(warning) << "exception contacting forwarder";
     }
 }
 
