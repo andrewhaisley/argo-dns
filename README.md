@@ -89,7 +89,7 @@ without warning messages.
 ## Start the Server
 A default configuration file is provided that starts a server using a SQLITE3 database. The DB is created by the server on first startup.
 ```
-./adns --config-file=config.jsn
+./adns --config-file=config.json
 ```
 The server default configuration uses the following ports:
 - 1053 - DNS over UDP/TCP
