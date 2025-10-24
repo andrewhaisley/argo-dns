@@ -459,6 +459,22 @@
             "doh_path": {
                 "nullable": false,
                 "type": "string"
+            },
+            "use_forwarding_cache": {
+                "nullable": false,
+                "type": "bool"
+            },
+            "forward_cache_max_age_seconds": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "forward_cache_max_entries": {
+                "nullable": false,
+                "type": "uint"
+            },
+            "forward_cache_garbage_collect_pct": {
+                "nullable": false,
+                "type": "uint"
             }
         },
         "foreign_keys": {},

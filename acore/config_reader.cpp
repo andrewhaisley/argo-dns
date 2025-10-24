@@ -110,6 +110,10 @@ void config_reader::read()
                 s.dns.doh_client_timeout_ms = dns_row->get_doh_client_timeout_ms();
                 s.dns.maximum_http_request_size = dns_row->get_maximum_http_request_size();
                 s.dns.doh_path = dns_row->get_doh_path();
+                s.dns.use_forwarding_cache = dns_row->get_use_forwarding_cache();
+                s.dns.forward_cache_max_age_seconds = dns_row->get_forward_cache_max_age_seconds();
+                s.dns.forward_cache_max_entries = dns_row->get_forward_cache_max_entries();
+                s.dns.forward_cache_garbage_collect_pct = dns_row->get_forward_cache_garbage_collect_pct();
 
                 auto dns_client_row = row_dns_client::get_by_client_id(*conn, dns_row->get_client_id());
 
@@ -393,6 +397,11 @@ void config_reader::build_row(const server_config &sc, row_dns_server &rs)
     rs.set_udp_retry_count(sc.dns.udp_retry_count);
     rs.set_max_queued_per_question(sc.dns.max_queued_per_question);
     rs.set_doh_path(sc.dns.doh_path);
+    rs.set_use_forwarding_cache(sc.dns.use_forwarding_cache);
+    rs.set_forward_cache_max_age_seconds(sc.dns.forward_cache_max_age_seconds);
+    rs.set_forward_cache_max_entries(sc.dns.forward_cache_max_entries);
+    rs.set_forward_cache_garbage_collect_pct(sc.dns.forward_cache_garbage_collect_pct);
+
     rs.set_doh_client_timeout_ms(sc.dns.doh_client_timeout_ms);
     rs.set_maximum_http_request_size(sc.dns.maximum_http_request_size);
 }

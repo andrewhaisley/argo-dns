@@ -81,6 +81,10 @@ void server_config::json_serialize() const
         dnsj["doh_client_timeout_ms"] = int(dns.doh_client_timeout_ms);
         dnsj["maximum_http_request_size"] = int(dns.maximum_http_request_size);
         dnsj["doh_path"] = dns.doh_path;
+        dnsj["use_forwarding_cache"] = dns.use_forwarding_cache;
+        dnsj["forward_cache_max_age_seconds"] = int(dns.forward_cache_max_age_seconds);
+        dnsj["forward_cache_max_entries"] = int(dns.forward_cache_max_entries);
+        dnsj["forward_cache_garbage_collect_pct"] = int(dns.forward_cache_garbage_collect_pct);
 
         dnsj["client"] = dns.client.to_json();
             
@@ -176,6 +180,11 @@ void server_config::json_unserialize()
         dns.doh_path =                          string(dnsj["doh_path"]);
         dns.doh_client_timeout_ms =             int(dnsj["doh_client_timeout_ms"]);
         dns.maximum_http_request_size =         int(dnsj["maximum_http_request_size"]);
+        dns.use_forwarding_cache =              bool(dnsj["use_forwarding_cache"]);
+        dns.forward_cache_max_age_seconds =     int(dnsj["forward_cache_max_age_seconds"]);
+        dns.forward_cache_max_entries =         int(dnsj["forward_cache_max_entries"]);
+        dns.forward_cache_garbage_collect_pct = int(dnsj["forward_cache_garbage_collect_pct"]);
+
 
         dns.client.from_json(dnsj["client"]);
     }

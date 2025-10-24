@@ -58,8 +58,6 @@ void dns_parallel_client::set_ip_address(const ip_address &ip)
 
 dns_message *dns_parallel_client::query(dns_message &request)
 {
-    LOG(debug) << "dns_parallel_client::query";
-
     unique_ptr<dns_message> res;
 
     m_total_sent = 0;
@@ -68,11 +66,8 @@ dns_message *dns_parallel_client::query(dns_message &request)
 
     if (m_config.use_udp)
     {
-        LOG(debug) << "dns_parallel_client::query HERE 1";
         res = unique_ptr<dns_message>(query_udp(request));
-        LOG(debug) << "dns_parallel_client::query HERE 2";
         check_timeout();
-        LOG(debug) << "dns_parallel_client::query HERE 3";
     }
 
     if (m_config.use_tcp)
@@ -93,8 +88,6 @@ dns_message *dns_parallel_client::query(dns_message &request)
 
 bool dns_parallel_client::send_udp(dns_message &request, bool use_edns, set<unsigned short int> &ids)
 {
-    LOG(debug) << "dns_parallel_client::send_udp";
-
     dns_message_parser p;
 
     if (use_edns && (config::edns_size() > STANDARD_MESSAGE_SIZE))
@@ -115,12 +108,10 @@ bool dns_parallel_client::send_udp(dns_message &request, bool use_edns, set<unsi
     }
     else
     {
-        LOG(debug) << "selecting ips";
         dns_ip_selector::select_ips(m_all_ips, m_ips, false, m_config.num_parallel_udp);
 
         for (auto &ip : m_ips)
         {
-            LOG(debug) << "trying ip " << ip;
             check_timeout();
 
             unsigned short int id = rd() & 0xffff;
@@ -142,8 +133,6 @@ dns_message *dns_parallel_client::query_udp(dns_message &request)
 {
     set<unsigned short int> ids;
     bool format_error = false;
-
-    LOG(debug) << "dns_parallel_client::query_udp";
 
     // try with EDNS first (second param)
     if (!send_udp(request, true, ids)) 

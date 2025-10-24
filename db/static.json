@@ -945,6 +945,10 @@
             [ "udp_reply_timeout_ms", 1000 ],
             [ "udp_retry_count", 3 ],
             [ "doh_client_timeout_ms", 5000 ],
+            [ "use_forwarding_cache", true ],
+            [ "forward_cache_max_age_seconds", 86400],
+            [ "forward_cache_max_entries", 1000000],
+            [ "forward_cache_garbage_collect_pct", 90],
             [ "maximum_http_request_size", 4000 ],
             [ "doh_path", "/dns-query" ]
         ]
@@ -974,6 +978,10 @@
             [ "udp_reply_timeout_ms", 1000 ],
             [ "udp_retry_count", 3 ],
             [ "doh_client_timeout_ms", 5000 ],
+            [ "use_forwarding_cache", true ],
+            [ "forward_cache_max_age_seconds", 86400],
+            [ "forward_cache_max_entries", 1000000],
+            [ "forward_cache_garbage_collect_pct", 90],
             [ "maximum_http_request_size", 4000 ],
             [ "doh_path", "/dns-query" ]
         ]
@@ -1003,6 +1011,10 @@
             [ "udp_reply_timeout_ms", 1000 ],
             [ "udp_retry_count", 3 ],
             [ "doh_client_timeout_ms", 5000 ],
+            [ "use_forwarding_cache", true ],
+            [ "forward_cache_max_age_seconds", 86400],
+            [ "forward_cache_max_entries", 1000000],
+            [ "forward_cache_garbage_collect_pct", 90],
             [ "maximum_http_request_size", 4000 ],
             [ "doh_path", "/dns-query" ]
         ]
@@ -1032,6 +1044,10 @@
             [ "udp_reply_timeout_ms", 1000 ],
             [ "udp_retry_count", 3 ],
             [ "doh_client_timeout_ms", 5000 ],
+            [ "use_forwarding_cache", true ],
+            [ "forward_cache_max_age_seconds", 86400],
+            [ "forward_cache_max_entries", 1000000],
+            [ "forward_cache_garbage_collect_pct", 90],
             [ "maximum_http_request_size", 4000 ],
             [ "doh_path", "/dns-query" ]
         ]

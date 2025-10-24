@@ -20,6 +20,7 @@
 #pragma once
 
 #include <thread>
+#include <unordered_map>
 #include <chrono>
 
 #include "types.hpp"
@@ -28,6 +29,7 @@
 #include "message_queue.hpp"
 #include "dns_message_envelope.hpp"
 #include "dns_recursive_slot_manager.hpp"
+#include "dns_forwarding_cache.hpp"
 
 EXCEPTION_CLASS(forwarding_slot_exception, exception)
 
@@ -39,10 +41,14 @@ namespace adns
 
         struct params_t
         {
-            params_t(const server_config &config, dns_recursive_slot_manager &rsm);
+            params_t(
+                const server_config                         &config, 
+                dns_recursive_slot_manager                  &rsm, 
+                const std::shared_ptr<dns_forwarding_cache> &emergency_cache);
 
-            server_config              m_config;
-            dns_recursive_slot_manager &m_slot_manager;
+            server_config                           m_config;
+            dns_recursive_slot_manager              &m_slot_manager;
+            std::shared_ptr<dns_forwarding_cache>   m_emergency_cache;
         };
 
         /**
@@ -78,6 +84,5 @@ namespace adns
 
         // outgoing message queue 
         message_queue<dns_message_envelope *> &m_out_queue;
-
     };
 }

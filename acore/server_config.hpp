@@ -88,6 +88,12 @@ namespace adns
             uint   udp_retry_count;
             uint   max_queued_per_question;
 
+            // forwarding cache items
+            bool   use_forwarding_cache;
+            uint   forward_cache_max_age_seconds;
+            uint   forward_cache_max_entries;
+            uint   forward_cache_garbage_collect_pct;
+
             // DoH specific items
             uint        doh_client_timeout_ms;
             uint        maximum_http_request_size;

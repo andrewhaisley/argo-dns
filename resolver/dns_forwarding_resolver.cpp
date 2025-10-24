@@ -26,7 +26,22 @@ using namespace boost::log::trivial;
 
 dns_forwarding_resolver::dns_forwarding_resolver(const server_config &sc)
 {
-    dns_forwarding_slot::params_t p(sc, m_slot_manager);
+    shared_ptr<dns_forwarding_cache> c;
+    if (sc.dns.use_forwarding_cache)
+    {
+        c = make_shared<dns_forwarding_cache>(
+                            sc.dns.forward_cache_max_age_seconds,
+                            sc.dns.forward_cache_max_entries,
+                            sc.dns.forward_cache_garbage_collect_pct);
+        LOG(info) << "forwarding cache configured, max age = " 
+                << sc.dns.forward_cache_max_age_seconds
+                << " max entries = "
+                << sc.dns.forward_cache_max_entries
+                << " gc % = "
+                << sc.dns.forward_cache_garbage_collect_pct;
+    }
+
+    dns_forwarding_slot::params_t p(sc, m_slot_manager, c);
     m_slot_pool = new handler_pool<dns_message_envelope *, dns_forwarding_slot, dns_forwarding_slot::params_t>(
             "forwarding slot pool",
             p,

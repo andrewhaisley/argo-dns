@@ -10,4 +10,4 @@ include_directories(
     ../db
     ../json)
 
-add_library(cache dns_recursive_cache_answer.cpp dns_recursive_cache.cpp)
+add_library(cache dns_recursive_cache_answer.cpp dns_recursive_cache.cpp dns_forwarding_cache.cpp)

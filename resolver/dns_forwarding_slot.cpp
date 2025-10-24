@@ -26,10 +26,13 @@ using namespace adns;
 using namespace boost::log::trivial;
 
 
-
-dns_forwarding_slot::params_t::params_t(const server_config &config, dns_recursive_slot_manager &rsm) : 
-                m_config(config),
-                m_slot_manager(rsm)
+dns_forwarding_slot::params_t::params_t(
+                    const server_config                     &config, 
+                    dns_recursive_slot_manager              &rsm,
+                    const shared_ptr<dns_forwarding_cache> &emergency_cache) :
+                                            m_config(config),
+                                            m_slot_manager(rsm),
+                                            m_emergency_cache(emergency_cache)
 {
 }
 
@@ -51,24 +54,8 @@ void dns_forwarding_slot::process(dns_message_envelope *m)
 {
     auto id = m->get_request()->get_id();
 
-    LOG(debug) << "forwarding slot address to use " << m->get_forwarding_address() << ":" << m->get_forwarding_port();
+    client_config config = m_params.m_config.dns.client;
 
-    client_config config;
-
-    // TODO: read this from the DB instead of hard coding it all
-    config.use_ip4 = true;
-    config.use_ip6 = false;
-    config.use_udp = true;
-    config.use_tcp = false;
-    config.num_parallel_udp = 1;
-    config.total_timeout_ms = 1000;
-    config.udp_timeout_ms = 1000;
-    config.wait_udp_response_ms = 1000;
-    config.connect_tcp_timeout_ms = 0;
-    config.read_tcp_timeout_ms = 0;
-    config.write_tcp_timeout_ms = 0;
-
-    // override the port as that is set per zone.
     config.server_port = m->get_forwarding_port();
 
     dns_parallel_client c(config);
@@ -86,13 +73,36 @@ void dns_forwarding_slot::process(dns_message_envelope *m)
 
         if (res)
         {
+            // save the response for later if the cache is configured for use
+            if (m_params.m_emergency_cache)
+            {
+                m_params.m_emergency_cache->add(*(m->get_request()->get_question()), make_shared<dns_message>(*res));
+            }
+
             res->set_id(id);
             m->set_response(res);
             send_response(m);
         }
         else
         {
-            LOG(warning) << "no response from forwarder";
+            if (m_params.m_emergency_cache)
+            {
+                auto a = m_params.m_emergency_cache->get(*(m->get_request()->get_question()));
+
+                if (a)
+                {
+                    LOG(warning) << "no response from forwarder, using cached answer";
+
+                    res = new dns_message(*a);
+                    res->set_id(id);
+                    m->set_response(res);
+                    send_response(m);
+                }
+            }
+            else
+            {
+                LOG(warning) << "no response from forwarder, no cached answer found";
+            }
         }
     }
     catch (adns::exception &e)
@@ -105,29 +115,25 @@ void dns_forwarding_slot::send_response(dns_message_envelope *m)
 {
     auto w = m_params.m_slot_manager.clear_waiters(*(m->get_request()->get_question()));
 
-    if (w.size() == 0)
+    // m is one of these, don't delete it until the end as we need the response it holds to still
+    // be valid through this loop
+    for (auto q : w)
     {
-        if (!m_out_queue.enqueue(m))
+        if (q != m)
         {
-            delete m;
-        }
-    }
-    else
-    {
-        for (auto q : w)
-        {
-            dns_message_envelope *copy_envelope = new dns_message_envelope(*m);
-            copy_envelope->get_response()->set_id(q->get_request()->get_id());
-            if (!m_out_queue.enqueue(copy_envelope))
+            q->set_response(new dns_message(*m->get_response()));
+            q->get_response()->set_id(q->get_request()->get_id());
+            if (!m_out_queue.enqueue(q))
             {
-                delete copy_envelope;
+                delete q;
             }
         }
+    }
 
-        for (auto q : w)
-        {
-            delete q;
-        }
+    m->get_response()->set_id(m->get_request()->get_id());
+    if (!m_out_queue.enqueue(m))
+    {
+        delete m;
     }
 }
 
