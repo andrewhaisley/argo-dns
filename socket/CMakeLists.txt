@@ -16,7 +16,6 @@ add_library(
     socket_address.cpp
     socket.cpp
     socket_set.cpp
-    socket_test.cpp
     ssl_server_socket.cpp
     tcp_client_socket.cpp
     tcp_server_socket.cpp

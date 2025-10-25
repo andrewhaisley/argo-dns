@@ -61,10 +61,25 @@ add_subdirectory(ui)
 add_subdirectory(json)
 
 add_executable(adns adns.cpp)
-target_link_libraries(adns server resolver api ui http message zone resolver message socket db client cache acore db acore message socket json db -lpthread -lmysqlcppconn -lssl -lcrypto -lsqlite3 -lmongoc-1.0 -lbson-1.0 -lpq -lnghttp2 -lboost_thread -lboost_program_options -lboost_log_setup -lboost_log)
+target_link_libraries(adns 
+            server api ui http zone resolver client cache db message socket
+            acore json
+            -lpthread -lmysqlcppconn -lssl -lcrypto -lsqlite3 
+            -lmongoc-1.0 -lbson-1.0 -lpq -lnghttp2 -lboost_thread 
+            -lboost_program_options -lboost_log_setup -lboost_log)
 
 add_executable(aquery aquery.cpp)
-target_link_libraries(aquery server resolver api ui http message zone resolver message socket db client cache acore db acore message socket json db zone message socket -lpthread -lmysqlcppconn -lssl -lcrypto -lsqlite3 -lmongoc-1.0 -lbson-1.0 -lpq -lnghttp2 -lboost_thread -lboost_program_options -lboost_log_setup -lboost_log)
+target_link_libraries(aquery 
+            server api ui http resolver client cache message 
+            acore json zone socket db
+            -lpthread -lmysqlcppconn -lssl -lcrypto -lsqlite3 
+            -lmongoc-1.0 -lbson-1.0 -lpq -lnghttp2 -lboost_thread 
+            -lboost_program_options -lboost_log_setup -lboost_log)
 
 add_executable(atest atest.cpp)
-target_link_libraries(atest socket acore json -lpthread -lmysqlcppconn -lssl -lcrypto -lsqlite3 -lmongoc-1.0 -lbson-1.0 -lpq -lnghttp2 -lboost_thread -lboost_program_options -lboost_log_setup -lboost_log)
+target_link_libraries(atest 
+            server api ui http resolver client cache db message socket
+            zone acore json 
+            -lpthread -lmysqlcppconn -lssl -lcrypto -lsqlite3 
+            -lmongoc-1.0 -lbson-1.0 -lpq -lnghttp2 -lboost_thread 
+            -lboost_program_options -lboost_log_setup -lboost_log)

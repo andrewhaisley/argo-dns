@@ -107,7 +107,7 @@ void dns_forwarding_slot::process(dns_message_envelope *m)
     }
     catch (adns::exception &e)
     {
-        LOG(warning) << "exception contacting forwarder";
+        e.log(error, "exception contacting forwarder");
     }
 }
 

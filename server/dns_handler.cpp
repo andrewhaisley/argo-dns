@@ -344,7 +344,6 @@ void dns_handler::handle_request(dns_message_envelope *m, const dns_horizon *h)
             }
             else
             {
-                LOG(info) << "resolving " << *(request->get_question()) << " for " << m->get_remote_address();
                 enqueue_to_resolver(m);
             }
         }

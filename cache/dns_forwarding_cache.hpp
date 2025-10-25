@@ -60,6 +60,10 @@ namespace adns
          */
         std::shared_ptr<dns_message> get(const dns_question &q);
         
+        /**
+         * run unit tests
+         */
+        static void test();
 
     private:
 
@@ -69,12 +73,20 @@ namespace adns
 
         std::mutex m_lock;
 
-        std::unordered_map<
+        std::shared_ptr<std::unordered_map<
                 dns_question, 
                 std::pair<
                     std::chrono::time_point<std::chrono::steady_clock>, 
                     std::shared_ptr<dns_message>
-                >> m_answers;
+                >>> m_answers;
+
+        /**
+         * make space in the cache. This proceeds as follows:
+         *   until number of entries <= max_extries * garbage_collect_pct / 100:
+         *     remove any entry older than m_max_entries
+         *     remove the oldest entries
+         */
+        void garbage_collect();
 
     };
 }
