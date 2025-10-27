@@ -31,7 +31,7 @@ def restart_server():
 def create_zone(horizon_id):
     zone = {
                 "horizon_id":           horizon_id,
-                "name":                 ".com",
+                "name":                 ".",
                 "is_forwarded":         True,
                 "forward_ip_address":   "8.8.8.8",
                 "forward_port":         53

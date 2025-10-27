@@ -479,7 +479,7 @@ shared_ptr<dns_zone> dns_zone::dns_zone_cache::find(const dns_name &name)
 {
     dns_name t = name;
 
-    while (t.size() > 0)
+    while (t.size() >= 0)
     {
         auto i = m_zones_by_name.find(t);
         if (i != m_zones_by_name.end())
