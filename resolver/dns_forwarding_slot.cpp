@@ -27,12 +27,14 @@ using namespace boost::log::trivial;
 
 
 dns_forwarding_slot::params_t::params_t(
-                    const server_config                     &config, 
-                    dns_recursive_slot_manager              &rsm,
-                    const shared_ptr<dns_forwarding_cache> &emergency_cache) :
+                    const server_config                    &config, 
+                    dns_recursive_slot_manager             &rsm,
+                    const shared_ptr<dns_forwarding_cache> &cache,
+                    bool                                   use_emergency_cache) :
                                             m_config(config),
                                             m_slot_manager(rsm),
-                                            m_emergency_cache(emergency_cache)
+                                            m_cache(cache),
+                                            m_use_emergency_cache(use_emergency_cache)
 {
 }
 
@@ -52,17 +54,33 @@ void dns_forwarding_slot::join()
 
 void dns_forwarding_slot::process(dns_message_envelope *m)
 {
-    auto id = m->get_request()->get_id();
-
-    client_config config = m_params.m_config.dns.client;
-
-    config.server_port = m->get_forwarding_port();
-
-    dns_parallel_client c(config);
-    c.set_ip_address(m->get_forwarding_address());
-
     try
     {
+        auto id = m->get_request()->get_id();
+
+        // check the cache for a live answer if configured
+        if (m_params.m_cache)
+        {
+            int age_seconds;
+
+            auto a = m_params.m_cache->get(*(m->get_request()->get_question()), age_seconds);
+
+            if (a && (a->get_min_ttl() > age_seconds))
+            {
+                auto res = a->clone();
+                res->update_ttl(-age_seconds);
+                res->set_id(id);
+                m->set_response(res);
+                send_response(m);
+                return;
+            }
+        }
+
+        client_config config = m_params.m_config.dns.client;
+        config.server_port = m->get_forwarding_port();
+        dns_parallel_client c(config);
+        c.set_ip_address(m->get_forwarding_address());
+        
         dns_message qm;
         qm.set_type(dns_message::query_e);
         qm.set_op_code(dns_message::op_query_e);
@@ -74,9 +92,9 @@ void dns_forwarding_slot::process(dns_message_envelope *m)
         if (res)
         {
             // save the response for later if the cache is configured for use
-            if (m_params.m_emergency_cache)
+            if (m_params.m_cache)
             {
-                m_params.m_emergency_cache->add(*(m->get_request()->get_question()), make_shared<dns_message>(*res));
+                m_params.m_cache->add(*(m->get_request()->get_question()), make_shared<dns_message>(*res));
             }
 
             res->set_id(id);
@@ -85,13 +103,17 @@ void dns_forwarding_slot::process(dns_message_envelope *m)
         }
         else
         {
-            if (m_params.m_emergency_cache)
+            // no answer, if an emergency cache is configured, check the cache for any answer
+            // live or not
+            if (m_params.m_use_emergency_cache)
             {
-                auto a = m_params.m_emergency_cache->get(*(m->get_request()->get_question()));
+                int age_seconds; // this is ignored when we're in emergency mode
+
+                auto a = m_params.m_cache->get(*(m->get_request()->get_question()), age_seconds);
 
                 if (a)
                 {
-                    LOG(warning) << "no response from forwarder, using cached answer";
+                    LOG(warning) << "no response from forwarder, using emergency cached answer";
 
                     res = new dns_message(*a);
                     res->set_id(id);
@@ -101,7 +123,7 @@ void dns_forwarding_slot::process(dns_message_envelope *m)
             }
             else
             {
-                LOG(warning) << "no response from forwarder, no cached answer found";
+                LOG(warning) << "no response from forwarder and no emergency cached answer found";
             }
         }
     }

@@ -44,11 +44,13 @@ namespace adns
             params_t(
                 const server_config                         &config, 
                 dns_recursive_slot_manager                  &rsm, 
-                const std::shared_ptr<dns_forwarding_cache> &emergency_cache);
+                const std::shared_ptr<dns_forwarding_cache> &cache,
+                bool                                        use_emergency_cache);
 
             server_config                           m_config;
             dns_recursive_slot_manager              &m_slot_manager;
-            std::shared_ptr<dns_forwarding_cache>   m_emergency_cache;
+            std::shared_ptr<dns_forwarding_cache>   m_cache;
+            bool                                    m_use_emergency_cache;
         };
 
         /**

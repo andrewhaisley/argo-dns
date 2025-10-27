@@ -33,7 +33,7 @@ dns_forwarding_resolver::dns_forwarding_resolver(const server_config &sc)
                             sc.dns.forward_cache_max_age_seconds,
                             sc.dns.forward_cache_max_entries,
                             sc.dns.forward_cache_garbage_collect_pct);
-        LOG(info) << "forwarding cache configured, max age = " 
+        LOG(info) << "forwarding cache configured, (emergency) max age = " 
                 << sc.dns.forward_cache_max_age_seconds
                 << " max entries = "
                 << sc.dns.forward_cache_max_entries
@@ -41,7 +41,7 @@ dns_forwarding_resolver::dns_forwarding_resolver(const server_config &sc)
                 << sc.dns.forward_cache_garbage_collect_pct;
     }
 
-    dns_forwarding_slot::params_t p(sc, m_slot_manager, c);
+    dns_forwarding_slot::params_t p(sc, m_slot_manager, c, sc.dns.use_forwarding_emergency_cache);
     m_slot_pool = new handler_pool<dns_message_envelope *, dns_forwarding_slot, dns_forwarding_slot::params_t>(
             "forwarding slot pool",
             p,

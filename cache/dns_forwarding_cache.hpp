@@ -56,9 +56,11 @@ namespace adns
         void add(const dns_question &q, const std::shared_ptr<dns_message> &a);
 
         /**
-         * find an existing entry, return nullptr if none matches. 
+         * find an existing entry, return nullptr if none matches. Age
+         * indicates how many seconds the response has been in the cache. Age will
+         * never be greater than max_age_seconds.
          */
-        std::shared_ptr<dns_message> get(const dns_question &q);
+        std::shared_ptr<dns_message> get(const dns_question &q, int &age_seconds);
         
         /**
          * run unit tests

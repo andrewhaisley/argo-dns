@@ -49,6 +49,8 @@ void dns_forwarding_cache::add(const dns_question &q, const shared_ptr<dns_messa
 {
     lock_guard<mutex> guard(m_lock);
 
+    a->set_min_ttl();
+
     (*m_answers)[q] = pair<time_point<steady_clock>, shared_ptr<dns_message>>(steady_clock::now(), a);
 
     if (m_answers->size() >= static_cast<size_t>(m_max_entries))
@@ -107,9 +109,11 @@ void dns_forwarding_cache::garbage_collect()
     }
 }
 
-shared_ptr<dns_message> dns_forwarding_cache::get(const dns_question &q)
+shared_ptr<dns_message> dns_forwarding_cache::get(const dns_question &q, int &age_seconds)
 {
     lock_guard<mutex> guard(m_lock);
+
+    age_seconds = 0;
 
     auto i = m_answers->find(q);
 
@@ -120,7 +124,7 @@ shared_ptr<dns_message> dns_forwarding_cache::get(const dns_question &q)
     else
     {
 
-        int age_seconds = duration_cast<chrono::seconds>(steady_clock::now() - i->second.first).count();
+        age_seconds = duration_cast<chrono::seconds>(steady_clock::now() - i->second.first).count();
         
         if (age_seconds > m_max_age_seconds)
         {

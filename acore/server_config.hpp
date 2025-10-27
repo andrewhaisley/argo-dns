@@ -90,6 +90,7 @@ namespace adns
 
             // forwarding cache items
             bool   use_forwarding_cache;
+            bool   use_forwarding_emergency_cache;
             uint   forward_cache_max_age_seconds;
             uint   forward_cache_max_entries;
             uint   forward_cache_garbage_collect_pct;

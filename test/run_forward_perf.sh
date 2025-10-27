@@ -1,2 +1,2 @@
 #!/bin/bash
-dnsperf -p 1053 -d forward-dnsperf1.txt -l 60
+dnsperf -p 1053 -d dnsperf-forward.txt -l 60

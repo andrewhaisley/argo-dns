@@ -328,7 +328,7 @@ shared_ptr<dns_rr> dns_message::get_first_answer(dns_rr::type_t t) const
     THROW(message_exception, "no answer record of the given type found", t);
 }
 
-size_t dns_message::get_num_records(dns_rr::type_t t, const std::list<std::shared_ptr<dns_rr>> &rrs) const
+size_t dns_message::get_num_records(dns_rr::type_t t, const list<shared_ptr<dns_rr>> &rrs) const
 {
     size_t res = 0;
     for (auto rr : rrs)
@@ -341,7 +341,7 @@ size_t dns_message::get_num_records(dns_rr::type_t t, const std::list<std::share
     return res;
 }
 
-bool dns_message::record_exists(dns_rr::type_t t, const std::list<std::shared_ptr<dns_rr>> &rrs) const
+bool dns_message::record_exists(dns_rr::type_t t, const list<shared_ptr<dns_rr>> &rrs) const
 {
     for (auto rr : rrs)
     {
@@ -385,4 +385,86 @@ size_t dns_message::get_num_additional_records() const
 int dns_message::get_min_ttl() const
 {
     return m_min_ttl;
+}
+
+void dns_message::update_ttls(list<shared_ptr<dns_rr>> &rrs, int diff)
+{
+    for (auto r : rrs)
+    {
+        int ttl = r->get_ttl();
+        ttl = std::max(0, ttl + diff);
+        r->set_ttl(ttl);
+        m_min_ttl = std::min(m_min_ttl, ttl);
+    }
+}
+
+void dns_message::update_ttl(int diff)
+{
+    update_ttls(m_answers, diff);
+    update_ttls(m_nameservers, diff);
+    update_ttls(m_additional_records, diff);
+}
+
+void dns_message::set_min_ttl()
+{
+    m_min_ttl = -1;
+    set_min_ttl(m_answers);
+    set_min_ttl(m_nameservers);
+    set_min_ttl(m_additional_records);
+}
+
+void dns_message::set_min_ttl(list<shared_ptr<dns_rr>> &rrs)
+{
+    for (auto r : rrs)
+    {
+        if (m_min_ttl == -1)
+        {
+            m_min_ttl = r->get_ttl();
+        }
+        else
+        {
+            m_min_ttl = std::min(m_min_ttl, static_cast<int>(r->get_ttl()));
+        }
+    }
+}
+
+dns_message *dns_message::clone()
+{
+    auto res = new dns_message;
+
+    res->m_id = m_id;
+    res->m_payload_size = m_payload_size;
+    res->m_type = m_type;
+    res->m_op_code = m_op_code;
+    res->m_is_authoritative = m_is_authoritative;
+    res->m_is_truncated = m_is_truncated;
+    res->m_is_recursion_desired = m_is_recursion_desired;
+    res->m_is_recursion_available = m_is_recursion_available;
+    res->m_is_edns = m_is_edns;
+    res->m_is_dnssec_ok = m_is_dnssec_ok;
+    res->m_edns_version = m_edns_version;
+    res->m_response_code = m_response_code;
+    res->m_an_count = m_an_count;
+    res->m_ns_count = m_ns_count;
+    res->m_ar_count = m_ar_count;
+    res->m_min_ttl = m_min_ttl;
+
+    res->m_question = m_question;
+
+    for (auto r : m_answers)
+    {
+        res->m_answers.push_back(shared_ptr<dns_rr>(r->clone()));
+    }
+
+    for (auto r : m_nameservers)
+    {
+        res->m_nameservers.push_back(shared_ptr<dns_rr>(r->clone()));
+    }
+
+    for (auto r : m_additional_records)
+    {
+        res->m_additional_records.push_back(shared_ptr<dns_rr>(r->clone()));
+    }
+
+    return res;
 }

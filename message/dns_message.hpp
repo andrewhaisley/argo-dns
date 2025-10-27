@@ -114,6 +114,11 @@ namespace adns
         dns_message();
 
         /**
+         * return a deep copy of the message
+         */
+        dns_message *clone();
+
+        /**
          * Virtual destructor to avoid later confusion in the case of
          * derived classes.
          */
@@ -309,9 +314,20 @@ namespace adns
         bool additional_record_exists(dns_rr::type_t t) const;
 
         /**
+         * set the minimum TTL based on the resource records. This isn't
+         * done at parse time for efficiency reasons.
+         */
+        void set_min_ttl();
+
+        /**
          * get the minimum TTL for any of the contained records
          */
         int get_min_ttl() const;
+
+        /**
+         * add a number to the ttls updating the min TTL in the process
+         */
+        void update_ttl(int diff);
 
         /**
          * Debug dump via boost info log messages.
@@ -378,5 +394,16 @@ namespace adns
          * true if at least one record of the given type exists in the list, false otherwise
          */
         bool record_exists(dns_rr::type_t t, const std::list<std::shared_ptr<dns_rr>> &rrs) const;
+
+        /** 
+         * update the ttl for a list of records updating min_ttl in the process. TTLS will never
+         * be set to less than 0.
+         */
+        void update_ttls(std::list<std::shared_ptr<dns_rr>> &rrs, int diff);
+
+        /**
+         * set the min ttl based on a list of rrs
+         */
+        void set_min_ttl(std::list<std::shared_ptr<dns_rr>> &rrs);
     };
 }

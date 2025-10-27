@@ -1,0 +1,6 @@
+google.com a
+bbc.com a
+amazon.com a
+facebook.com a
+expedia.com a
+sap.com a

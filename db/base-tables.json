@@ -464,6 +464,10 @@
                 "nullable": false,
                 "type": "bool"
             },
+            "use_forwarding_emergency_cache": {
+                "nullable": false,
+                "type": "bool"
+            },
             "forward_cache_max_age_seconds": {
                 "nullable": false,
                 "type": "uint"
