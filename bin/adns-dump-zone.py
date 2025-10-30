@@ -5,7 +5,8 @@ import argparse
 import json
 import requests
 import urllib3
-import zone_file_parser
+
+import zone_file_rdata
 
 hostname = None
 port = None
@@ -48,7 +49,8 @@ def get_args():
     parser.add_argument('-n', '--no-verify',  help="don't verify ssl connection to server", action='store_true')
     parser.add_argument('-s', '--no-ssl',     help="don't use SSL for connection to server", action='store_true')
     parser.add_argument(       '--horizon',   help='server horizon ID for the zone (blank for first horizon)')
-    parser.add_argument('filename',           help='zone file to load')
+    parser.add_argument('-z', '--zone',       help='zone to dump')
+    parser.add_argument('filename',           help='file to dump zone to')
 
     args = parser.parse_args()
 
@@ -62,7 +64,7 @@ def get_args():
             print('usage: username and password required when not supplying a configuration file.')
             exit(1)
 
-    return (args.hostname, args.port, username, password, args.horizon, not args.no_verify, not args.no_ssl, args.filename)
+    return (args.hostname, args.port, username, password, args.horizon, not args.no_verify, not args.no_ssl, args.zone, args.filename)
 
 
 def make_request(method, path, payload):
@@ -102,7 +104,6 @@ def make_request(method, path, payload):
 
 
 def get_first_horizon_id():
-
     response_code, data = make_request('GET', '1/horizon', None)
     if response_code == 200:
         if len(data['horizons']) > 0:
@@ -117,17 +118,44 @@ def get_first_horizon_id():
     else:
         raise Exception('failed to read horizons', response_code)
 
-def zone_exists(name):
-    response_code, data = make_request('GET', '1/zone?name=%s' % name[:-1].replace('.', '\\.'), None)
+def get_zone(horizon_id, name):
+    name = name.replace('.', '\\.')
+    response_code, data = make_request('GET', '1/zone?name=%s&horizon=%s' % (name, horizon_id), None)
     if response_code == 200:
         if len(data['zones']) == 0:
-            return False, None
+            return None
         else:
-            return True, data['zones'][0]['zone_id']
+            return data['zones'][0]
     else:
         raise Exception('failed to check zone existence', response_code)
 
-def load_zone_file(p_hostname, p_port, p_username, p_password, horizon, p_verify, p_ssl, filename):
+
+def dump_record(f, rr):
+    f.write('%s. %s IN %s ' % (rr['name'], rr['ttl'], rr['type']))
+    for n, t in zone_file_rdata.record_fields[rr['type']]:
+        if t == zone_file_rdata.NAME:
+            f.write(rr[n] + '. ')
+        else:
+            f.write('%s ' % rr[n])
+    f.write('\n')
+
+def dump_zone(z, filename):
+    #print(json.dumps(z, indent=4))
+    f = open(filename, 'w')
+
+    f.write('$TTL    86400\n')
+    f.write('$ORIGIN %s.\n' % z['name'])
+
+    dump_record(f, z['authority']['soa'])
+    for ns in z['authority']['ns']:
+        dump_record(f, ns)
+
+    for rr in z['resource_records']:
+        dump_record(f, rr)
+    f.close()
+
+
+def dump_zone_file(p_hostname, p_port, p_username, p_password, horizon_id, p_verify, p_ssl, zone_name, filename):
 
     global hostname, port, username, password, verify, ssl
 
@@ -138,62 +166,20 @@ def load_zone_file(p_hostname, p_port, p_username, p_password, horizon, p_verify
     verify = p_verify
     ssl = p_ssl
 
-    if not horizon:
-        horizon = get_first_horizon_id()
+    if not horizon_id:
+        horizon_id = get_first_horizon_id()
 
-    print('Loading zone to horizon ID', horizon)
+    print('Dump zone', zone_name, 'from horizon ID', horizon_id)
 
-    rrs = zone_file_parser.get_resource_records(filename)
+    z = get_zone(horizon_id, zone_name)
 
-    if len(rrs) == 0:
-        raise Exception('No valid resource records in zone file')
-
-    if rrs[0]['type'] != 'SOA':
-        raise Exception('First resource record in zone file is not SOA')
-
-    filtered_rrs = []
-    SOA = None
-    NS = []
-
-    # get the SOA and domain NS records and remove them from the full list
-    for r in rrs:
-        if r['type'] == 'SOA':
-            if SOA is not None:
-                raise Exception('More than one SOA record found')
-            else:
-                SOA = r
-        elif r['type'] == 'NS' and r['name'] == SOA['name']:
-            NS.append(r)
+    if z:
+        if z['is_forwarded']:
+            raise Exception('Zone exists but is forwarded', z)
         else:
-            filtered_rrs.append(r)
-
-    z =  {
-            'horizon_id': horizon,
-            'is_forwarded': False,
-            'name': SOA['name'],
-            'authority' : {
-                'soa' : SOA,
-                'ns' : NS
-            }, 
-            'resource_records': filtered_rrs
-    }
-
-    e, i = zone_exists(SOA['name'])
-
-    # print(json.dumps(z, indent=4))
-    if e:
-        z['zone_id'] = i
-        response_code, data = make_request('PUT', '1/zone/' + i, z)
-        if response_code == 200:
-            print("Zone updated")
-        else:
-            print("Zone update failed, response was", response_code, data)
+            dump_zone(z, filename)
     else:
-        response_code, data = make_request('POST', '1/zone', z)
-        if response_code == 200:
-            print("Zone created")
-        else:
-            print("Zone create failed, response was", response_code, data)
+        raise Exception('Zone not found', zone)
     
 
-load_zone_file(*get_args())
+dump_zone_file(*get_args())

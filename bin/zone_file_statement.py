@@ -75,10 +75,11 @@ class zone_file_statement:
         if last_name is None:
             last_name = ORIGIN
 
-        # if a default TTL is specified, use that otherwise use the one 
-        # from the previous record.
-        if TTL is not None:
+        # if a last TTL is specified, use that otherwise use the
+        # default
+        if last_ttl is None:
             last_ttl = TTL
+    
 
         #
         # records look like one of these:
@@ -108,14 +109,17 @@ class zone_file_statement:
             res['name'] = last_name
             res['ttl'] = last_ttl
 
-        # with only one item to the left, assume it's a name. The RFC doesn't
+        # with only one item to the left, assume it's a name unless it's IN. The RFC doesn't
         # define the behaviour here so just do what bind9 does.
         elif i == 1:
             if last_name is None:
                 raise zone_file_exception('unable to default name', f)
             if last_ttl is None:
                 raise zone_file_exception('unable to default TTL', f)
-            res['name'] = cls.get_name(f, ORIGIN, tokens[0].value())
+            if tokens[0].value() == 'IN':
+                res['name'] = last_name
+            else:
+                res['name'] = cls.get_name(f, ORIGIN, tokens[0].value())
             res['ttl'] = last_ttl
 
         # with two items to the left there are four valid combinations:
@@ -148,6 +152,7 @@ class zone_file_statement:
             elif left_is_name and right_is_TTL:
                 res['name'] = cls.get_name(f, ORIGIN, left.value())
                 res['ttl'] = translate_ttl(f, right.value())
+
             else:
                 raise zone_file_exception('invalid resource record', f)
 
@@ -161,6 +166,9 @@ class zone_file_statement:
                 res['ttl'] = translate_ttl(f, tokens[1].value())
             else:
                 raise zone_file_exception('invalid resource record', f)
+
+        if res['ttl'] is None:
+            res['ttl'] = last_ttl
 
         # parse the record type specific data
         parse_rdata(f, ORIGIN, res, tokens[i+1:])

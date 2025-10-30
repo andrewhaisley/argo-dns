@@ -2,7 +2,10 @@ import base64
 import string
 import binascii
 
+from zone_file_exception import zone_file_exception 
+
 def translate_ttl(f, s):
+    s = s.lower()
     number_part = ''
     while len(s) > 0:
         if str.isdigit(s[0]):
