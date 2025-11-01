@@ -258,6 +258,10 @@ const list<shared_ptr<dns_rr_NS>> &dns_rr_cache::get_NS(const dns_zone &zone)
 {
     lock_guard<mutex> guard(m_lock);
     read_records(zone, dns_rr::T_NS_e);
+    if (m_NS_cache.find(zone.get_zone_id()) == m_NS_cache.end())
+    {
+        THROW(rr_cache_exception, "no NS found for zone", zone.get_zone_id());
+    }
     return m_NS_cache[zone.get_zone_id()];
 }
 

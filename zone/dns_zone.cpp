@@ -479,17 +479,24 @@ shared_ptr<dns_zone> dns_zone::dns_zone_cache::find(const dns_name &name)
 {
     dns_name t = name;
 
-    while (t.size() >= 0)
+    while (true)
     {
         auto i = m_zones_by_name.find(t);
         if (i != m_zones_by_name.end())
         {
             return i->second;
         }
-        t.remove_first();
+
+        if (t.size() == 0)
+        {
+            return nullptr;
+        }
+        else
+        {
+            t.remove_first();
+        }
     }
 
-    return nullptr;
 }
 
 shared_ptr<dns_zone> dns_zone::dns_zone_cache::find_exact(const dns_name &name)

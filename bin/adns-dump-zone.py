@@ -121,6 +121,7 @@ def get_first_horizon_id():
 def get_zone(horizon_id, name):
     name = name.replace('.', '\\.')
     response_code, data = make_request('GET', '1/zone?name=%s&horizon=%s' % (name, horizon_id), None)
+    print(json.dumps(data, indent=4))
     if response_code == 200:
         if len(data['zones']) == 0:
             return None
@@ -131,10 +132,19 @@ def get_zone(horizon_id, name):
 
 
 def dump_record(f, rr):
+    print("dumping record type", rr['type'])
     f.write('%s. %s IN %s ' % (rr['name'], rr['ttl'], rr['type']))
     for n, t in zone_file_rdata.record_fields[rr['type']]:
         if t == zone_file_rdata.NAME:
             f.write(rr[n] + '. ')
+        if t == zone_file_rdata.TXT:
+            f.write('"' + rr[n] + '"')
+        elif t == zone_file_rdata.POLAR:
+            f.write('<NULL>')
+        elif t == zone_file_rdata.IPSECKEY:
+            f.write('<NULL>')
+        elif t == zone_file_rdata.BITMAP:
+            f.write('<NULL>')
         else:
             f.write('%s ' % rr[n])
     f.write('\n')
