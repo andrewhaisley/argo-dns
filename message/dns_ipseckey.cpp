@@ -113,10 +113,10 @@ void dns_ipseckey::json_serialize() const
     switch (m_gateway_type)
     {
     case ipv4_e :
-            (*m_json_object)["ipv4_gateway"] = m_ipv4_gateway.to_json();
+            (*m_json_object)["ipv4_gateway"] = m_ipv4_gateway.to_json()["address"];
             break;
     case ipv6_e :
-            (*m_json_object)["ipv6_gateway"] = m_ipv6_gateway.to_json();
+            (*m_json_object)["ipv6_gateway"] = m_ipv6_gateway.to_json()["address"];
             break;
     case name_e :
             (*m_json_object)["name_gateway"] = m_name_gateway.to_string();

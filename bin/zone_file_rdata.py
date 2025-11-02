@@ -192,7 +192,7 @@ def form_name(ORIGIN, n):
         return n + '.' + ORIGIN
 
 def get_txt(f, tokens):
-    b = bytearray()
+    res = {'strings' : []}
 
     for t in tokens:
         if t.type() != zone_file_token.STRING:
@@ -200,9 +200,9 @@ def get_txt(f, tokens):
         else:
             if len(t.value()) > 255:
                 raise zone_file_exception('string greater than 255 characters for TXT record', f)
-            b.append(len(t.value()))
-            b += t.value().encode('utf-8')
-    return b
+            res['strings'].append(t.value())
+
+    return res
 
 def get_svcparams(f, tokens):
     res = {}
@@ -250,8 +250,17 @@ def get_ipseckey(f, tokens):
 
     res['precedence'] = int(tokens[0].value())
     res['algorithm'] = int(tokens[1].value())
-    res['gateway_type'] = int(tokens[2].value())
-    res['ipv4_gateway'] = tokens[3].value()
+    t = res['gateway_type'] = int(tokens[2].value())
+
+    if t == 0:
+        pass
+    elif t == 1:
+        res['ipv4_gateway'] = tokens[3].value()
+    elif t == 2:
+        res['ipv6_gateway'] = tokens[3].value()
+    else:
+        res['name_gateway'] = tokens[3].value()
+
     res['public_key'] = get_base64(f, tokens[4:])
 
     return res
@@ -409,7 +418,7 @@ def parse_rdata(f, ORIGIN, res, tokens):
         field_name, field_type = record_fields[t][n]
 
         if field_type == TXT:
-            res[field_name] = base64.b64encode(get_txt(f, tokens[n:])).decode('utf-8')
+            res[field_name] = get_txt(f, tokens[n:])
             return
         elif field_type == SVCPARAMS:
             res[field_name] = get_svcparams(f, tokens[n:])

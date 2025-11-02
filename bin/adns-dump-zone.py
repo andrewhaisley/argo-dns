@@ -5,6 +5,7 @@ import argparse
 import json
 import requests
 import urllib3
+import base64
 
 import zone_file_rdata
 
@@ -121,7 +122,6 @@ def get_first_horizon_id():
 def get_zone(horizon_id, name):
     name = name.replace('.', '\\.')
     response_code, data = make_request('GET', '1/zone?name=%s&horizon=%s' % (name, horizon_id), None)
-    print(json.dumps(data, indent=4))
     if response_code == 200:
         if len(data['zones']) == 0:
             return None
@@ -130,6 +130,41 @@ def get_zone(horizon_id, name):
     else:
         raise Exception('failed to check zone existence', response_code)
 
+def dump_txt(f, t):
+    for s in t['strings']:
+        f.write('"%s" ' % s)
+
+def dump_svcparams(f, d):
+    if 'mandatory' in d and len(d['mandatory']) > 0:
+        f.write('mandatory=%s ' % (','.join(d['mandatory'])))
+    if 'alpn' in d and len(d['alpn']) > 0:
+        f.write('alpn=%s ' % (','.join(['"' + i + '"'  for i in d['alpn']])))
+    if 'no-default-alpn' in d and d['no-default-alpn'] == 'set':
+        f.write('no-default-alpn ')
+    if 'port' in d:
+        f.write('port=%s ' % d['port'])
+    if 'ech' in d:
+        f.write('ech=%s ' % d['ech'])
+
+def dump_polar(f, d):
+    for k in ['version', 'size', 'horizontal_precision', 'vertical_precision', 'latitude', 'longitude', 'altitude']:
+        f.write('%s ' % d[k])
+
+def dump_ipseckey(f, d):
+    f.write('%s %s %s ' % (d['precedence'], d['algorithm'], d['gateway_type']))
+
+    t = d['gateway_type']
+
+    if t == 0:
+        pass
+    elif t == 1:
+        f.write(d['ipv4_gateway'])
+    elif t == 2:
+        f.write(d['ipv6_gateway'])
+    else:
+        f.write(d['name_gateway'])
+
+    f.write(' %s' % d['public_key'])
 
 def dump_record(f, rr):
     print("dumping record type", rr['type'])
@@ -137,20 +172,24 @@ def dump_record(f, rr):
     for n, t in zone_file_rdata.record_fields[rr['type']]:
         if t == zone_file_rdata.NAME:
             f.write(rr[n] + '. ')
-        if t == zone_file_rdata.TXT:
-            f.write('"' + rr[n] + '"')
+        elif t == zone_file_rdata.TXT:
+            dump_txt(f, rr[n])
+        elif t == zone_file_rdata.SVCPARAMS:
+            dump_svcparams(f, rr[n])
         elif t == zone_file_rdata.POLAR:
-            f.write('<NULL>')
+            dump_polar(f, rr)
+            pass
         elif t == zone_file_rdata.IPSECKEY:
-            f.write('<NULL>')
+            dump_ipseckey(f, rr[n])
         elif t == zone_file_rdata.BITMAP:
-            f.write('<NULL>')
+            f.write('%s ' % ' '.join(rr[n]))
+        elif t == zone_file_rdata.STRING:
+            f.write('"%s" ' % rr[n])
         else:
             f.write('%s ' % rr[n])
     f.write('\n')
 
 def dump_zone(z, filename):
-    #print(json.dumps(z, indent=4))
     f = open(filename, 'w')
 
     f.write('$TTL    86400\n')

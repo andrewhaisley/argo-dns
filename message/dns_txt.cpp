@@ -17,9 +17,9 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
  
-#include <string.h>
 #include "types.hpp"
 #include "util.hpp"
+#include "parser.hpp"
 #include "dns_txt.hpp"
 #include "dns_message.hpp"
 
@@ -36,29 +36,13 @@ dns_txt::~dns_txt()
 
 dns_txt::dns_txt(const string &s)
 {
-    buffer bin = util::frombase64(s);
+    auto j = parser::parse(s);
+    from_json(*j);
+}
 
-    if (s.size() >= MAX_EXTENDED_MESSAGE_SIZE)
-    {
-        THROW(txt_format_exception, "txt is too big", s.size());
-    }
-
-    size_t index = 0;
-
-    while (index < bin.get_size())
-    {
-        octet *d = bin.get_data();
-        octet length = d[index];
-
-        if ((index + length) > bin.get_size())
-        {
-            THROW(txt_format_exception, "string overruns length of data");
-        }
-
-        index++;
-        m_strings.push_back(make_shared<dns_label>(d + index, length));
-        index += length;
-    }
+dns_txt::dns_txt(const json &j)
+{
+    from_json(j);
 }
 
 string dns_txt::to_string() const
@@ -82,25 +66,25 @@ void dns_txt::append(const shared_ptr<dns_label> &string)
     m_strings.push_back(string);
 }
 
-string dns_txt::to_base64() const
-{
-    // maximum possible buffer size is 256 data bytes + 1 length byte for each string
-    buffer b(m_strings.size() * 256 + m_strings.size());
-    size_t offset = 0;
-
-    for (auto s : m_strings)
-    {
-        memcpy(b.get_data() + offset, &s->m_size, 1);
-        offset += 1;
-        memcpy(b.get_data() + offset, s->m_data, s->m_size);
-        offset += s->m_size;
-    }
-    b.set_size(offset);
-    return util::tobase64(b);
-}
-
 ostream &adns::operator<<(ostream& stream, const dns_txt &t)
 {
     stream << t.to_string();
     return stream;
+}
+
+void dns_txt::json_serialize() const
+{
+    (*m_json_object)["strings"] = json(json::array_e);
+    for (auto s : m_strings)
+    {
+        (*m_json_object)["strings"].append(json(s->to_string()));
+    }
+}
+
+void dns_txt::json_unserialize()
+{
+    for (auto const &s : (*m_json_object)["strings"].get_array())
+    {
+        m_strings.push_back(make_shared<dns_label>(string(*s)));
+    }
 }

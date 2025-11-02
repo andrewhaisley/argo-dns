@@ -35,7 +35,6 @@ dname   100 IN  DNAME   redirectedto.blah.com.
 @       600 IN  EUI48 00-11-22-44-55-66
 @       600 IN  EUI64 00-11-22-44-55-66-77-88
 @       600 IN  HTTPS 1 . mandatory=alpn,port alpn="h3" no-default-alpn port=65535 ech=a2poa2poa2poIGpraGpoa2poa2hqayBqaDk4Nzg5Nwo=
-@       600 IN  IPSECKEY 10 1 1 192.0.2.38 AQNRU3mG7TVTO2BkR47u sn tb102uFJtugbo6BSGvgqt4AQ==
 @       500 IN  KX 100 one.two.com.
 @       500 IN  LOC   51 36 19 N 71 06 18 W -24m 30m
 @       500 IN  OPENPGPKEY AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ==
@@ -43,3 +42,6 @@ dname   100 IN  DNAME   redirectedto.blah.com.
 @       500 IN  TLSA 0 0 1 d2abde240d7cd3ee6b4b28c54df034b9 7983a1d16e8a410e4561cb106618e971
 @       400 IN  URI 10 1 "ftp://ftp1.example.com/public"
 @       400 IN  ZONEMD 2018031500 1 1 FEBE3D4CE2EC2FFA4BA99D46CD69D6D29711E55217057BEE 7EB1A7B641A47BA7FED2DD5B97AE499FAFA4F22C6BD647DE
+@       600 IN  IPSECKEY 10 1 1 192.0.2.38 AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ==
+@       600 IN  IPSECKEY 10 1 2 10::10 AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ==
+@       600 IN  IPSECKEY 10 1 3 zog.com AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ==

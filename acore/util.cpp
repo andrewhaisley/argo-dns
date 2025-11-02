@@ -21,6 +21,7 @@
 #include <string.h>
 
 #include <boost/algorithm/string.hpp>
+#include <boost/beast/core/detail/base64.hpp>
 
 #include "types.hpp"
 #include "exception.hpp"
@@ -29,158 +30,20 @@
 using namespace std;
 using namespace adns;
 using namespace util;
-
-static const char *base64_map = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
-inline uint extract_6_bits(const octet *data, size_t size, size_t &byte, size_t &bit)
-{
-    // not the most elegant approach, but seems to be the quickest to execute
-    if (bit == 0)
-    {
-        bit = 6;
-        return data[byte] >> 2;
-    }
-    else if (bit == 2)
-    {
-        bit = 0;
-        return data[byte++] & 0x3f;
-    }
-    else if (bit == 4)
-    {
-        uint res = (data[byte] & 0x0f) << 2;
-        if (byte < (size - 1))
-        {
-            res |= (data[byte + 1] >> 6);
-        }
-        
-        bit = 2;
-        byte++;
-
-        return res;
-    }
-    else if (bit == 6)
-    {
-        uint res = (data[byte] & 0x03) << 4;
-        if (byte < (size - 1))
-        {
-            res |= (data[byte + 1] >> 4);
-        }
-        
-        bit = 4;
-        byte++;
-
-        return res;
-    }
-    else
-    {
-        THROW(util_exception, "base64 encode bug");
-    }
-}
+using namespace boost::beast::detail::base64;
 
 string util::tobase64(const buffer &binary)
 {
-    string res;
-
-    res.reserve(((binary.get_size() + 3) / 3) * 4);
-
-    size_t byte = 0;
-    size_t bit = 0;
-    size_t size = binary.get_size();
-    const octet *data = binary.get_data();
-
-    while (byte < size)
-    {
-        res += base64_map[extract_6_bits(data, size, byte, bit)];
-    }
-
-    if ((byte % 3) == 1)
-    {
-        res += "=";
-    }
-    else if ((byte % 3) == 2)
-    {
-        res += "==";
-    }
-
-    return res;
-}
-
-octet from_base_64(char c)
-{
-    if (c >= 'A' && c <= 'Z')
-    {
-        return c - 'A';
-    }
-    else if (c >= 'a' && c <= 'z')
-    {
-        return c - 'a' + 26;
-    }
-    else if (c >= '0' && c <= '9')
-    {
-        return c - '0' + 52;
-    }
-    else if (c == '+')
-    {
-        return 62;
-    }
-    else if (c == '/')
-    {
-        return 63;
-    }
-    else
-    {
-        THROW(util_exception, "illegal base64 character", c);
-    }
+    char dest[encoded_size(binary.get_size())];
+    auto len = encode(dest, binary.get_data(), binary.get_size());
+    return string(dest, len);
 }
 
 buffer util::frombase64(const string &base64)
 {
-    buffer res(((base64.size() * 6) / 8) + 1);
-
-    size_t byte = 0;
-    size_t bit = 0;
-
-    octet *data = res.get_data();
-
-    for (char c : base64)
-    {
-        if (c == '=')
-        {
-            break;
-        }
-
-        octet o = from_base_64(c);
-
-        if (bit == 0)
-        {
-            data[byte] = (o << 2);
-            bit = 6;
-        }
-        else if (bit == 2)
-        {
-            data[byte++] |= o;
-            bit = 0;
-        }
-        else if (bit == 4)
-        {
-            data[byte++] |= o >> 2;
-            data[byte] = o << 6;
-            bit = 2;
-        }
-        else if (bit == 6)
-        {
-            data[byte++] |= o >> 4;
-            data[byte] = o << 4;
-            bit = 4;
-        }
-        else
-        {
-            THROW(util_exception, "base64 decode bug");
-        }
-    }
-
-    res.set_size(byte);
-    return res;
+    octet dest[decoded_size(base64.size())];
+    auto len = decode(dest, base64.c_str(), base64.size()).first;
+    return buffer(len, dest);
 }
 
 char util::tohexchar(octet o)

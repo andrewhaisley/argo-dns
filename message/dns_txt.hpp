@@ -24,12 +24,13 @@
 #include "types.hpp"
 #include "dns_label.hpp"
 #include "exception.hpp"
+#include "json_serializable.hpp"
 
 EXCEPTION_CLASS(txt_format_exception, exception)
 
 namespace adns
 {
-    class dns_txt final
+    class dns_txt final : public json_serializable 
     {
     public:
 
@@ -41,15 +42,14 @@ namespace adns
         dns_txt();
 
         /**
-         * constructor from a string stored in the DB format. Format being base64 string encoded with
-         * length bytes followed by data.
+         * constructor from a json string
          */
         dns_txt(const std::string &s);
 
         /**
-         * to base64 string, the format used in the DB, in json etc.
+         * constructor from a json object
          */
-        std::string to_base64() const;
+        dns_txt(const json &j);
 
         /**
          * append string
@@ -62,13 +62,23 @@ namespace adns
         virtual ~dns_txt();
 
         /**
-         * for debug
+         * string representation (json)
          */
         std::string to_string() const;
 
     private:
 
         std::list<std::shared_ptr<dns_label>> m_strings;
+
+        /**
+         * Turn the instance into JSON
+         */
+        virtual void json_serialize() const;
+
+        /**
+         * Re-initialize the instance from json.
+         */
+        virtual void json_unserialize();
     };
 
     std::ostream &operator<<(std::ostream& stream, const dns_txt &t);
