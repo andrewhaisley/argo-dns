@@ -51,6 +51,8 @@ namespace adns
     writer &operator<<(writer& w, char c);
     /// Write an int (formatted as a string. i.e. 123 is written as "123").
     writer &operator<<(writer& w, int i);
+    /// Write an unsigned int (formatted as a string. i.e. 123 is written as "123").
+    writer &operator<<(writer& w, unsigned int i);
     /// Write a double (formatted as a string. i.e. 123e23 is written as "123e23").
     writer &operator<<(writer& w, double d);
 }

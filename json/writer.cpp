@@ -52,6 +52,14 @@ writer &adns::operator<<(writer& w, int i)
     return w;
 }
 
+writer &adns::operator<<(writer& w, unsigned int i)
+{
+    ostringstream ss;
+    ss << i;
+    w.write(ss.str());
+    return w;
+}
+
 writer &adns::operator<<(writer& w, double d)
 {
     ostringstream ss;

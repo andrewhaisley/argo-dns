@@ -80,6 +80,33 @@ unique_ptr<json> parser::parse_number_int(const token &t)
     }
 }
 
+unique_ptr<json> parser::parse_number_uint(const token &t)
+{
+    istringstream is(t.get_raw_value());
+
+    unsigned int i;
+
+    if (is >> i)
+    {
+        return unique_ptr<json>(new json(i));
+    }
+    else
+    {
+        // We know the int is syntactically correct so this has to be a range error.
+        if (m_fallback_to_double)
+        {
+            return parse_number_double(t);
+        }
+        else
+        {
+            throw json_parser_exception(
+                        json_parser_exception::number_out_of_range_e,
+                        t.get_raw_value(),
+                        m_reader.get_byte_index());
+        }
+    }
+}
+
 unique_ptr<json> parser::parse_number_double(const token &t)
 {
     istringstream is(t.get_raw_value());
@@ -117,6 +144,15 @@ unique_ptr<json> parser::parse_value(lexer &l, size_t nesting_depth)
         else
         {
             return unique_ptr<json>(new json(json::number_int_e, t.get_raw_value()));
+        }
+    case token::number_uint_e:
+        if (m_convert_numbers)
+        {
+            return parse_number_uint(t);
+        }
+        else
+        {
+            return unique_ptr<json>(new json(json::number_uint_e, t.get_raw_value()));
         }
     case token::number_double_e:
         if (m_convert_numbers)

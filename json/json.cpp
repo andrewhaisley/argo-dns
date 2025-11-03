@@ -20,6 +20,10 @@
 #include <string.h>
 #include <algorithm>
 
+    
+#include <boost/log/trivial.hpp>
+#define LOG BOOST_LOG_TRIVIAL
+
 #include "json.hpp"
 #include "json_invalid_key_exception.hpp"
 #include "json_array_index_range_exception.hpp"
@@ -99,6 +103,12 @@ void json::copy_json(const json &other)
     }
 }
 
+bool json::both_numbers(const json &other) const
+{
+    return (m_type == number_double_e || m_type == number_int_e || m_type == number_uint_e) &&
+           (other.m_type == number_double_e || other.m_type == number_int_e || other.m_type == number_uint_e);
+}
+
 json::json(const json &other) : m_type(null_e)
 {
     copy_json(other);
@@ -153,6 +163,9 @@ json::json(type t) : m_type(t)
     case number_int_e:
         m_value.u_number_int = 0;
         break;
+    case number_uint_e:
+        m_value.u_number_uint = 0;
+        break;
     case number_double_e:
         m_value.u_number_double = 0;
         break;
@@ -166,7 +179,7 @@ json::json(type t) : m_type(t)
 
 json::json(type t, const string &raw_value) : m_type(t), m_raw_value(raw_value)
 {
-    if (t != string_e && t != number_int_e && t != number_double_e)
+    if (t != string_e && t != number_int_e && t != number_uint_e && t != number_double_e)
     {
         throw json_exception(json_exception::not_number_or_string_e, get_instance_type_name());
     }
@@ -179,6 +192,12 @@ json::json(int i)
 {
     m_type = number_int_e;
     m_value.u_number_int = i;
+}
+
+json::json(unsigned int i)
+{
+    m_type = number_uint_e;
+    m_value.u_number_uint = i;
 }
 
 json::json(double d)
@@ -220,6 +239,14 @@ json &json::operator=(int i)
     reset();
     m_type = number_int_e;
     m_value.u_number_int = i;
+    return *this;
+}
+
+json &json::operator=(unsigned int i)
+{
+    reset();
+    m_type = number_uint_e;
+    m_value.u_number_uint = i;
     return *this;
 }
 
@@ -337,6 +364,34 @@ json::operator int() const
     {
         return m_value.u_number_int;
     }
+    else if (m_type == number_uint_e)
+    {
+        return static_cast<unsigned int>(m_value.u_number_uint);
+    }
+    else if (m_type == number_double_e)
+    {
+        return static_cast<int>(m_value.u_number_double);
+    }
+    else
+    {
+        throw json_exception(json_exception::not_number_e);
+    }
+}
+
+json::operator unsigned int() const
+{
+    if (m_raw_value.size() > 0)
+    {
+        throw json_exception(json_exception::cant_cast_raw_e);
+    }
+    else if (m_type == number_int_e)
+    {
+        return static_cast<unsigned int>(m_value.u_number_int);
+    }
+    else if (m_type == number_uint_e)
+    {
+        return m_value.u_number_uint;
+    }
     else if (m_type == number_double_e)
     {
         return static_cast<int>(m_value.u_number_double);
@@ -360,6 +415,10 @@ json::operator double() const
     else if (m_type == number_int_e)
     {
         return static_cast<double>(m_value.u_number_int);
+    }
+    else if (m_type == number_uint_e)
+    {
+        return static_cast<double>(m_value.u_number_uint);
     }
     else
     {
@@ -392,6 +451,10 @@ json::operator bool() const
     else if (m_type == number_int_e)
     {
         return m_value.u_number_int != 0;
+    }
+    else if (m_type == number_uint_e)
+    {
+        return m_value.u_number_uint != 0;
     }
     else
     {
@@ -563,6 +626,8 @@ const char *json::get_instance_type_name() const
         return "null";
     case number_int_e:
         return "number (int)";
+    case number_uint_e:
+        return "number (unsigned int)";
     case number_double_e:
         return "number (double)";
     case string_e:
@@ -579,6 +644,10 @@ bool json::number_equal(const json &other) const
         if (m_type == number_int_e)
         {
             return m_value.u_number_int == other.m_value.u_number_int;
+        }
+        else if (m_type == number_uint_e)
+        {
+            return m_value.u_number_uint == other.m_value.u_number_uint;
         }
         else
         {
@@ -642,6 +711,8 @@ bool json::operator==(const json &other) const
             return true;
         case number_int_e:
             return number_equal(other);
+        case number_uint_e:
+            return number_equal(other);
         case number_double_e:
             return number_equal(other);
         case string_e:
@@ -650,8 +721,7 @@ bool json::operator==(const json &other) const
             throw json_exception(json_exception::invalid_json_type_e);
         }
     }
-    else if ((m_type == number_int_e && other.m_type == number_double_e) ||
-             (m_type == number_double_e && other.m_type == number_int_e))
+    else if (both_numbers(other))
     {
         return static_cast<double>(*this) == static_cast<double>(other);
     }
@@ -797,9 +867,11 @@ bool json::operator<(const json &other) const
     {
         return static_cast<int>(*this) < static_cast<int>(other);
     }
-    else if ((m_type == number_double_e && other.m_type == number_double_e) ||
-             (m_type == number_double_e && other.m_type == number_int_e) ||
-             (m_type == number_int_e && other.m_type == number_double_e))
+    else if (m_type == number_uint_e && other.m_type == number_uint_e)
+    {
+        return static_cast<unsigned int>(*this) < static_cast<unsigned int>(other);
+    }
+    else if (both_numbers(other))
     {
         return static_cast<double>(*this) < static_cast<double>(other);
     }
@@ -822,9 +894,11 @@ bool json::operator<=(const json &other) const
     {
         return static_cast<int>(*this) <= static_cast<int>(other);
     }
-    else if ((m_type == number_double_e && other.m_type == number_double_e) ||
-             (m_type == number_double_e && other.m_type == number_int_e) ||
-             (m_type == number_int_e && other.m_type == number_double_e))
+    else if (m_type == number_uint_e && other.m_type == number_uint_e)
+    {
+        return static_cast<unsigned int>(*this) <= static_cast<unsigned int>(other);
+    }
+    else if (both_numbers(other))
     {
         return static_cast<double>(*this) <= static_cast<double>(other);
     }
@@ -913,4 +987,36 @@ string json::to_string() const
 shared_ptr<json> json::from_string(const string &s)
 {
     return parser::parse(s);
+}
+
+void json::dump() const
+{
+    LOG(debug) << "JSON dump instance";
+    LOG(debug) << "raw value:'" << m_raw_value << "'";
+    switch (m_type)
+    {
+    case object_e :
+        LOG(debug) << "type is object";
+        break;
+    case array_e  :
+        LOG(debug) << "type is array";
+        break;
+    case boolean_e :
+        LOG(debug) << "type is boolean:" << m_value.u_boolean;
+        break;
+    case null_e :
+        LOG(debug) << "type is NULL";
+        break;
+    case number_int_e :
+        LOG(debug) << "type is int:" << m_value.u_number_int;
+        break;
+    case number_double_e :
+        LOG(debug) << "type is double:" << m_value.u_number_double;
+        break;
+    case string_e :
+        LOG(debug) << "type is string:" << *m_value.u_string;
+        break;
+    default:
+        LOG(debug) << "type is invalid";
+    }
 }

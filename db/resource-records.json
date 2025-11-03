@@ -710,7 +710,7 @@
         "columns": {
             "altitude": {
                 "nullable": false,
-                "type": "int"
+                "type": "uint"
             },
             "horizontal_precision": {
                 "nullable": false,
@@ -718,11 +718,11 @@
             },
             "latitude": {
                 "nullable": false,
-                "type": "int"
+                "type": "uint"
             },
             "longitude": {
                 "nullable": false,
-                "type": "int"
+                "type": "uint"
             },
             "name": {
                 "nullable": false,

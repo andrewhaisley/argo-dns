@@ -146,10 +146,49 @@ def dump_svcparams(f, d):
     if 'ech' in d:
         f.write('ech=%s ' % d['ech'])
 
-def dump_polar(f, d):
-    for k in ['version', 'size', 'horizontal_precision', 'vertical_precision', 'latitude', 'longitude', 'altitude']:
-        f.write('%s ' % d[k])
+def dump_latitude_longitude(f, l, hemis):
+    offset = l - (1 << 31)
+    seconds = offset / 1000.0
 
+    if seconds < 0:
+        hemi = hemis[0]
+        seconds = -seconds
+    else:
+        hemi = hemis[1]
+
+    degrees = int(seconds / 3600)
+    seconds -= degrees * 3600
+    minutes = int(seconds / 60)
+    seconds -= minutes * 60
+
+    f.write("%s %s %.3f %s " % (degrees, minutes, seconds, hemi))
+
+def dump_size(f, size):
+
+    if size < 0 or size > 255:
+        raise Exception('size field from LOC is outside of range 0..255')
+
+    mantissa = (size >> 4) & 0x0F
+    exponent = size & 0x0F
+    size_cm = mantissa * (10 ** exponent)
+    size_m = size_cm / 100.0
+
+    f.write('%.0fm ' % size_m)
+
+def dump_altitude(f, alt):
+    altitude_cm = alt- 10000000
+    altitude_m = altitude_cm / 100.0
+
+    f.write('%.2fm ' % altitude_m)
+
+def dump_polar(f, d):
+    dump_latitude_longitude(f, d['latitude'], ['S', 'N'])
+    dump_latitude_longitude(f, d['longitude'], ['W', 'E'])
+    dump_altitude(f, d['altitude'])
+    dump_size(f, d['size'])
+    dump_size(f, d['horizontal_precision'])
+    dump_size(f, d['vertical_precision'])
+    
 def dump_ipseckey(f, d):
     f.write('%s %s %s ' % (d['precedence'], d['algorithm'], d['gateway_type']))
 
@@ -167,7 +206,6 @@ def dump_ipseckey(f, d):
     f.write(' %s' % d['public_key'])
 
 def dump_record(f, rr):
-    print("dumping record type", rr['type'])
     f.write('%s. %s IN %s ' % (rr['name'], rr['ttl'], rr['type']))
     for n, t in zone_file_rdata.record_fields[rr['type']]:
         if t == zone_file_rdata.NAME:

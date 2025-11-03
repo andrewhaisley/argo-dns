@@ -16,11 +16,14 @@
 //  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
+#include <boost/lexical_cast.hpp>
  
 #include "lexer.hpp"
 #include "json_parser_exception.hpp"
 
 using namespace std;
+using namespace boost;
 using namespace adns;
 
 lexer::lexer(reader &r, size_t max_token_length) :
@@ -256,7 +259,37 @@ void lexer::read_number()
         m_reader.put_back(c);
     }
 
-    m_token = token(is_double ? token::number_double_e : token::number_int_e, m_buffer, n);
+    if (is_double)
+    {
+        m_token = token(token::number_double_e, m_buffer, n);
+    }
+    else
+    {
+        string s(m_buffer, n);
+
+        try 
+        {
+            (void)lexical_cast<unsigned int>(s);
+            m_token = token(token::number_uint_e, m_buffer, n);
+            return;
+        }
+        catch (...)
+        {
+        }
+
+        try 
+        {
+            (void)lexical_cast<int>(s);
+            m_token = token(token::number_int_e, m_buffer, n);
+            return;
+        }
+        catch (...)
+        {
+        }
+
+        m_token = token(token::number_double_e, m_buffer, n);
+    }
+
 }
 
 void lexer::read_string()

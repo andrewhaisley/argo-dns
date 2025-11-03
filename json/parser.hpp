@@ -187,6 +187,7 @@ namespace adns
     private:
 
         std::unique_ptr<json> parse_number_int(const token &t);
+        std::unique_ptr<json> parse_number_uint(const token &t);
         std::unique_ptr<json> parse_number_double(const token &t);
         std::unique_ptr<json> parse_string(const token &t);
         std::unique_ptr<json> parse_value(lexer &l, size_t nesting_depth);

@@ -128,6 +128,9 @@ void unparser::unparse(const json &j, int indent_level)
         case json::number_int_e:
             m_writer << static_cast<int>(j);
             break;
+        case json::number_uint_e:
+            m_writer << static_cast<unsigned int>(j);
+            break;
         case json::number_double_e:
             m_writer << static_cast<double>(j);
             break;

@@ -81,6 +81,7 @@ namespace adns
             array_e, 
             boolean_e, 
             null_e, 
+            number_uint_e, 
             number_int_e, 
             number_double_e, 
             string_e 
@@ -111,12 +112,13 @@ namespace adns
         /**
          * New json instance of the given type. The value is initialised according to the
          * type as follows:<br>
-         * object_e  : empty      <br>
-         * array_e   : empty      <br>
-         * boolean_e : false      <br>
-         * null_e    : null       <br>
-         * number_e  : 0          <br>
-         * string_e  : ""         <br>
+         * object_e       : empty      <br>
+         * array_e        : empty      <br>
+         * boolean_e      : false      <br>
+         * null_e         : null       <br>
+         * number_uint_e  : 0          <br>
+         * number_int_e   : 0          <br>
+         * string_e       : ""         <br>
          * \throw json_exception if t isn't a valid type.
          */
         json(type t);
@@ -130,7 +132,7 @@ namespace adns
          * unconverted form allows code using this library to process it anyway
          * if desired.
          *
-         * \param t         number_int_e, number_double_e or string_e
+         * \param t         number_uint_e, number_int_e, number_double_e or string_e
          * \param raw_value e.g. 999989999999999999 (too big to be an int)
          * \throw json_exception if t is not one of the allowed types.
          */
@@ -150,6 +152,11 @@ namespace adns
          * New json instance of number int type.
          */
         json(int i);
+
+        /**
+         * New json instance of number unsigned int type.
+         */
+        json(unsigned int i);
 
         /**
          * New json instance of number double type.
@@ -200,6 +207,12 @@ namespace adns
          * freed.
          */
         json &operator=(int i);
+
+        /**
+         * Assign the instance an unsigned int value. All previous values are erased and/or
+         * freed.
+         */
+        json &operator=(unsigned int i);
 
         /**
          * Assign the instance a double value. All previous values are erased and/or
@@ -290,9 +303,15 @@ namespace adns
 
         /**
          * Cast the object to an int.
-         * \throw json_exception if the instance isn't an int or a double.
+         * \throw json_exception if the instance isn't an unsigned int, an in range int or a double.
          */
         operator int() const;
+
+        /**
+         * Cast the object to an unsigned int.
+         * \throw json_exception if the instance isn't an unsigned int, an in range int, or a double.
+         */
+        operator unsigned int() const;
 
         /**
          * Cast the object to a double.
@@ -489,11 +508,15 @@ namespace adns
         /// == operator - throws for raw values 
         bool operator==(int i) const;
         /// == operator - throws for raw values 
+        bool operator==(unsigned int i) const;
+        /// == operator - throws for raw values 
         bool operator==(double d) const;
         /// == operator - throws for raw values 
         bool operator==(const std::string &s) const;
         /// == operator - throws for raw values 
         bool operator==(const char *s) const;
+        /// != operator - throws for raw values 
+        bool operator!=(unsigned int i) const;
         /// != operator - throws for raw values 
         bool operator!=(int i) const;
         /// != operator - throws for raw values 
@@ -503,6 +526,8 @@ namespace adns
         /// != operator - throws for raw values 
         bool operator!=(const char *s) const;
         /// < operator - throws for raw values 
+        bool operator<(unsigned int i) const;
+        /// < operator - throws for raw values 
         bool operator<(int i) const;
         /// < operator - throws for raw values 
         bool operator<(double d) const;
@@ -510,6 +535,8 @@ namespace adns
         bool operator<(const std::string &s) const;
         /// < operator - throws for raw values 
         bool operator<(const char *s) const;
+        /// <= operator - throws for raw values 
+        bool operator<=(unsigned int i) const;
         /// <= operator - throws for raw values 
         bool operator<=(int i) const;
         /// <= operator - throws for raw values 
@@ -519,6 +546,8 @@ namespace adns
         /// <= operator - throws for raw values 
         bool operator<=(const char *s) const;
         /// > operator - throws for raw values 
+        bool operator>(unsigned int i) const;
+        /// > operator - throws for raw values 
         bool operator>(int i) const;
         /// > operator - throws for raw values 
         bool operator>(double d) const;
@@ -526,6 +555,8 @@ namespace adns
         bool operator>(const std::string &s) const;
         /// > operator - throws for raw values 
         bool operator>(const char *s) const;
+        /// >= operator - throws for raw values 
+        bool operator>=(unsigned int i) const;
         /// >= operator - throws for raw values 
         bool operator>=(int i) const;
         /// >= operator - throws for raw values 
@@ -540,6 +571,11 @@ namespace adns
          * \throw   json_exception  If the pointer didn't match, a json_exception is throw.
          */
         const json &find(const pointer &p) const;
+
+        /**
+         * dump an instance for debug purposes
+         */
+        void dump() const;
 
     private:
 
@@ -558,6 +594,8 @@ namespace adns
             bool u_boolean;
             /// int representation of a number (not set if the raw option is used).
             int u_number_int;
+            /// unsigned int representation of a number (not set if the raw option is used).
+            unsigned int u_number_uint;
             /// double representation of a number (not set if the raw option is used).
             double u_number_double;
             /// UTF-8 string representation of tha value (not set if the raw option is used).
@@ -591,6 +629,11 @@ namespace adns
          * values are overwritten.
          */
         void reset();
+
+        /**
+         * Do this and another json instance both represent some type of number?
+         */
+        bool both_numbers(const json &other) const;
 
         /// copy the other object to this one
         void copy_json(const json &other);

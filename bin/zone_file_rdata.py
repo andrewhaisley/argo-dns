@@ -265,145 +265,108 @@ def get_ipseckey(f, tokens):
 
     return res
 
-def polar_range_check(x, l, u):
-    if x >= l and x <= u:
-        return
+def encode_angle(a, nsew):
+    seconds =  a * 3600.0
+    thousandths = int(round(seconds * 1000.0))
+    if nsew in ['n', 'e']:
+        val = (1 << 31) + thousandths       
     else:
-        raise zone_file_exception('malformed polar coordinates', f)
+        val = (1 << 31) - thousandths       
+    return val
 
-def translate_loc_size(cm):
+def extract_angle(f, tokens, i, dirs):
+    deg = float(tokens[i].value())
+    i += 1
 
-    if cm < 0:
-        raise zone_file_exception('cannot translate negative location size %s' % cm, f)
-    elif cm == 0:
-        return 0
-    else: 
-        mult = 0
-        n = cm
-        while n > 9:
-            n = int(n/10)
-            mult += 1
-            if mult > 9:
-                raise zone_file_exception('location size too big %s' % cm, f)
-        return n * 16 + mult
+    if tokens[i].value() in dirs:
+        return (i + 1, tokens[i].value().lower(), deg)
+    else:
+        deg += float(tokens[i].value()) / 60
+        i += 1
+
+    if tokens[i].value() in dirs:
+        return (i + 1, tokens[i].value().lower(), deg)
+    else:
+        deg += float(tokens[i].value()) / 3600
+        i += 1
+
+    if tokens[i].value() in dirs:
+        return (i + 1, tokens[i].value().lower(), deg)
+    else:
+        raise zone_file_exception('missing N|S|E|W in LOC record', f)
+        
+def encode_loc_size(f, size_meters):
+
+    size_cm = size_meters * 100.0
+
+    # determine mantissa+exponent such that mantissa is 1–9
+    exponent = 0
+    mantissa = size_cm
+
+    # scale until mantissa fits range 1–9
+    while mantissa > 9:
+        mantissa /= 10.0
+        exponent += 1
+
+    # round mantissa to nearest whole number
+    mantissa = round(mantissa)
+
+    # if rounding pushed it out of range, rescale again
+    if mantissa == 10:
+        mantissa = 1
+        exponent += 1
+
+    if not (1 <= mantissa <= 9 and 0 <= exponent <= 9):
+        raise zone_file_exception('value cannot be encoded in LOC size format', f)
+
+    return (mantissa << 4) | exponent
+
 
 def get_polar(f, tokens):
+
     res = {}
 
-    i = 0 
+    #
+    # 51 36 19 N 71 06 18 W -24m 30m
+    # fields:
+    #
+    #  alt:    [-100000.00 .. 42849672.95] BY .01 (altitude in meters)
+    #  siz, hp, vp: [0 .. 90000000.00] (size/precision in meters)       - size defaults to 1m, horiz precision defaults to 10000m, vert precision defaults to 10m
+    #
 
-    lat_dir = ''
+    i = 0
 
-    d_lat = 0
-    m_lat = 0
-    s_lat = 0
+    i, ns, latitude = extract_angle(f, tokens, i, ['N', 'S', 'n', 's'])
+    i, ew, longitude = extract_angle(f, tokens, i, ['E', 'W', 'e', 'w'])
 
-    d_lon = 0
-    m_lon = 0
-    s_lon = 0
+    altitude = float(tokens[i].value().replace('m', '').replace('M', '')) * 100.0
 
-    alt = None
+    i += 1
 
-    size = '1m'
-    horiz_p = '10000m'
-    vert_p = '10m'
+    size = float(tokens[i].value().replace('m', '').replace('M', ''))
 
-    d_lat = int(tokens[i].value())
-    i+= 1
-
-    if tokens[i].value() not in ['N', 'S']:
-        m_lat = int(tokens[i].value())
-    else:
-        lat_dir = tokens[i].value()
-    i+= 1
-
-    if tokens[i].value() not in ['N', 'S']:
-        s_lat = int(tokens[i].value())
-    else:
-        lat_dir = tokens[i].value()
-    i+= 1
-
-    if tokens[i].value() not in ['N', 'S']:
-        raise zone_file_exception('malformed polar coordinates', f)
-    else:
-        lat_dir = tokens[i].value()
-    i+= 1
-
-    d_lon = int(tokens[i].value())
-    i+= 1
-
-    if tokens[i].value() not in ['E', 'W']:
-        m_lon = int(tokens[i].value())
-    else:
-        lon_dir = tokens[i].value()
-    i+= 1
-    if tokens[i].value() not in ['E', 'W']:
-        s_lon = int(tokens[i].value())
-    else:
-        lon_dir = tokens[i].value()
-    i+= 1
-
-    if tokens[i].value() not in ['E', 'W']:
-        raise zone_file_exception('malformed polar coordinates', f)
-    else:
-        lon_dir = tokens[i].value()
-    i+= 1
-    
-    alt = tokens[i].value()
-    i+= 1
+    i += 1
 
     if i < len(tokens):
-        size = tokens[i].value()
-        i+= 1
-
-    if i < len(tokens):
-        horiz_p = tokens[i].value()
-        i+= 1
-
-    if i < len(tokens):
-        vert_p = tokens[i].value()
-        i+= 1
-
-    if i < len(tokens):
-        if len(tokens) == i + 3:
-            size = tokens[i].value()
-            horiz_p = tokens[i + 1].value()
-            vert_p = tokens[i + 2].value()
-        else:
-            raise zone_file_exception('malformed polar coordinates', f)
-
-    polar_range_check(d_lon, 0, 90)
-    polar_range_check(d_lat, 0, 180)
-    polar_range_check(m_lon, 0, 59)
-    polar_range_check(m_lat, 0, 59)
-    polar_range_check(s_lon, 0, 59.999)
-    polar_range_check(s_lat, 0, 59.999)
-
-    lat = int((d_lat * 60 * 60 * 1000) + (m_lat * 60 * 1000) + (s_lat * 1000))
-    if lat_dir == 'N':
-        lat = 2**31 + lat
+        hp = float(tokens[i].value().replace('m', '').replace('M', '')) 
+        i += 1
     else:
-        lat = 2**31 - lat
+        hp = 10000
 
-    lon = int((d_lon * 60 * 60 * 1000) + (m_lon * 60 * 1000) + (s_lon * 1000))
-    if lon_dir == 'E':
-        lon = 2**31 + lon
+    if i < len(tokens):
+        vp = float(tokens[i].value().replace('m', '').replace('M', '')) 
     else:
-        lon = 2**31 - lon
-
-    alt = 10000000 + int(alt.replace('m', '')) * 100 
-    size = int(size.replace('m', ''))
-    horiz_p = int(horiz_p.replace('m', ''))
-    vert_p = int(vert_p.replace('m', ''))
+        vp = 10
 
     res['version'] = 0
-    res['size'] = translate_loc_size(size * 100)
-    res['horizontal_precision'] = translate_loc_size(horiz_p * 100)
-    res['vertical_precision'] = translate_loc_size(vert_p *100)
+    res['size'] = encode_loc_size(f, size)
+    res['horizontal_precision'] = encode_loc_size(f, hp)
+    res['vertical_precision'] = encode_loc_size(f, vp)
 
-    res['latitude'] = lat
-    res['longitude'] = lon
-    res['altitude'] = alt
+    res['latitude'] = encode_angle(latitude, ns)
+    res['longitude'] = encode_angle(longitude, ew)
+    res['altitude'] = round(altitude) + 10000000
+
     return res
 
 def parse_rdata(f, ORIGIN, res, tokens):

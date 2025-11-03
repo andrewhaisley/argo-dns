@@ -49,8 +49,10 @@ namespace adns
             name_separator_e,
             /// ,
             value_separator_e,
-            /// whole number
+            /// whole number integer (may be negative)
             number_int_e,
+            /// whole number cardinal
+            number_uint_e,
             /// floating point number
             number_double_e,
             /// sting in JSON format
