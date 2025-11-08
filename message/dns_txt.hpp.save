@@ -28,8 +28,6 @@
 
 EXCEPTION_CLASS(txt_format_exception, exception)
 
-#define MAX_TXT_LEN 255
-
 namespace adns
 {
     class dns_txt final : public json_serializable 
@@ -56,6 +54,7 @@ namespace adns
         /**
          * append string
          */
+        //void append(const std::shared_ptr<dns_label> &string);
         void append(const std::string &s);
 
         /**
@@ -70,6 +69,7 @@ namespace adns
 
     private:
 
+        //std::list<std::shared_ptr<dns_label>> m_strings;
         std::list<std::string> m_strings;
 
         /**

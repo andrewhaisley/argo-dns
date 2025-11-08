@@ -349,7 +349,7 @@ shared_ptr<dns_txt> dns_message_serial::parse_txt(const octet *raw, size_t size,
     {
         octet len = parse_octet(raw, size, offset);
         length_check(size, offset, len);
-        res->append(make_shared<dns_label>(raw + offset, len));
+        res->append(string(reinterpret_cast<const char *>(raw + offset), len));
         offset += len;
     }
 
@@ -478,8 +478,15 @@ void dns_message_serial::unparse_txt(const shared_ptr<dns_txt> &txt, octet *targ
 {
     for (auto s : txt->m_strings)
     {
-        unparse_octet(target, &s->m_size, size, offset);
-        unparse_data(target, s->m_data, s->m_size, size, offset);
+        if (s.size() > MAX_TXT_LEN)
+        {
+            THROW(message_serial_format_exception, "string for TXT record exceeds maximum length", s);
+        }
+
+        octet txt_size = s.size();
+
+        unparse_octet(target, &txt_size, size, offset);
+        unparse_data(target, s.c_str(), txt_size, size, offset);
     }
 }
 

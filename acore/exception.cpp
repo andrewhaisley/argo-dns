@@ -19,8 +19,6 @@
  
 #include <string.h>
 
-#include <boost/uuid/uuid_generators.hpp>
-
 #include "types.hpp"
 #include "exception.hpp"
 
@@ -40,21 +38,6 @@ adns::exception::exception(const char *method, const char *file, int line, const
     m_code = error_code;
     m_line = line;
     m_details[0] = 0;
-    m_uuid = boost::uuids::nil_generator()();
-}
-
-adns::exception::exception(const char *method, const char *file, int line, const string &description, uuid oid)
-{
-    strncpy(m_method, method, MAX_EXCEPTION_TEXT_LEN - 1);
-    strncpy(m_file, file, MAX_EXCEPTION_TEXT_LEN - 1);
-    strncpy(m_description, description.c_str(), MAX_EXCEPTION_TEXT_LEN - 1);
-    m_method[MAX_EXCEPTION_TEXT_LEN - 1] = 0;
-    m_file[MAX_EXCEPTION_TEXT_LEN - 1] = 0;
-    m_description[MAX_EXCEPTION_TEXT_LEN - 1] = 0;
-    m_code = 0;
-    m_line = line;
-    m_details[0] = 0;
-    m_uuid = oid;
 }
 
 adns::exception::exception(const char *method, const char *file, int line, const string &description, const string &details, int error_code)
@@ -68,21 +51,6 @@ adns::exception::exception(const char *method, const char *file, int line, const
     m_description[MAX_EXCEPTION_TEXT_LEN - 1] = 0;
     m_code = error_code;
     m_line = line;
-    m_uuid = boost::uuids::nil_generator()();
-}
-
-adns::exception::exception(const char *method, const char *file, int line, const string &description, const string &details, uuid oid)
-{
-    strncpy(m_method, method, MAX_EXCEPTION_TEXT_LEN - 1);
-    strncpy(m_file, file, MAX_EXCEPTION_TEXT_LEN - 1);
-    strncpy(m_description, description.c_str(), MAX_EXCEPTION_TEXT_LEN - 1);
-    strncpy(m_details, details.c_str(), MAX_EXCEPTION_TEXT_LEN - 1);
-    m_method[MAX_EXCEPTION_TEXT_LEN - 1] = 0;
-    m_file[MAX_EXCEPTION_TEXT_LEN - 1] = 0;
-    m_description[MAX_EXCEPTION_TEXT_LEN - 1] = 0;
-    m_code = 0;
-    m_line = line;
-    m_uuid = oid;
 }
 
 adns::exception::~exception() noexcept(true)
@@ -109,11 +77,6 @@ int adns::exception::get_code() const noexcept
     return m_code;
 }
 
-uuid adns::exception::get_uuid() const noexcept
-{
-    return m_uuid;
-}
-
 const char *adns::exception::get_method() const noexcept
 {
     return m_method;
@@ -138,6 +101,5 @@ void adns::exception::log(severity_level l, const char *message) const noexcept
         << get_method() << "|" 
         << get_description() << "|" 
         << get_details() << "|" 
-        << get_code() << "|"
-        << to_string(m_uuid); 
+        << get_code();
 }

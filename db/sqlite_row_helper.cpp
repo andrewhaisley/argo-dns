@@ -528,7 +528,7 @@ row *sqlite_row_helper::fetch_row(connection &conn, const column &c, uuid unique
 
     if (rows.size() == 0)
     {
-        THROW(row_not_found_exception, "row from " + r.get_table_name() + " with unique key column " + c.get_name() + " not found", unique_key);
+        THROW(row_not_found_exception, "row from " + r.get_table_name() + " with unique key column " + c.get_name() + " not found", lexical_cast<string>(unique_key));
     }
     else if (rows.size() == 1)
     {
@@ -536,7 +536,7 @@ row *sqlite_row_helper::fetch_row(connection &conn, const column &c, uuid unique
     }
     else
     {
-        THROW(row_not_unique_exception, "more than one row from " + r.get_table_name() + " with unique key column " + c.get_name() + " found", unique_key);
+        THROW(row_not_unique_exception, "more than one row from " + r.get_table_name() + " with unique key column " + c.get_name() + " found", lexical_cast<string>(unique_key));
     }
 }
 

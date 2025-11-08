@@ -16,6 +16,8 @@
 //  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
+#include <boost/lexical_cast.hpp>
  
 #include "api_horizon_v1.hpp"
 #include "api.hpp"
@@ -60,7 +62,7 @@ shared_ptr<http_response> api_horizon_v1::handle_get_request(shared_ptr<http_req
         }
         else
         {
-            THROW(api_resource_not_found_exception, "unknown horizon requested", horizon_id.value());
+            THROW(api_resource_not_found_exception, "unknown horizon requested", boost::lexical_cast<string>(horizon_id.value()));
         }
     }
 
@@ -87,7 +89,7 @@ shared_ptr<http_response> api_horizon_v1::handle_update_request(shared_ptr<http_
 
     if (!existing_h)
     {
-        THROW(api_resource_not_found_exception, "unknown horizon specified", h.get_horizon_id());
+        THROW(api_resource_not_found_exception, "unknown horizon specified", boost::lexical_cast<string>(h.get_horizon_id()));
     }
 
     h.update_horizon_db(*conn);
@@ -144,7 +146,7 @@ shared_ptr<http_response> api_horizon_v1::handle_delete_request(shared_ptr<http_
     }
     else
     {
-        THROW(api_resource_not_found_exception, "unknown horizon specified", horizon_id.value());
+        THROW(api_resource_not_found_exception, "unknown horizon specified", boost::lexical_cast<string>(horizon_id.value()));
     }
 
     return make_shared<http_response>(req->get_stream_id(), http_response::ok_200);

@@ -18,6 +18,7 @@
 //
  
 #include <mutex>
+#include <boost/lexical_cast.hpp>
 
 #include "types.hpp"
 #include "config.hpp"
@@ -604,12 +605,12 @@ void dns_zone::update_zone_db(connection &conn)
     {
         if (*(existing_zone->m_name) != *m_name)
         {
-            THROW(dns_zone_exception, "zone names can't be changed, create a new one instead", m_zone_id);
+            THROW(dns_zone_exception, "zone names can't be changed, create a new one instead", boost::lexical_cast<string>(m_zone_id));
         }
     }
     else
     {
-        THROW(dns_zone_exception, "zone not found", m_zone_id);
+        THROW(dns_zone_exception, "zone not found", boost::lexical_cast<string>(m_zone_id));
     }
 
     row_zone z;

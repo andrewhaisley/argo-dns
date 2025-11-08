@@ -506,14 +506,14 @@ def test():
     #horizon_id = create_base_data()
     #restart_server()
     #test_auth()
-    #test_run_state()
+    test_run_state()
     #test_monitor()
     #test_server()
     #test_base_config()
     #test_cache_config()
     #test_address_list()
     #test_horizon()
-    test_zone()
+    # test_zone()
     #test_rr(horizon_id)
     pass
 

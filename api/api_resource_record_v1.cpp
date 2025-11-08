@@ -19,7 +19,6 @@
  
 #include <vector>
 
-#include <boost/algorithm/string.hpp>    
 #include <boost/lexical_cast.hpp>
 
 #include "nullable.hpp"
@@ -89,7 +88,7 @@ shared_ptr<http_response> api_resource_record_v1::handle_get_request(shared_ptr<
         }
         else
         {
-            THROW(api_resource_not_found_exception, "unknown resource record requested", rr_id.value());
+            THROW(api_resource_not_found_exception, "unknown resource record requested", boost::lexical_cast<string>(rr_id.value()));
         }
     }
 

@@ -55,15 +55,15 @@ string dns_txt::to_string() const
         {
             res += ",";
         }
-        res += i;
+        res += i->to_string();
     }
 
     return res;
 }
 
-void dns_txt::append(const string &s)
+void dns_txt::append(const shared_ptr<dns_label> &string)
 {
-    m_strings.push_back(s);
+    m_strings.push_back(string);
 }
 
 ostream &adns::operator<<(ostream& stream, const dns_txt &t)
@@ -77,7 +77,7 @@ void dns_txt::json_serialize() const
     (*m_json_object)["strings"] = json(json::array_e);
     for (auto s : m_strings)
     {
-        (*m_json_object)["strings"].append(json(s));
+        (*m_json_object)["strings"].append(json(s->to_string()));
     }
 }
 
@@ -85,6 +85,6 @@ void dns_txt::json_unserialize()
 {
     for (auto const &s : (*m_json_object)["strings"].get_array())
     {
-        m_strings.push_back(string(*s));
+        m_strings.push_back(make_shared<dns_label>(string(*s)));
     }
 }

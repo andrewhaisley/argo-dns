@@ -19,7 +19,6 @@
  
 #include <vector>
 
-#include <boost/algorithm/string.hpp>    
 #include <boost/lexical_cast.hpp>
 
 #include "nullable.hpp"
@@ -74,7 +73,7 @@ shared_ptr<http_response> api_zone_v1::handle_get_request(shared_ptr<http_reques
         }
         else
         {
-            THROW(api_resource_not_found_exception, "unknown zone requested", zone_id.value());
+            THROW(api_resource_not_found_exception, "unknown zone requested", boost::lexical_cast<string>(zone_id.value()));
         }
     }
 
@@ -146,7 +145,7 @@ shared_ptr<http_response> api_zone_v1::handle_delete_request(shared_ptr<http_req
     }
     else
     {
-        THROW(api_resource_not_found_exception, "unknown zone specified", zone_id.value());
+        THROW(api_resource_not_found_exception, "unknown zone specified", boost::lexical_cast<string>(zone_id.value()));
     }
 
     return make_shared<http_response>(req->get_stream_id(), http_response::ok_200);

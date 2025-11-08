@@ -16,6 +16,8 @@
 //  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
+#include <boost/lexical_cast.hpp>
  
 #include "api.hpp"
 #include "api_address_list_v1.hpp"
@@ -62,7 +64,7 @@ shared_ptr<http_response> api_address_list_v1::handle_get_request(shared_ptr<htt
         }
         else
         {
-            THROW(api_resource_not_found_exception, "unknown address_list requested", address_list_id.value());
+            THROW(api_resource_not_found_exception, "unknown address_list requested", boost::lexical_cast<string>(address_list_id.value()));
         }
     }
 

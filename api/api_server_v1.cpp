@@ -16,6 +16,8 @@
 //  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
+#include <boost/lexical_cast.hpp>
  
 #include "api.hpp"
 #include "api_server_v1.hpp"
@@ -57,7 +59,7 @@ shared_ptr<http_response> api_server_v1::handle_get_request(shared_ptr<http_requ
             }
         }
 
-        THROW(api_resource_not_found_exception, "unknown server", server_id.value());
+        THROW(api_resource_not_found_exception, "unknown server", boost::lexical_cast<string>(server_id.value()));
     }
 }
 
@@ -90,14 +92,14 @@ shared_ptr<http_response> api_server_v1::handle_update_request(shared_ptr<http_r
                 }
                 catch (config_addresses_exception &e)
                 {
-                    THROW(api_method_conflict_exception, "overlapping socket addresses", server_id.value());
+                    THROW(api_method_conflict_exception, "overlapping socket addresses", boost::lexical_cast<string>(server_id.value()));
                 }
 
                 return make_shared<http_response>(req->get_stream_id(), http_response::ok_200);
             }
             else
             {
-                THROW(api_method_conflict_exception, "cannot change server type, delete and insert instead", server_id.value());
+                THROW(api_method_conflict_exception, "cannot change server type, delete and insert instead", boost::lexical_cast<string>(server_id.value()));
             }
         }
     }
@@ -144,7 +146,7 @@ shared_ptr<http_response> api_server_v1::handle_delete_request(shared_ptr<http_r
         {
             if (s.type == server_config::control_e)
             {
-                THROW(api_method_conflict_exception, "control server instance cannot be deleted", server_id.value());
+                THROW(api_method_conflict_exception, "control server instance cannot be deleted", boost::lexical_cast<string>(server_id.value()));
             }
             else
             {
@@ -155,7 +157,7 @@ shared_ptr<http_response> api_server_v1::handle_delete_request(shared_ptr<http_r
         }
     }
 
-    THROW(api_resource_not_found_exception, "unknown server", server_id.value());
+    THROW(api_resource_not_found_exception, "unknown server", boost::lexical_cast<string>(server_id.value()));
 }
 
 shared_ptr<http_response> api_server_v1::handle_request(shared_ptr<http_request> &req, const api_url_v1 &p)

@@ -49,11 +49,6 @@ namespace adns
         exception(const char *method, const char *file, int line, const std::string &description, int error_code = -1);
 
         /**
-         * Description is whatever makes sense. Object ID is the relavant object instance.
-         */
-        exception(const char *method, const char *file, int line, const std::string &description, uuid oid);
-
-        /**
          * Description is whatever makes sense. error code will often
          * be a system error code, but could be something else for
          * different subclasses. Details add more context.
@@ -64,7 +59,7 @@ namespace adns
          * Description is whatever makes sense. 
          * Details add more context.
          */
-        exception(const char *method, const char *file, int line, const std::string &description, const std::string &details, uuid oid);
+        //exception(const char *method, const char *file, int line, const std::string &description, const std::string &details);
 
         /**
          * destructor   
@@ -107,11 +102,6 @@ namespace adns
         int get_code() const noexcept;
 
         /**
-         * get the UUID - could mean all sorts of different things.
-         */
-        uuid get_uuid() const noexcept;
-
-        /**
          * log the exception
          */
         void log(boost::log::trivial::severity_level l, const char *message) const noexcept;
@@ -124,7 +114,6 @@ namespace adns
         char m_description[MAX_EXCEPTION_TEXT_LEN];
         char m_details[MAX_EXCEPTION_TEXT_LEN];
         int m_code;
-        uuid m_uuid;
     };
 }
 
@@ -141,12 +130,6 @@ namespace adns \
         { \
         } \
         CLASS_NAME(const char *method, const char *file, int line, const std::string &description, const std::string &details, int error_code = -1) : adns::BASE_CLASS(method, file, line, description, details, error_code) \
-        { \
-        } \
-        CLASS_NAME(const char *method, const char *file, int line, const std::string &description, uuid oid) : adns::BASE_CLASS(method, file, line, description, oid) \
-        { \
-        } \
-        CLASS_NAME(const char *method, const char *file, int line, const std::string &description, const std::string &details, uuid oid) : adns::BASE_CLASS(method, file, line, description, details, oid) \
         { \
         } \
     };   \

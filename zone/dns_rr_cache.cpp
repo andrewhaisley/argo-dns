@@ -19,6 +19,8 @@
  
 #include <algorithm>
 #include <random>
+#include <boost/lexical_cast.hpp>
+
 #include "dns_rr_cache.hpp"
 #include "dns_rr_dal.hpp"
 
@@ -61,7 +63,7 @@ void dns_rr_cache::read_records(const dns_zone &zone, dns_rr::type_t t)
         case dns_rr::T_SOA_e :
             if (m_cache[zone.get_zone_id()][t].empty())
             {
-                THROW(rr_cache_exception, "no SOA found for zone", zone.get_zone_id());
+                THROW(rr_cache_exception, "no SOA found for zone", boost::lexical_cast<string>(zone.get_zone_id()));
             }
             m_SOA_cache[zone.get_zone_id()] = shared_ptr<dns_rr_SOA>(dynamic_cast<dns_rr_SOA *>(m_cache[zone.get_zone_id()][t].front()->clone()));
             break;
@@ -69,7 +71,7 @@ void dns_rr_cache::read_records(const dns_zone &zone, dns_rr::type_t t)
         case dns_rr::T_NS_e :
             if (m_cache[zone.get_zone_id()][t].empty())
             {
-                THROW(rr_cache_exception, "no NS records found for zone", zone.get_zone_id());
+                THROW(rr_cache_exception, "no NS records found for zone", boost::lexical_cast<string>(zone.get_zone_id()));
             }
 
             for (auto &ns : m_cache[zone.get_zone_id()][t])
@@ -260,7 +262,7 @@ const list<shared_ptr<dns_rr_NS>> &dns_rr_cache::get_NS(const dns_zone &zone)
     read_records(zone, dns_rr::T_NS_e);
     if (m_NS_cache.find(zone.get_zone_id()) == m_NS_cache.end())
     {
-        THROW(rr_cache_exception, "no NS found for zone", zone.get_zone_id());
+        THROW(rr_cache_exception, "no NS found for zone", boost::lexical_cast<string>(zone.get_zone_id()));
     }
     return m_NS_cache[zone.get_zone_id()];
 }
@@ -475,7 +477,7 @@ void dns_rr_cache::insert_record_cache(const std::shared_ptr<dns_rr> &rr)
 
     if (!z)
     {
-        THROW(rr_cache_exception, "no zone found for record", rr->get_zone_id());
+        THROW(rr_cache_exception, "no zone found for record", boost::lexical_cast<string>(rr->get_zone_id()));
     }
 
     if (m_cache.find(rr->get_zone_id()) == m_cache.end())

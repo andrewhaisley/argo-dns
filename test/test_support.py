@@ -7,7 +7,6 @@ import os
 verify = False
 
 default_server = 'https://localhost:2000/'
-#default_server = 'https://haisley.com:2000/'
 
 def read_file(name):
     with open(name, 'r') as content_file:

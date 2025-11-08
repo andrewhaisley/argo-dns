@@ -123,6 +123,7 @@ void dns_doh_connection::run()
                     http h(http::doh_e, *m_socket, m_config.dns.doh_client_timeout_ms);
 
                     auto req = h.from_wire();
+                    LOG(debug) << "GOT DOH QUERY";
 
                     buffer b;
                     dns_message_envelope *m = nullptr;
@@ -172,6 +173,7 @@ void dns_doh_connection::run()
                     {
                         auto res = make_shared<http_response>(req->get_stream_id(), http_response::ok_200, m->get_raw());
                         res->add_header("cache-control", "private, max-age=" + boost::lexical_cast<string>(m->get_response()->get_min_ttl()));
+                        LOG(debug) << "sending response to " << *(m->get_response()->get_question());
                         h.to_wire(*res);
 
                         // cleanup
@@ -205,6 +207,7 @@ void dns_doh_connection::run()
         }
         catch (adns::exception &e)
         {
+            e.log(error, "in DOH loop");
             done();
 
             if (run_state::o_state == run_state::shutdown_e)

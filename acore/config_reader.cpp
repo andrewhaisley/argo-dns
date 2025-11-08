@@ -135,7 +135,7 @@ void config_reader::read()
                 s.control.control_address_list = address_list::get(control_row->get_address_list_id());
                 if (!s.control.control_address_list)
                 {
-                    THROW(config_reader_exception, "no address list found for ID", control_row->get_address_list_id());
+                    THROW(config_reader_exception, "no address list found for ID", boost::lexical_cast<string>(control_row->get_address_list_id()));
                 }
                 m_server_configs.push_back(s);
             }
@@ -152,7 +152,7 @@ void config_reader::read()
                 s.ui.document_root = ui_row->get_document_root();
                 if (!s.ui.ui_address_list)
                 {
-                    THROW(config_reader_exception, "no address list found for ID", ui_row->get_address_list_id());
+                    THROW(config_reader_exception, "no address list found for ID", boost::lexical_cast<string>(ui_row->get_address_list_id()));
                 }
                 m_server_configs.push_back(s);
             }

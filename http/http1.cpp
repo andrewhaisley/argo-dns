@@ -55,6 +55,7 @@ string http1::read_line()
                 {
                     res.pop_back();
                 }
+
                 return res;
             }
             else    
