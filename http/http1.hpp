@@ -61,6 +61,11 @@ namespace adns
          */
         virtual void to_wire(http_response &res);
 
+        /**
+         * did the last request specify the connection should be kept alive?
+         */
+        bool keep_alive();
+
     private:
 
         // what the session is being used for
@@ -71,6 +76,9 @@ namespace adns
 
         // TCP read/write timeout in ms
         uint m_timeout;
+
+        // keep alive value from last request
+        bool m_keep_alive;
 
         /**
          * read a single line of text from the socket

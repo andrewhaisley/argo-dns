@@ -356,7 +356,7 @@ shared_ptr<http_request> http2::from_wire()
 
     while (true)
     {
-        buffer b = m_socket.read(1024, m_timeout);
+        buffer b = m_socket.read(1, m_timeout);
         if (b.get_size() > 0)
         {
             int r = nghttp2_session_mem_recv(m_session, b.get_data(), b.get_size());
@@ -387,4 +387,9 @@ ssize_t http2::send_callback(
     m_socket.write(data, length, m_timeout);
 
     return length;
+}
+
+bool http2::keep_alive()
+{
+    return true;
 }

@@ -29,7 +29,7 @@ using namespace std;
 using namespace adns;
 using namespace boost::log::trivial;
 
-http1::http1(http::usage_t u, tcp_socket &s, uint timeout) : m_usage(u), m_socket(s), m_timeout(timeout)
+http1::http1(http::usage_t u, tcp_socket &s, uint timeout) : m_usage(u), m_socket(s), m_timeout(timeout), m_keep_alive(false)
 {
 }
 
@@ -142,5 +142,12 @@ shared_ptr<http_request> http1::from_wire()
         res->m_raw_payload = m_socket.read(ps, m_timeout);
     }
 
+    m_keep_alive = (res->get_header("connection") == "keep-alive");
+
     return res;
+}
+
+bool http1::keep_alive()
+{
+    return m_keep_alive;
 }

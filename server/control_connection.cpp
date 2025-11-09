@@ -136,18 +136,15 @@ void control_connection::handle_requests()
 {
     api api_instance;
 
-    bool close = false;
-
     http h(http::api_e, *m_socket, m_config.control.client_connection_timeout_ms);
 
-    while (!close)
+    do 
     {
         uint32_t stream_id = 0;
 
         try
         {
             auto req = h.from_wire();
-            close = req->close_connection();
             stream_id = req->get_stream_id();
 
             // the to_wire method is all or nothing, the only exceptions
@@ -229,4 +226,5 @@ void control_connection::handle_requests()
             return;
         }
     }
+    while (h.keep_alive());
 }

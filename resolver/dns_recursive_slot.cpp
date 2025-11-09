@@ -560,7 +560,6 @@ void dns_recursive_slot::process(dns_message_envelope *m)
         } 
         else
         {
-            LOG(debug) << "resolve " << *(m->get_request()->get_question());
             auto a = resolve(m);
 
             switch (a->get_type())

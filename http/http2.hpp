@@ -66,6 +66,11 @@ namespace adns
          */
         void to_wire(http_response &res);
 
+        /**
+         * should the connection should be kept alive? Always true for http2.
+         */
+        bool keep_alive();
+
     private:
 
         // what the session is being used for

@@ -58,3 +58,8 @@ void http::to_wire(http_response &res)
 {
     m_protocol->to_wire(res);
 }
+
+bool http::keep_alive()
+{
+    return m_protocol->keep_alive();
+}

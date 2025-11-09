@@ -74,6 +74,12 @@ namespace adns
          */
         virtual void to_wire(http_response &res);
 
+        /**
+         * did the last request (or the protocol otherwise) specify the connection should be
+         * kept alive?
+         */
+        bool keep_alive();
+
     private:
 
         http_impl *m_protocol;
