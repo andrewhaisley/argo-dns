@@ -46,6 +46,18 @@ api_v1::~api_v1()
 
 shared_ptr<http_response> api_v1::handle_request(shared_ptr<http_request> &req, const api_url_v1 &p)
 {
+    if (req->get_method() == "OPTIONS")
+    {
+        auto res = make_shared<http_response>(req->get_stream_id(), http_response::ok_200);
+
+        res->add_header("access-control-allow-origin", "*");
+        res->add_header("access-control-allow-headers", "authorization");
+        res->add_header("access-control-allow_methods", "GET, PUT, POST, DELETE, OPTIONS");
+        res->add_header("allow", "GET, PUT, POST, DELETE, OPTIONS");
+
+        return res;
+    }
+
     if (!req->authorized())
     {
         return make_shared<http_response>(req->get_stream_id(), http_response::unauthorized_401);

@@ -88,6 +88,7 @@ int http2::on_header_callback(
             size_t              valuelen,
             uint8_t             flags)
 {
+
     string n((char *)name, namelen);
     string v((char *)value, valuelen);
 
@@ -112,7 +113,7 @@ int http2::on_header_callback(
         THROW(http_exception, "maximum number of HTTP2 headers exceeded");
     }
 
-    if (n == "method")
+    if (n == ":method")
     {
         m_raw_method[stream_id] = v;
     }
@@ -159,9 +160,11 @@ int http2::on_data_chunk_callback(
 
 int http2::on_frame_recv_callback(nghttp2_session *session, const nghttp2_frame *frame)
 {
+
     auto stream_id = frame->hd.stream_id;
 
-    if (frame->hd.type == NGHTTP2_DATA)
+    if ((frame->hd.type == NGHTTP2_DATA) ||
+        ((frame->hd.type == NGHTTP2_HEADERS) && (m_content_length[stream_id] == 0)))
     {
         auto m = m_headers[stream_id].find(":method");
 
