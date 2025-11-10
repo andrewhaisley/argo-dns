@@ -117,6 +117,8 @@ void http1::to_wire(http_response &res)
 shared_ptr<http_request> http1::from_wire()
 {
     shared_ptr<http_request> res(new http_request);
+
+    res->set_source_ip(m_socket.get_remote_address().get_ip_address());
     res->add_request_line(read_line());
 
     vector<string> headers;

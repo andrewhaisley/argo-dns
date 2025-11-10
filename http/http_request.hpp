@@ -28,6 +28,7 @@
 #include "exception.hpp"
 #include "url.hpp"
 #include "json.hpp"
+#include "ip_address.hpp"
 
 EXCEPTION_CLASS(http_request_exception, exception)
 EXCEPTION_CLASS(http_request_bad_format_exception, http_request_exception)
@@ -46,6 +47,7 @@ namespace adns
          * construct from parts
          */
         http_request(
+            const ip_address                                   &source_ip,
             uint32_t                                           stream_id,
             const std::unordered_map<std::string, std::string> &raw_headers,
             const std::string                                  &raw_method,
@@ -57,6 +59,16 @@ namespace adns
          * destructor
          */
         virtual ~http_request();
+
+        /**
+         * set the source IP
+         */
+        void set_source_ip(const ip_address &ip);
+
+        /**
+         * get the source IP
+         */
+        const ip_address &get_source_ip() const;
 
         /**
          * close connection once handled?
@@ -105,7 +117,7 @@ namespace adns
 
         /**
          * Does the request contain an authorization header with username & password
-         * matching the server config?
+         * matching the server config or a valid bearer token?
          */
         bool authorized() const;
 
@@ -115,6 +127,9 @@ namespace adns
         void dump() const;
 
     private:
+
+        // source IP of the request
+        ip_address m_source_ip;
 
         // only relevant for requests sent via http2
         uint32_t    m_stream_id;

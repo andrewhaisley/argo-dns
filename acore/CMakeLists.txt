@@ -21,4 +21,5 @@ add_library(acore
     read_write_lock.cpp
     run_state.cpp
     server_config.cpp
-    util.cpp)
+    util.cpp
+    token_store.cpp)

@@ -17,10 +17,12 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
  
+#include <boost/uuid/uuid.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>    
 
 #include "config.hpp"
+#include "token_store.hpp"
 #include "http_request.hpp"
 #include "util.hpp"
 #include "parser.hpp"
@@ -70,6 +72,16 @@ uint http_request::get_payload_size() const
             THROW(http_request_bad_format_exception, "content-length header is malformed", v);
         }
     }
+}
+
+void http_request::set_source_ip(const ip_address &ip)
+{
+    m_source_ip = ip;
+}
+
+const ip_address &http_request::get_source_ip() const
+{
+    return m_source_ip;
 }
 
 string http_request::get_header(const string &name) const
@@ -186,12 +198,14 @@ void http_request::add_headers(const vector<string> &headers)
 }
 
 http_request::http_request(
+    const ip_address                              &source_ip,
     uint32_t                                      stream_id,
     const unordered_map<std::string, std::string> &raw_headers,
     const string                                  &raw_method,
     const string                                  &raw_url,
     const url                                     &p_url,
     const buffer                                  &raw_payload) :
+                            m_source_ip(source_ip),
                             m_stream_id(stream_id),
                             m_raw_headers(raw_headers),
                             m_raw_method(raw_method),
@@ -242,14 +256,26 @@ bool http_request::authorized() const
                     THROW(http_request_bad_format_exception, "malformed basic authentication username/password base64 string");
                 }
             }
+            else if (bits[0] == "Bearer")
+            {
+                try
+                {
+                    auto token = boost::lexical_cast<uuid>(bits[1]);
+                    return token_store::contains(m_source_ip, token);
+                }
+                catch (const boost::bad_lexical_cast& e) 
+                {
+                    THROW(http_request_bad_format_exception, "malformed Bearer authentication token string");
+                }
+            }
             else
             {
-                THROW(http_request_bad_format_exception, "only Basic authentication is supported", bits[0]);
+                THROW(http_request_bad_format_exception, "only Basic and Bearer authentication are supported", bits[0]);
             }
         }
         else
         {
-            THROW(http_request_bad_format_exception, "malformed basic authentication header");
+            THROW(http_request_bad_format_exception, "malformed authentication header");
         }
     }
 }

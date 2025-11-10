@@ -48,6 +48,7 @@ namespace adns
 
         typedef enum
         {
+            auth_token_e,
             monitor_e,
             run_e,
             server_e,

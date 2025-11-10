@@ -181,6 +181,7 @@ int http2::on_frame_recv_callback(nghttp2_session *session, const nghttp2_frame 
         }
 
         m_request = make_shared<http_request>(
+                m_socket.get_remote_address().get_ip_address(),
                 stream_id,
                 m_headers[stream_id],
                 m->second,

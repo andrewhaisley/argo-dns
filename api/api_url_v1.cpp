@@ -42,7 +42,11 @@ api_url_v1::api_url_v1(const string &p) : url(p)
 
 api_url_v1::resource_type_t api_url_v1::string_to_type(string type) const
 {
-    if (type == "monitor")
+    if (type == "auth_token")
+    {
+        return auth_token_e;
+    }
+    else if (type == "monitor")
     {
         return monitor_e;
     }

@@ -12,34 +12,64 @@ def read_file(name):
     with open(name, 'r') as content_file:
         return content_file.read()
 
-def make_request(method, path, payload, server=default_server):
-    try:
+def make_request(method, path, payload, server=default_server, token=None):
+
+    if token is not None:
+        headers = { "Authorization": f"Bearer {token}" }
+        try:
+            if method == 'GET':
+                r = requests.get(server + path, headers=headers, verify=verify)
+                return r.status_code, r.text
+            elif method == 'PUT':
+                r = requests.put(server + path, headers=headers, json=payload, verify=verify)
+                return r.status_code, r.text
+            elif method == 'POST':
+                r = requests.post(server + path, headers=headers, json=payload, verify=verify)
+                return r.status_code, r.text
+            elif method == 'DELETE':
+                r = requests.delete(server + path, headers=headers, verify=verify)
+                return r.status_code, r.text
+            else:
+                print('unsupported method: ', method)
+
+        except IOError as e: 
+            if hasattr(e, 'code'): # HTTPError 
+                data = e.read()
+                return (e.code, json.dumps(json.loads(data), sort_keys=True, indent=4, separators=(',', ': ')))
+            elif hasattr(e, 'reason'): # URLError 
+                print("can't connect, reason: ", e.reason)
+                raise
+            else: 
+                raise
+
+    else:
         auth = ('admin', 'admin')
 
-        if method == 'GET':
-            r = requests.get(server + path, auth=auth, verify=verify)
-            return r.status_code, r.text
-        elif method == 'PUT':
-            r = requests.put(server + path, auth=auth, json=payload, verify=verify)
-            return r.status_code, r.text
-        elif method == 'POST':
-            r = requests.post(server + path, auth=auth, json=payload, verify=verify)
-            return r.status_code, r.text
-        elif method == 'DELETE':
-            r = requests.delete(server + path, auth=auth, verify=verify)
-            return r.status_code, r.text
-        else:
-            print('unsupported method: ', method)
+        try:
+            if method == 'GET':
+                r = requests.get(server + path, auth=auth, verify=verify)
+                return r.status_code, r.text
+            elif method == 'PUT':
+                r = requests.put(server + path, auth=auth, json=payload, verify=verify)
+                return r.status_code, r.text
+            elif method == 'POST':
+                r = requests.post(server + path, auth=auth, json=payload, verify=verify)
+                return r.status_code, r.text
+            elif method == 'DELETE':
+                r = requests.delete(server + path, auth=auth, verify=verify)
+                return r.status_code, r.text
+            else:
+                print('unsupported method: ', method)
 
-    except IOError as e: 
-        if hasattr(e, 'code'): # HTTPError 
-            data = e.read()
-            return (e.code, json.dumps(json.loads(data), sort_keys=True, indent=4, separators=(',', ': ')))
-        elif hasattr(e, 'reason'): # URLError 
-            print("can't connect, reason: ", e.reason)
-            raise
-        else: 
-            raise
+        except IOError as e: 
+            if hasattr(e, 'code'): # HTTPError 
+                data = e.read()
+                return (e.code, json.dumps(json.loads(data), sort_keys=True, indent=4, separators=(',', ': ')))
+            elif hasattr(e, 'reason'): # URLError 
+                print("can't connect, reason: ", e.reason)
+                raise
+            else: 
+                raise
 
 def sort_json_vectors(json):
     if type(json) == dict:

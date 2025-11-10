@@ -19,6 +19,22 @@ def test_run_state():
     else:
         print('run test 1: FAILED')
 
+def test_auth_token():
+
+    print('TESTING auth token API')
+
+    response_code, data = make_request('GET', '1/auth_token', None)
+    if response_code == 200:
+        print('token auth test 1: PASSED')
+        token = json.loads(data)['token']
+        response_code, data = make_request('GET', '1/run', None, token=token)
+        if response_code == 200:
+            print('token auth test 2: PASSED')
+        else:
+            print('token auth test 2: FAILED')
+    else:
+        print('token auth test 1: FAILED')
+
 def restart_server():
 
     print('restarting server')
@@ -506,7 +522,8 @@ def test():
     #horizon_id = create_base_data()
     #restart_server()
     #test_auth()
-    test_run_state()
+    #test_run_state()
+    test_auth_token()
     #test_monitor()
     #test_server()
     #test_base_config()

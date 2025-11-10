@@ -14,6 +14,7 @@ include_directories(
 
 add_library(
     api 
+    api_auth_token_v1.cpp
     api_address_list_v1.cpp
     api_base_configuration_v1.cpp
     api_cache_configuration_v1.cpp

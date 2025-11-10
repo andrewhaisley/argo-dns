@@ -23,6 +23,7 @@
 #include "config.hpp"
 #include "api.hpp"
 #include "api_v1.hpp"
+#include "api_auth_token_v1.hpp"
 #include "api_run_state_v1.hpp"
 #include "api_server_v1.hpp"
 #include "api_zone_v1.hpp"
@@ -65,6 +66,8 @@ shared_ptr<http_response> api_v1::handle_request(shared_ptr<http_request> &req, 
 
     switch (p.get_resource_type())
     {
+        case api_url_v1::auth_token_e :
+            return api_auth_token_v1::handle_request(req, p);
         case api_url_v1::monitor_e :
             return api_monitor_v1::handle_request(req, p);
         case api_url_v1::run_e :
