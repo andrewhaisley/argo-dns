@@ -96,7 +96,7 @@ namespace adns
         bool is_localhost() const;
 
         /**
-         * is the address 'any' (either for ipv4 or ipv6
+         * is the address 'any' (either for ipv4 or ipv6)
          */
         bool is_any() const;
 

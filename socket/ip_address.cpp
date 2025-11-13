@@ -198,7 +198,7 @@ bool ip_address::operator<(const ip_address &other) const
                     return false;
                 }
             }
-            return true;
+            return false;
         }
     }
     else 

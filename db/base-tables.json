@@ -713,51 +713,5 @@
             ]
         },
         "name": "zone"
-    },
-    "rr_history": {
-        "columns": {
-            "rr_history_id": {
-                "nullable": false,
-                "type": "uuid"
-            },
-            "full_record": {
-                "length": 8000,
-                "nullable": false,
-                "type": "string"
-            },
-            "zone_id": {
-                "nullable": false,
-                "type": "uuid"
-            },
-            "sequence_number": {
-                "nullable": false,
-                "type": "uint"
-            },
-            "action": {
-                "length": 1,
-                "nullable": false,
-                "type": "string"
-            }
-        },
-        "foreign_keys": {},
-        "indexes": {
-            "PRIMARY": [
-                [
-                    "rr_history_id",
-                    true
-                ]
-            ],
-            "i_rr_history_zone_seq": [
-                [
-                    "zone_id",
-                    false
-                ],
-                [
-                    "sequence_number",
-                    false
-                ]
-            ]
-        },
-        "name": "rr_generic"
     }
 }

@@ -56,7 +56,7 @@ void http_impl::add_headers(http::usage_t u, http_response &res, int content_len
     {
         // add API headers
         res.add_header("content-type", "application/json");
-        res.add_header("www-authenticate", "Basic realm=\"ADNS\"");
+        res.add_header("www-authenticate", "Basic realm=\"Argo DNS\", Bearer");
         res.add_header("cache-control", "no-cache");
         res.add_header("access-control-allow-origin", "*");
         res.add_header("content-length", boost::lexical_cast<string>(content_length));

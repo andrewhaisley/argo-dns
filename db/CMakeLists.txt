@@ -39,7 +39,6 @@ add_library(
     row_rr_eui64.cpp
     row_rr_generic.cpp
     row_rr_hinfo.cpp
-    row_rr_history.cpp
     row_rr_https.cpp
     row_rr_ipseckey.cpp
     row_rr_kx.cpp
