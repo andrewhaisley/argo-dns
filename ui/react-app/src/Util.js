@@ -1,9 +1,27 @@
-export var defaultServer = "https://localhost:2000";
-
 export function createBasicAuthHeader(username, password) {
     const credentials = `${username}:${password}`;
     const encoded = btoa(credentials);
     return `Basic ${encoded}`;
+}
+
+export async function getDefaultServer() {
+    try {
+        const response = await fetch("http://localhost:8000/api-port", {
+            method: "GET"
+        });
+
+        if (response.status === 200) {
+            const url = new URL(window.location.href);
+            const j = await response.json();
+            url.port = j["port"];
+            return url.origin;
+        } else {
+            return "<error>";
+        }
+    }
+    catch (err) {
+        return false;
+    };
 }
 
 export async function loggedIn() {
@@ -19,15 +37,13 @@ export async function loggedIn() {
         });
 
         if (response.status === 200) {
-            console.log("logged in");
             return true;
         } else {
-            console.log("not logged in", response.status);
             return false;
         }
     }
     catch (err) {
-        return false
+        return false;
     };
 }
 

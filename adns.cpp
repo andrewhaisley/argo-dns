@@ -297,6 +297,13 @@ int main(int argc, char *argv[], char *envp[])
         }
 
         config::init_log(bootstrap_config);
+
+        if (config::server_config_password() == "admin")
+        {
+            LOG(fatal) << "the default server password in " << bootstrap_config << " must be changed to something vaguely secure";
+            exit(1);
+        }
+
         LOG(info) << "starting " << VERSION;
 
         set_user();

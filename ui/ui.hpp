@@ -56,5 +56,11 @@ namespace adns
          */
         std::shared_ptr<http_response> handle_get_request(std::shared_ptr<http_request> &req);
 
+        /**
+         * Get a response giving the control server port - this is used by the GUI client
+         * to create a reasonable default URL for the API.
+         */
+        std::shared_ptr<http_response> get_api_port();
+
     };
 }

@@ -26,13 +26,12 @@
 #include "exception.hpp"
 #include "json_serializable.hpp"
 #include "client_config.hpp"
+#include "address_list.hpp"
 
 EXCEPTION_CLASS(server_config_exception, exception)
 
 namespace adns
 {
-    class address_list;
-
     class server_config : public json_serializable
     {
     public:

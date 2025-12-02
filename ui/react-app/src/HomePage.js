@@ -24,7 +24,7 @@ function HomePage({ onLogout }) {
                 <div className={styles.homepage_left}>
                     <span role="img" className={styles.home_icon}>🏠</span>
                     <a href="/" className={styles.home_link}>Home</a>
-                    <span className={styles.homepage_url_label}>API URL</span>
+                    <span className={styles.homepage_url_label}>Server URL</span>
                     <span className={styles.homepage_server}>{loggedInServer()}</span>
                 </div>
                 <button className={styles.logout_button} onClick={onLogout}>Logout</button>

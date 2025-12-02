@@ -397,6 +397,18 @@ void config::add_server(const server_config &sc)
     o_config_reader.add_server(sc);
 }
 
+server_config config::get_control_server_config()
+{
+    for (auto s : o_config_reader.servers())
+    {
+        if (s.type == server_config::control_e)
+        {
+            return s;
+        }
+    }
+    THROW(config_exception, "no control server found");
+}
+
 void config::update_server(const server_config &sc)
 {
     o_config_reader.update_server(sc);

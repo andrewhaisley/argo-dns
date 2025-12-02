@@ -19,12 +19,14 @@
  
 #include <fstream>
 
+#include <boost/lexical_cast.hpp>
+
+#include "config.hpp"
 #include "util.hpp"
 #include "ui.hpp"
 
 using namespace std;
 using namespace adns;
-
 
 ui::ui(const string &document_root) : m_document_root(document_root)
 {
@@ -32,6 +34,16 @@ ui::ui(const string &document_root) : m_document_root(document_root)
 
 ui::~ui()
 {
+}
+
+shared_ptr<http_response> ui::get_api_port()
+{
+    auto s = config::get_control_server_config();
+    string port = "{ \"port\" : " + boost::lexical_cast<string>(s.socket_addresses.front().port) + " }";
+    auto res = make_shared<http_response>(0, http_response::ok_200, buffer(port), "text/json");
+    res->add_header("cache-control", "no-cache");
+    res->add_header("access-control-allow-origin", "*");
+    return res;
 }
 
 shared_ptr<http_response> ui::handle_get_request(shared_ptr<http_request> &req)
@@ -47,31 +59,36 @@ shared_ptr<http_response> ui::handle_get_request(shared_ptr<http_request> &req)
         path += "index.html";
     }
 
-    path = m_document_root + path;
-
-    LOG(debug) << "file path is " << path;
-
-    ifstream is(path);
-
-    if (is)
+    if (path == "/api-port")
     {
-        buffer b;
-
-        try
-        {
-            b = buffer(is);
-        }
-        catch (buffer_exception &e)
-        {
-            is.close();
-            throw;
-        }
-
-        return make_shared<http_response>(0, http_response::ok_200, b, util::mime_type(path));
+        return get_api_port();
     }
     else
     {
-        return make_shared<http_response>(0, http_response::not_found_404);
+        path = m_document_root + path;
+
+        ifstream is(path);
+
+        if (is)
+        {
+            buffer b;
+
+            try
+            {
+                b = buffer(is);
+            }
+            catch (buffer_exception &e)
+            {
+                is.close();
+                throw;
+            }
+
+            return make_shared<http_response>(0, http_response::ok_200, b, util::mime_type(path));
+        }
+        else
+        {
+            return make_shared<http_response>(0, http_response::not_found_404);
+        }
     }
 }
 

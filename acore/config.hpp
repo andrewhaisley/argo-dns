@@ -52,6 +52,11 @@ namespace adns
         static void add_server(const server_config &sc);
 
         /**
+         * Get the control server config (there is always a control server)
+         */
+        static server_config get_control_server_config();
+
+        /**
          * Change a server - changes will be picked up on restart
          */
         static void update_server(const server_config &sc);

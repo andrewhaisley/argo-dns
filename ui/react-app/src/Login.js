@@ -1,33 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Login.module.css";
-import { defaultServer, createBasicAuthHeader } from "./Util.js";
+import { getDefaultServer, createBasicAuthHeader } from "./Util.js";
 
 export default function Login() {
-const [server, setServer] = useState(defaultServer);
-const [username, setUsername] = useState("");
-const [password, setPassword] = useState("");
-const [error, setError] = useState(null);
-const [loading, setLoading] = useState(false);
+    const [server, setServer] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-        const response = await fetch(server + "/1/auth_token", {
-            method: "GET",
-            headers: { "Authorization": createBasicAuthHeader(username, password) }
-        });
-
-        if (response.status === 200) {
-            const data = await response.json();
-            localStorage.setItem("server", server);
-            localStorage.setItem("authToken", data.token);
-            window.location.href = "/";
-        } else {
-            setError("Invalid username or password");
+    // Load server value asynchronously on mount
+    useEffect(() => {
+        async function loadServer() {
+            try {
+                const s = await getDefaultServer();
+                setServer(s);
+            } catch (e) {
+                console.error("Failed to load default server", e);
+            }
         }
+        loadServer();
+    }, []);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+
+        try {
+            const response = await fetch(server + "/1/auth_token", {
+                method: "GET",
+                headers: { Authorization: createBasicAuthHeader(username, password) },
+            });
+
+            if (response.status === 200) {
+                const data = await response.json();
+                localStorage.setItem("server", server);
+                localStorage.setItem("authToken", data.token);
+                window.location.href = "/";
+            } else {
+                setError("Invalid username or password");
+            }
         } catch (err) {
             setError("Network error");
         } finally {
@@ -35,13 +48,14 @@ const handleSubmit = async (e) => {
         }
     };
 
-return (
-    <div className={styles.container}>
+    return (
+        <div className={styles.container}>
         <div className={styles.card}>
-            <h2 className={styles.title}>Argo DNS Login</h2>
-            <form onSubmit={handleSubmit} className={styles.form}>
+        <h2 className={styles.title}>Argo DNS Login</h2>
 
-            <label className={styles.label}>
+        <form onSubmit={handleSubmit} className={styles.form}>
+
+        <label className={styles.label}>
             Server URL
             <input
                 type="text"
@@ -50,9 +64,9 @@ return (
                 className={styles.input}
                 required
             />
-            </label>
+        </label>
 
-            <label className={styles.label}>
+        <label className={styles.label}>
             Username
             <input
                 type="text"
@@ -61,9 +75,9 @@ return (
                 className={styles.input}
                 required
             />
-            </label>
+        </label>
 
-            <label className={styles.label}>
+        <label className={styles.label}>
             Password
             <input
                 type="password"
@@ -72,15 +86,16 @@ return (
                 className={styles.input}
                 required
             />
-            </label>
+        </label>
 
-            {error && <p className={styles.error}>{error}</p>}
+        {error && <p className={styles.error}>{error}</p>}
 
-            <button type="submit" className={styles.button} disabled={loading}>
+        <button type="submit" className={styles.button} disabled={loading}>
             {loading ? "Logging in..." : "Login"}
-            </button>
+        </button>
+
         </form>
         </div>
-    </div>
-);
+        </div>
+        );
 }
